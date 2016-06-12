@@ -5,7 +5,7 @@
 
 from os import listdir
 from os.path import isfile, join
-#import csv
+import pickle
 
 
 print("Starting Introduction Script!")
@@ -17,6 +17,7 @@ files = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
 print("Training files:")
 for il in range(10):
 	print files[il]
+
 
 end = len(files)
 print("...")
@@ -37,7 +38,7 @@ for it in range(5):
 		for raw in handle.readlines():
 			temp = raw.split()
 			datat.append(temp)
-	print datat[0]
+	print datat
 
 	for im in datat[0]:
 		data.append(int(im))
@@ -45,7 +46,7 @@ for it in range(5):
 	print data
 
 
+# make dictionary of training data and save it as pickle file !
+# for it in
 
-
-# need remove last space
 
