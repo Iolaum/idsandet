@@ -9,10 +9,10 @@ import pickle
 import numpy as np
 
 
-print("Started processing training data!")
+print("Started processing attack data!")
 
 
-with open('../data/training.p', 'rb') as ha:
+with open('../data/attack.p', 'rb') as ha:
     trdata = pickle.load(ha)
 
 
@@ -20,7 +20,7 @@ with open('../data/training.p', 'rb') as ha:
 # first number is lines, second is columns.
 # 833 training data points
 # 325 system calls to check their frequency.
-tmatrix = np.zeros((833, 325))
+tmatrix = np.zeros((746, 325))
 
 # counter for line in array to be added
 linectr = 0
@@ -60,7 +60,7 @@ for key in trdata:
     #    break
 
 
-with open('../data/b1_trmatrix.p', 'wb') as ha:
+with open('../data/b2_atmatrix.p', 'wb') as ha:
     pickle.dump(tmatrix, ha)
 
-print("trmatrix saved as nd array with pickle.")
+print("atmatrix saved as nd array with pickle.")
