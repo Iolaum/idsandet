@@ -8,7 +8,7 @@ from __future__ import division
 import pickle
 
 
-print("Scipt starting!\nReading training data file!")
+print("Scipt starting!\nReading attack data file!")
 
 
 with open('../data/attack.p', 'rb') as handle:
@@ -30,7 +30,7 @@ print("Script completed. Bigger system call trace is: {}.".format(scsize))
 
 
 '''
-$ ./a6-at-explore.py 
+$ ./a6-at-explore.py
 Scipt starting!
 Reading training data file!
 Attack data size is 746
