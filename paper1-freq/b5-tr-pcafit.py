@@ -114,5 +114,5 @@ ntmatrix = pca.transform(tmatrix)
 
 print("Saving web shell attack data principal components: {}".format(ntmatrix.shape))
 
-with open('../data/b6_at6mat_webshell.p', 'wb') as ha:
+with open('../data/b5_at6mat_webshell.p', 'wb') as ha:
     pickle.dump(ntmatrix, ha)
