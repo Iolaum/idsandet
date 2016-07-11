@@ -33,7 +33,7 @@ datavar = np.var(trdat, axis=0)
 # exit()
 
 # attack data options
-atdatselector = 1
+atdatselector = 3
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
@@ -79,7 +79,7 @@ totacc = atdat.shape[0]
 totval = vadat.shape[0]
 
 # metric distance radius
-barr1 = 1
+barr1 = 3
 
 # normal data neighbours thresshold
 barr2 = 20
@@ -87,11 +87,6 @@ barr2 = 20
 
 # determine attack detection accuracy
 for it1 in atdat:
-
-    # debug
-    # print type(it1)
-    # print it1.shape
-    # exit()
 
     for it2 in trdat:
         if math.pow(seuclidean(it1, it2, datavar), 2) <= barr1:
@@ -110,11 +105,6 @@ myprint("Attack detection accuracy: {}".format(ctracc/totacc))
 
 # determine false positive rate
 for it1 in vadat:
-
-    # debug
-    # print type(it1)
-    # print it1.shape
-    # exit()
 
     for it2 in trdat:
         if math.pow(seuclidean(it1, it2, datavar), 2) <= barr1:
