@@ -1,14 +1,22 @@
-\documentclass[reqno,openany,12pt]{amsbook}
-\usepackage{amsmath}
+% http://tex.stackexchange.com/questions/192817/two-sided-amsbook-with-custom-title-page
+% for reference
+% \documentclass[twoside, reqno, openright ,12pt]{amsbook}
+ 
 
+\documentclass[reqno,openany,12pt]{amsbook}
 %  openany option dumps the blank pages between chapters when the next
 %  chapter starts on odd page number; following command had similar
 %  effect
 %  \let\cleardoublepage\clearpage
 %  NB need an abstract or get a blank page between title and contents
 
+\usepackage{amsmath}
 
-\renewcommand{\baselinestretch}{1.35}
+% \renewcommand{\baselinestretch}{1.35}
+% changed from:
+% http://tex.stackexchange.com/a/79155
+\usepackage{setspace}
+\setstretch{1.5}
 
 
 %  ************  begin my definitions  *******************
@@ -92,203 +100,72 @@
 %  ************  end my definitions  *******************
 
 
-\begin{document}
+% title info
+% fix me later
 
-
-\title{Title}
-\author{Author\\
+\title{Intrusion Detection using Outliers in a modern Cyber Security Dataset}
+\author{Nikolaos Perrakis\\
 {\small
-MSc Dissertation\\[-1 ex]
-Department of Mathematics and Computer Science\\[-1 ex]
-Heriot Watt University\\[-1 ex]
-date
+MSc Project\\[-1 ex]
+University of Southampton\\[-1 ex]
+Faculty of Physical Sciences and Engineering\\[-1 ex]
+Electronics and Computer Science\\[-1 ex]
 }
 }
-\bigskip
-
-\author{Supervised by Prof Bryan Rynne}
 
 
-\begin{abstract}
-This project will investigate some aspects of rational approximation to
-real numbers.
-It is well known that any irrational number can be estimated arbitrarily
-close by rationals, i.e. for any $\ep>0$ and irrational $x \in \R$,
-there exists integers $p$,$q$ such that
-\begin{equation}  \label{abs_basic_app.eq}
-\left| {x-\frac{p}{q}} \right| < \ep
-\end{equation}
-This is known as Diophantine approximation, named after Diophantus of
-Alexandria.
-
-\end{abstract}
+\begin{document}
 
 
 \maketitle
 
+\frontmatter
 
- \setcounter{page}{0}
+
+\chapter*{Abstract}
+\setcounter{page}{1}
+This is the summary of the project describing the details of the analysis on the ADFA-LD 12 dataset.
+
+
+
+\chapter*{Acknowledgements}
+
+Thank you!!
 
 
 \tableofcontents
+\listoffigures
 
+
+\mainmatter
 
 \chapter{Introduction}
 
-This project will investigate some aspects of rational approximation to
-real numbers.
-It is well known that any irrational number can be estimated arbitrarily
-close by rationals, i.e. for any $\ep>0$ and irrational $x \in \R$,
-there exists integers $p$,$q$ such that
-\begin{equation}\label{firsteq}
-\left| {x-\frac{p}{q}} \right| < \ep
-\end{equation}
-This is known as Diophantine approximation, named after Diophantus of Alexandria.
-A good example to illustrate this is the rational approximation to the
-value of $\pi$, which is an irrational number equal to
-$3.141592653589793\dots$.
-Below are some early approximations:-
-\bigskip
-\begin{itemize}
-\item
-The Rhind Papyrus ($\approx 1650$ B.C.):
-$\pi \approx 4(8/9)^2= 3.16\dots,$
-\item
-Old Testament ($\approx 1000$ B.C.): $\pi \approx 3$,
-\item
-Archimedes (287-212 B.C.): $\pi \approx \frac{22}{7} = 3.142\dots,$
-\item
-Tsu Ching Chi ($\approx 500$ A.D.):
-$\pi \approx \frac{355}{133} = 3.1415929\dots.$
-\end{itemize}
-\bigskip
+Write Introduction here.
 
+\chapter{Literature Review}
 
+Review me!
 
-Of course, we can obtain
-`better' approximations to the value of $x$ by using larger denominators
-$q$.
-Hence, an obvious question to ask is: `can we make the dependence of the
-level of approximation on the size of $q$ more precise?',
-that is,
-`can we express the inequality in (1) in a more quantitative way?'.
-If we replace $\ep$ in (1) by $1/{q^\al}$,
-for some $\al > 0$,
-then we have the inequality
-\begin{equation} \label{first_approx.eq}
-\left| {x-\frac{p}{q}}\right| <\frac{1}{q^\al}
-\end{equation}
-which we want to hold for arbitrarily large $q$,
-that is, we want (2) to hold infinitely often.
-Thus, we  investigate the set of $x$ and $\al$ for which the
-inequality
-(2) holds for infinitely many integers $q$.
-
-This basic approximation of a single number $x$ by rationals can be
-extended and generalised in various ways, some of which will be
-described in this project.
-A good introduction to the subject is in \cite{Cassels}.
-
-\chapter{Basic Definitions and Notation}
-
-
-\section{Lebesgue measure zero}
-
-
-\begin{definition}
-If $A \subset \R^k$ then
-$$
-|A| := \sup \{ |x-y| : x,\,y \in \bar A \}.
-$$
-If $|A| < \infty$ then $A$ is {\em bounded};
-otherwise it is {\em unbounded}.
-\end{definition}
-
-
-\begin{definition}
-A set $X \subset \R^k$ has {\em $($Lebesgue$)$ measure zero}, if for any
-$\ep>0$ there exists a set of intervals $I_1,I_2,I_3,\dots$ such that
-$$X\subset I_1\cup I_2\cup I_3,\dots$$
-and
-$$\sum_{i=1}^\infty |I_i|<\ep.$$
-\end{definition}
-
-Below are some examples of sets with Lebesgue measure zero.
-\begin{enumerate}
-\item
-$X_1 =\lbrace x \rbrace,$
-\item
-$X_2 =\lbrace x_{1},\dots,x_{n}\rbrace,$
-\item
-$X_3 =\lbrace x_{1},x_{2},\dots \rbrace$.
-\end{enumerate}
-
-For example, to prove that $X_3$ has measure zero, let $\ep>0$ and
-define
-$$
-I_i = (x_i - \frac14 \ep 2^{-i}, x_i + \frac14 \ep 2^{-i}), \quad i=1,2,\dots .
-$$
-Then for each $i=1,2,\dots,$
-$
-|I_{i}| = \frac12 \ep 2^{-i},
-$
-and hence
-$$
-\sum_{i=1}^\infty |I_{i}| = \frac12 \ep \left(\frac12 + \frac14 +
-\frac18 +\dots \right) = \frac12 \ep < \ep .
-$$
-
-\begin{definition}
-A set $X \subset \R^k$ has  {\em full} (Lebesgue) measure if the
-complement $X^c := \R^k  \setminus X$ has  measure zero.
-\end{definition}
-
-Throughout this project we will refer to Lebesgue measure zero or
-full Lebesgue measure simply as measure zero or full measure.
-
-
-\section{Hausdorff dimension}
-
-In this section we briefly describe the definition of the
-Hausdorff dimension of an arbitrary set $F \subset \R$.
-
-
-\begin{definition}
-Let $F \subset \R$ be an arbitrary non-empty set.
-A finite or countably infinite collection of
-sets $\{ U_i \} = \{ U_1,U_2,\dots\}$ in $\R$ is a {\em cover} of $F$ if
-$$
-F \subset U_1 \cup U_2 \cup \dots
-$$
-(in general, one could also allow uncountable collections of sets as covers,
-but for our purposes here we won't consider such coverings).
-
-If, in addition,  $|U_i| \le \de$ for all $i$ then $\{ U_i \}$ is a {\em $\de$-cover}
-of $F$.
-\end{definition}
-
-For any $s \ge 0$ and $\de >0$ we define
-\begin{equation}  \label{hausmeasde.eq}
-H_\de^s(F) := \inf \Bigl\{ \sum_i |U_i|^s :
-\text{$\{U_i\}$ is a $\de$-cover of $F$ }\Bigr\} .
-\end{equation}
-NB. the summation in \eqref{hausmeasde.eq}, and below, may be finite or
-countably infinite depending on whether the covering $\{U_i\}$ is finite
-or countable.
 
 
 \begin{thebibliography}{99}
 
-\bibitem{Bovey}
-J. D. Bovey, M. M. Dodson,
-The Hausdorff dimension of systems of linear forms
-{\em Acta Arithmetica}
-(1986) 337-358.
 
-\bibitem{Cassels}
-J. W. S. Cassels,
-{\em An Introduction to Diophantine Approximation},
-Cambridge University Press, 1965.
+\bibitem{dat2} Gideon Creech, Jiankun Huy \emph{Generation of a new IDS Test Dataset: Time to Retire the KDD Collection}, 
+2013 IEEE Wireless Communications and Networking Conference (WCNC)
+
+
+%\bibitem{Bovey}
+%J. D. Bovey, M. M. Dodson,
+%The Hausdorff dimension of systems of linear forms
+%{\em Acta Arithmetica}
+%(1986) 337-358.
+%
+%\bibitem{Cassels}
+%J. W. S. Cassels,
+%{\em An Introduction to Diophantine Approximation},
+%Cambridge University Press, 1965.
 
 
 
