@@ -43,5 +43,5 @@ fpr9 = np.array([0.75571820677, 0.308325709058, 0.189387008234,
     0.0176120768527, 0.0176120768527, 0.0173833485819])
 
 # This is the ROC curve
-plt.plot(fpr1, acc1)
+plt.plot(fpr7, acc7, fpr8, acc8, fpr9, acc9, fpr7, fpr7)
 plt.show() 
