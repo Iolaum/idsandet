@@ -7,24 +7,33 @@
 from __future__ import division
 import pickle
 import numpy as np
-from scipy.spatial.distance import euclidean
+from scipy.spatial.distance import seuclidean
 import math
 
 
 # custom print function to also save runs on text file
+resultsfile = '../data/b6-knn-2-results.txt'
 def myprint(mytext):
     print(mytext)
-    with open('../data/b6-knn-1-results.txt', 'a') as ha:
+    with open(resultsfile, 'a') as ha:
         ha.write(mytext + '\n')
 
-myprint("Starting a kNN squared euclidean distance classifier.")
+myprint("Starting a kNN squared standardised euclidean distance classifier.")
 
 myprint("Loading trainind data.")
 with open('../data/b5_trmatrix.p', 'rb') as ha:
     trdat = pickle.load(ha)
 
+# compute variance vector
+datavar = np.var(trdat, axis=0)
+
+
+# debug
+# print datavar
+# exit()
+
 # attack data options
-atdatselector = 1
+atdatselector = 3
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
@@ -69,8 +78,8 @@ dumctr = 0
 totacc = atdat.shape[0]
 totval = vadat.shape[0]
 
-# euclidian distance radius
-barr1 = 0.1
+# metric distance radius
+barr1 = 10
 
 # normal data neighbours thresshold
 barr2 = 20
@@ -79,13 +88,8 @@ barr2 = 20
 # determine attack detection accuracy
 for it1 in atdat:
 
-    # debug
-    # print type(it1)
-    # print it1.shape
-    # exit()
-
     for it2 in trdat:
-        if math.pow(euclidean(it1, it2), 2) <= barr1:
+        if math.pow(seuclidean(it1, it2, datavar), 2) <= barr1:
             dumctr += 1
 
     if dumctr < barr2:
@@ -94,20 +98,16 @@ for it1 in atdat:
     dumctr = 0
 
 
-myprint("With {} squared Euclidean distance limit and {} neighbours limit we get:".format(barr1, barr2))
+myprint("With {} Standardised square Euclidean distance limit and {} neighbours\
+ limit we get:".format(barr1, barr2))
 myprint("Attack detection accuracy: {}".format(ctracc/totacc))
 
 
 # determine false positive rate
 for it1 in vadat:
 
-    # debug
-    # print type(it1)
-    # print it1.shape
-    # exit()
-
     for it2 in trdat:
-        if math.pow(euclidean(it1, it2), 2) <= barr1:
+        if math.pow(seuclidean(it1, it2, datavar), 2) <= barr1:
             dumctr += 1
 
     if dumctr < barr2:
@@ -117,5 +117,5 @@ for it1 in vadat:
 
 myprint("False Positive rate: {}".format(ctrfpr/totval))
 
-with open('../data/b6-knn-1-results.txt', 'a') as ha:
+with open(resultsfile, 'a') as ha:
     ha.write('\n')
