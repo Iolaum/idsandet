@@ -24,7 +24,7 @@ with open('../data/b5_trmatrix.p', 'rb') as ha:
     trdat = pickle.load(ha)
 
 # attack data options
-atdatselector = 2
+atdatselector = 3
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")

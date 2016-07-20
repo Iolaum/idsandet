@@ -6,10 +6,11 @@
 # test scripts
 /testing/
 
+# pictures for report
+/pictures
 
-
-
-
+# report document
+/report/report1.pdf
 
 ## Default exceptions by github for python
 

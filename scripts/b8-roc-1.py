@@ -18,6 +18,15 @@ fpr1 = np.array([0.775617566331, 0.394098810613, 0.25571820677,
 
 # sq eucl - hydra ftp
 
+acc2 = np.array([0.728395061728, 0.635802469136, 0.561728395062,
+    0.364197530864, 0.191358024691, 0.0246913580247, 0, 0, 0, 0])
+# fpr2 = fpr1
+
+# sq eucl - hydra ssh
+
+acc3 = np.array([0.795454545455, 0.477272727273, 0.409090909091,
+    0.25, 0.181818181818, 0.0625, 0.0170454545455, 0.00568181818182,
+    0.00568181818182, 0])
 
 # sq sn eucl - adduser
 acc7 = np.array([0.912087912088, 0.67032967033, 0.56043956044,
@@ -43,5 +52,24 @@ fpr9 = np.array([0.75571820677, 0.308325709058, 0.189387008234,
     0.0176120768527, 0.0176120768527, 0.0173833485819])
 
 # This is the ROC curve
-plt.plot(fpr7, acc7, fpr8, acc8, fpr9, acc9, fpr7, fpr7)
+'''
+plt.plot(fpr1, acc1, 'r', label='adduser')
+plt.plot(fpr1, acc2, 'g', label='hydra ftp')
+plt.plot(fpr1, acc3, 'b', label='hydra ssh')
+plt.plot(fpr1, fpr1, 'k', label='random')
+plt.legend(loc='upper left')
+plt.title('kNN with squared euclidean distance')
+plt.ylabel('Accuracy')
+plt.xlabel('False Positive')
+plt.show() 
+'''
+
+plt.plot(fpr7, acc7, 'r', label='adduser')
+plt.plot(fpr7, acc8, 'g', label='hydra ftp')
+plt.plot(fpr7, acc9, 'b', label='hydra ssh')
+plt.plot(fpr7, fpr7, 'k', label='random')
+plt.legend(loc='upper left')
+plt.title('kNN with squared standardised euclidean distance')
+plt.ylabel('Accuracy')
+plt.xlabel('False Positive')
 plt.show() 
