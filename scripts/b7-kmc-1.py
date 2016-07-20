@@ -42,7 +42,7 @@ else:
         pickle.dump(kmc, ha)
 
 # attack data options
-atdatselector = 1
+atdatselector = 3
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
@@ -115,7 +115,7 @@ totacc = atdat.shape[0]
 totval = vadat.shape[0]
 
 # barrier distance for classification
-barr1 = 0.8 * dist  # setme!
+barr1 = 1 * dist  # setme!
 
 
 # determine attack detection accuracy
