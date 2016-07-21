@@ -9,8 +9,11 @@
 # pictures for report
 /pictures
 
-# report document
-/report/report1.pdf
+# report folder
+/report/
+# except LaTeX file
+!/report/report1.tex
+
 
 ## Default exceptions by github for python
 

@@ -54,14 +54,16 @@ def gprint(it, xx, yy, aa, va):
     mywidth = 0.3
     plt.xlabel('System Calls')
     plt.ylabel('Count', rotation='horizontal')
-    plt.title('System Calls count')
+    plt.title('Counting system calls.')
     plt.axis([xx[0] - mywidth, xx[-1] + 2 * mywidth, 0.1, maxval])
     plt.bar(np.array(xx) - mywidth, yy, color='green', width=mywidth, log=True)
     plt.bar(xx, aa, color='red', width=mywidth, log=True)
     plt.bar(np.array(xx) + mywidth, va, color='blue', width=mywidth, log=True)
     # plt.show()
     plt.savefig('../pictures/a9-syscalls-{}.jpg'.format(int(it/25)))
+    print("Figure-{} saved.".format(int(it/25)))
     plt.close()
+    
 
 # syscall number
 syscalls = range(1, 326)
