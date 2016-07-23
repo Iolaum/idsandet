@@ -7,33 +7,17 @@ from os.path import exists
 import matplotlib.pyplot as plt
 
 
-# function to change zero count!
-def append0(ap, xx):
-    if ap == 0:
-        xx.append(0.2)
-    else:
-        xx.append(ap)
-    #print ap  # debug
-    return xx
+print("Started processing data!")
 
 
-# debug
-# xx = [1,2]
-# xx = append0(3, xx)
-#
-# print xx
-# exit()
-
-
-print("Started processing training data!")
-
-with open('../data/a8_trmatrix.p', 'rb') as ha:
+# load data where calls are frequencies per data point
+with open('../data/a10_trmatrix.p', 'rb') as ha:
     trmatrix = pickle.load(ha)
 
-with open('../data/a8_atmatrix.p', 'rb') as ha:
+with open('../data/a10_atmatrix.p', 'rb') as ha:
     atmatrix = pickle.load(ha)
 
-with open('../data/a8_vamatrix.p', 'rb') as ha:
+with open('../data/a10_vamatrix.p', 'rb') as ha:
     vamatrix = pickle.load(ha)
 
 maxval1 = np.amax(trmatrix)
@@ -56,12 +40,12 @@ def gprint(it, xx, yy, aa, va):
     plt.xlabel('System Calls')
     plt.ylabel('Count', rotation='horizontal')
     plt.title('Counting system calls.')
-    plt.axis([xx[0] - mywidth, xx[-1] + 2 * mywidth, 0.1, maxval])
-    plt.bar(np.array(xx) - mywidth, yy, color='green', width=mywidth, log=True)
-    plt.bar(xx, aa, color='red', width=mywidth, log=True)
-    plt.bar(np.array(xx) + mywidth, va, color='blue', width=mywidth, log=True)
+    plt.axis([xx[0] - mywidth, xx[-1] + 2 * mywidth, 0, maxval])
+    plt.bar(np.array(xx) - mywidth, yy, color='green', width=mywidth, log=False)
+    plt.bar(xx, aa, color='red', width=mywidth, log=False)
+    plt.bar(np.array(xx) + mywidth, va, color='blue', width=mywidth, log=False)
     # plt.show()
-    plt.savefig('../pictures/a9-syscalls-{}.jpg'.format(int(it/25)))
+    plt.savefig('../pictures/a10-syscalls-{}.jpg'.format(int(it/25)))
     print("Figure-{} saved.".format(int(it/25)))
     plt.close()
     
@@ -79,7 +63,6 @@ va = []
 
 
 
-# count absolute frequency of system calls
 for it in range(325):
     if it % 25 == 0:
         if it == 0:
@@ -100,16 +83,16 @@ for it in range(325):
             # start new graph
             # just append to create graph!
             xx.append(syscalls[it])
-            yy = append0(trmatrix[0, it], yy)
-            aa = append0(atmatrix[0, it], aa)
-            va = append0(vamatrix[0, it], va)
+            yy.append(trmatrix[0, it])
+            aa.append(atmatrix[0, it])
+            va.append(vamatrix[0, it])
 
     else:
     # just append to create graph!
         xx.append(syscalls[it])
-        yy = append0(trmatrix[0, it], yy)
-        aa = append0(atmatrix[0, it], aa)
-        va = append0(vamatrix[0, it], va)
+        yy.append(trmatrix[0, it])
+        aa.append(atmatrix[0, it])
+        va.append(vamatrix[0, it])
 
 # print last graph
 gprint(325, xx, yy, aa, va)
