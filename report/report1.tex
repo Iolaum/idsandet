@@ -5,18 +5,26 @@
 
 \documentclass[reqno,openany,12pt]{amsbook}
 %  openany option dumps the blank pages between chapters when the next
-%  chapter starts on odd page number; following command had similar
-%  effect
+%  chapter starts on odd page number; 
+%  following command had similar effect
 %  \let\cleardoublepage\clearpage
 %  NB need an abstract or get a blank page between title and contents
 
+%  reqno option:
+%  right-aligned equation numbers
+%  (altenratively leqno)
+
 \usepackage{amsmath}
 
-% \renewcommand{\baselinestretch}{1.35}
+%\renewcommand{\baselinestretch}{1.35}
 % changed from:
 % http://tex.stackexchange.com/a/79155
-\usepackage{setspace}
-\setstretch{1.5}
+%\usepackage{setspace}
+%\setstretch{1.5}
+
+\usepackage{url}
+% package for url links
+
 
 
 %  ************  begin my definitions  *******************
@@ -146,9 +154,12 @@ In the industry we are currently experiencing what many people call the fourth i
 \item The ubuquitous pressence of connected devices, collectively called Internet of Everything.
 \item The ability of cyber system to interact with and affect the physical world creating the so called cyber-physical systems (CPS).
 \item The growth of distributed computing and the capabilities that it allows.
-\item The evolution of Machine Learning enabling cyber-physical systems with increased autonomy.\footnote{A good example of an autonomous cyber-physical system are self-driving cars.}
+\item The evolution of Machine Learning enabling cyber-physical systems with increased autonomy.\footnote{A good example of an autonomous cyber-physical system are Tesla's self-driving cars.}
 \end{itemize}
-One common denominator of the aspects of the fourth industrial revolution is increased connectivity of computing devices. This brings the negative side effect that more facets of our life and society are in exposed online making cyber-security even more important. During the last couple of years we have seen many examples of this danger. 
+One common denominator of the aspects of the fourth industrial revolution is increased connectivity of computing devices. This brings the negative side effect that more facets of our life and society are in exposed online making cyber-security even more important. During the last couple of years we have seen many examples of this danger.
+
+Further expanding on the example on cars we mention that on the summer of 2015 two american security researchers demonstrated that a contemporary model Jeep Cherokee could be remotely accessed maliciously over mobile telephony network.\cite{intro-car1} As demonstrated in the afforementioned article\cite{intro-car1} this has resulted in the academia, the industry and regulators considering policy decisions for regulation and standards adoption in order for car safety to keep up with technological innovation. Another significant event is the attack on a regional electricity distribution company, Ukrainian Kyivoblenergo, on 23 December 2015. The attack compromised the company's computer systems and their supervisory control and data acquisition systems (SCADA). It resulted in power outages for around 225,000 customers for a period of hours. The diligence of the company employees and the quick transition on 
+manual mode allowed the company to restore its service with little delay. The attack is thought to have been carried out by a state actor and could have inflicted more damage had the perpetrators more time before making their pressence known. Again this attack has attracted a lot of attention among security researchers and the industry in order to formulate appropriate policies to protect core infrastructure\cite{intro-cps1}.
 
 Cyber security generally consists of two parts. Intrusion Prevention Systems (IPS) and Intrusion Detection Systems (IDS). Put it simply an IPS prevents the attacker from getting in and an IDS detects him once he is in.
 
@@ -164,6 +175,13 @@ Review me!
 
 \bibitem{dat2} Gideon Creech, Jiankun Huy \emph{Generation of a new IDS Test Dataset: Time to Retire the KDD Collection}, 
 2013 IEEE Wireless Communications and Networking Conference (WCNC)
+
+\bibitem{intro-car1} Maurice Schellekens \emph{Car hacking: Navigating the regulatory landscape},\\ Computer Law \& Security Review 32 (2016) 307 - 315\\
+\url{http://www.sciencedirect.com/science/article/pii/S0267364915001843}
+
+\bibitem{intro-cps1} Chih-Che Sun, Chen-Ching Liu and Jing Xie \emph{Cyber-Physical System Security of a Power Grid: State-of-the-Art}, MDPI - Electronics open access journal.\\
+\url{http://www.mdpi.com/2079-9292/5/3/40/pdf}
+
 
 
 %\bibitem{Bovey}
