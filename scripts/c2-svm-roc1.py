@@ -26,13 +26,15 @@ fpr2 = np.array([0.0, 0.13494967978, 0.62351326624, 0.662397072278, 0.6575937785
 acc3 = np.array([1.0, 0.886363636364, 0.886363636364, 0.886363636364, 0.431818181818])
 fpr3 = np.array([1.0, 0.655306495883, 0.663311985361, 0.658508691674, 0.156907593779])
 
+# random classifier
+rand = np.arange(0, 1.1, 0.2)
 
 # This is the ROC curve
 
-plt.plot(fpr1, acc1, 'r', label='adduser')
+plt.plot(fpr1, acc1, 'r', label='adduser-alt')
 plt.plot(fpr2, acc2, 'g', label='hydra ftp')
 plt.plot(fpr3, acc3, 'b', label='hydra ssh')
-plt.plot(acc1, acc1, 'k', label='random')
+plt.plot(rand, rand, 'k', label='random')
 plt.legend(loc='upper left')
 plt.title('linear SVM ROC curve')
 plt.ylabel('Accuracy')
