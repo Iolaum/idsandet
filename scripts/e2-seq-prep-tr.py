@@ -27,9 +27,10 @@ with open('../data/e1-sys-seq-dict.p', 'rb') as ha:
 with open('../data/1_training.p', 'rb') as ha:
     trdata = pickle.load(ha)
 
+len1 = len(trdata)
 
 # create data object
-trdata2 = np.zeros((len(trdata), 30626))
+trdata2 = np.zeros((len1, 30626))
 
 print("Populating data object.")
 
@@ -48,17 +49,17 @@ for key, value in trdata.iteritems():
     if np.sum(trdata2[ctr, :]) != 1.0:
         print("Data point {} sum is {}.".format(ctr+1, np.sum(trdata2[ctr, :])))
     if ctr % 83 == 0: 
-        print("Population progress {}\%".format(int(10*ctr/83)))
+        print("Population progress ~{}%".format(int(10*ctr/83)))
     #exit()
     ctr += 1
 
 datasums =  np.sum(trdata2, axis=0)
 print("There are {} non zero 2-sequencies.".format(np.count_nonzero(datasums)))
 
-with open('../data/e2-trdata2.p', 'wb') as ha:
-    pickle.dump(trdata2, ha)
+
+np.save('../data/e2-trdata2', trdata2)
 
 with open('../data/e2-tr-datasums.p', 'wb') as ha:
     pickle.dump(datasums, ha)
 
-print("Total probabilities: {}".format(np.sum(datasums)))
+print("Total probabilities: {} out of {}".format(np.sum(datasums), len1))

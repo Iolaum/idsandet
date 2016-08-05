@@ -25,7 +25,7 @@ with open('../data/e1-sys-seq-dict.p', 'rb') as ha:
 
 
 # load sequencis of training data
-with open('../data/1_validation.p', 'rb') as ha:
+with open('../data/1_attack.p', 'rb') as ha:
     trdata = pickle.load(ha)
 
 len1 = len(trdata)
@@ -64,11 +64,11 @@ print("There are {} non zero 2-sequencies.".format(np.count_nonzero(datasums)))
 #with open('../data/e3-vadata2.p', 'wb') as ha:
 #    pickle.dump(trdata2, ha)
 # Unlike pickle module it DID NOT give Memory Error !
-np.save('../data/e3-vadata2', trdata2)
+np.save('../data/e4-atdata2', trdata2)
 
 del trdata2
 
-with open('../data/e3-va-datasums.p', 'wb') as ha:
+with open('../data/e4-at-datasums.p', 'wb') as ha:
     pickle.dump(datasums, ha)
 
 print("Total probabilities: {} out of {}".format(np.sum(datasums), len1))
