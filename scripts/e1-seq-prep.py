@@ -7,9 +7,12 @@ from __future__ import division
 import pickle
 import numpy as np
 
+with open('../data/a14-sys-set.p', 'rb') as ha:
+    syset = pickle.load(ha)
 
-with open('../data/d2_syscalls.p', 'rb') as ha:
-    syscalls = pickle.load(ha)
+syscalls = list(syset)
+syscalls.sort
+
 
 # dictionary setup !
 #
@@ -35,10 +38,10 @@ for it1 in syscalls:
         sysdict[pointer] = (it1, it2)
         pointer += 1
 
-with open('../data/e1-sys_seq-dict.p', 'wb') as ha:
+with open('../data/e1-sys-seq-dict.p', 'wb') as ha:
     pickle.dump(sysdict, ha)
 
 print("Total number of sequencies is {}".format(pointer+1))
-# Total number of sequencies is 29242
+# Total number of sequencies is 30626
 
 print("System calls 2-sequence dictionary created.")

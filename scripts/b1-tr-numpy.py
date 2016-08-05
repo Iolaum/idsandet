@@ -12,7 +12,7 @@ import numpy as np
 print("Started processing training data!")
 
 
-with open('../data/training.p', 'rb') as ha:
+with open('../data/1_training.p', 'rb') as ha:
     trdata = pickle.load(ha)
 
 
