@@ -14,6 +14,9 @@
 %  right-aligned equation numbers
 %  (altenratively leqno)
 
+\usepackage[english]{babel}
+% package for language and hyphenation support (?)
+
 \usepackage{amsmath}
 
 %\renewcommand{\baselinestretch}{1.35}
@@ -25,84 +28,95 @@
 \usepackage{url}
 % package for url links
 
+\usepackage{graphics}
+% introduced to resize big table of attack types
+% http://tex.stackexchange.com/questions/10863/is-there-a-way-to-slightly-shrink-a-table-including-font-size-to-fit-within-th
+
 
 
 %  ************  begin my definitions  *******************
 
-% *** theorem etc. commands ***
-
-\newtheorem{thm}{Theorem}%[section]
-\newtheorem{lemma}[thm]{Lemma}
-\newtheorem{cor}[thm]{Corollary}
-
-\theoremstyle{definition}
-\newtheorem{definition}[thm]{Definition}
-\newtheorem*{ass}{Assumption S}
-
-\theoremstyle{remark}
-\newtheorem{remark}[thm]{Remark}
-
-%\numberwithin{equation}{section}
-
-\newenvironment{mylist}{\begin{enumerate}
-\def\labelenumi{\theenumi}
-\renewcommand{\theenumi}{(\roman{enumi})}
-}{\end{enumerate}}
-
-% *** greek commands ***
-
-\newcommand\al{\alpha}
-\newcommand\be{\beta}
-\newcommand\ga{\gamma}
-\newcommand\Ga{\Gamma}
-\newcommand\de{\delta}
-\newcommand\De{\Delta}
-\newcommand\ep{\epsilon}
-\newcommand\ka{\kappa}
-\newcommand\la{\lambda}
-\newcommand\La{\Lambda}
-\newcommand\om{\omega}
-\newcommand\Om{\Omega}
-\newcommand\si{\sigma}
-\newcommand\Si{\Sigma}
-\renewcommand\th{\theta}
-\newcommand\Th{\Theta}
-
-% *** tilde/bar/bold commands ***
+\renewcommand{\thesection}{\thechapter.\arabic{section}}
+% http://tex.stackexchange.com/questions/20837/section-numbering-with-chapter-in-amsbook
+% show chapter numbers in sections!
 
 
-\newcommand\bg{\bar g}
-\newcommand\bh{\bar h}
-\newcommand\bu{\bar u}
+% ************  begin old definitions  *******************
 
-\newcommand\bq{\boldsymbol{q}}
-\newcommand\br{\boldsymbol{r}}
-\newcommand\bv{\boldsymbol{v}}
-
-% *** Bbb commands ***
-
-\newcommand\Q{\mathbb{Q}}
-\newcommand\R{\mathbb{R}}
-\newcommand\Nf{\mathbb{N}}
-\newcommand\Zf{\mathbb{Z}}
-
-% *** script commands ***
-
-\newcommand\I{{\mathcal I}}
-
-\newcommand\B{{\mathcal B}}
-
-% *** brackets commands ***
-
-\newcommand\lan{\langle}
-\newcommand\ran{\rangle}
-
-% *** various maths commands ***
-
-\newcommand\X{\times}
-\newcommand{\tow}{\rightharpoonup}
-\newcommand{\pa}{\partial}
-\newcommand\rot{{\rm Rot}}
+%% *** theorem etc. commands ***
+%
+%\newtheorem{thm}{Theorem}%[section]
+%\newtheorem{lemma}[thm]{Lemma}
+%\newtheorem{cor}[thm]{Corollary}
+%
+%\theoremstyle{definition}
+%\newtheorem{definition}[thm]{Definition}
+%\newtheorem*{ass}{Assumption S}
+%
+%\theoremstyle{remark}
+%\newtheorem{remark}[thm]{Remark}
+%
+%%\numberwithin{equation}{section}
+%
+%\newenvironment{mylist}{\begin{enumerate}
+%\def\labelenumi{\theenumi}
+%\renewcommand{\theenumi}{(\roman{enumi})}
+%}{\end{enumerate}}
+%
+%% *** greek commands ***
+%
+%\newcommand\al{\alpha}
+%\newcommand\be{\beta}
+%\newcommand\ga{\gamma}
+%\newcommand\Ga{\Gamma}
+%\newcommand\de{\delta}
+%\newcommand\De{\Delta}
+%\newcommand\ep{\epsilon}
+%\newcommand\ka{\kappa}
+%\newcommand\la{\lambda}
+%\newcommand\La{\Lambda}
+%\newcommand\om{\omega}
+%\newcommand\Om{\Omega}
+%\newcommand\si{\sigma}
+%\newcommand\Si{\Sigma}
+%\renewcommand\th{\theta}
+%\newcommand\Th{\Theta}
+%
+%% *** tilde/bar/bold commands ***
+%
+%
+%\newcommand\bg{\bar g}
+%\newcommand\bh{\bar h}
+%\newcommand\bu{\bar u}
+%
+%\newcommand\bq{\boldsymbol{q}}
+%\newcommand\br{\boldsymbol{r}}
+%\newcommand\bv{\boldsymbol{v}}
+%
+%% *** Bbb commands ***
+%
+%\newcommand\Q{\mathbb{Q}}
+%\newcommand\R{\mathbb{R}}
+%\newcommand\Nf{\mathbb{N}}
+%\newcommand\Zf{\mathbb{Z}}
+%
+%% *** script commands ***
+%
+%\newcommand\I{{\mathcal I}}
+%
+%\newcommand\B{{\mathcal B}}
+%
+%% *** brackets commands ***
+%
+%\newcommand\lan{\langle}
+%\newcommand\ran{\rangle}
+%
+%% *** various maths commands ***
+%
+%\newcommand\X{\times}
+%\newcommand{\tow}{\rightharpoonup}
+%\newcommand{\pa}{\partial}
+%\newcommand\rot{{\rm Rot}}
 
 
 %  ************  end my definitions  *******************
@@ -151,22 +165,75 @@ Thank you!!
 
 In the industry we are currently experiencing what many people call the fourth industrial revolution. The main characteristics of this disruptive process are:
 \begin{itemize}
-\item The ubuquitous pressence of connected devices, collectively called Internet of Everything.
+\item The ubiquitous presence of connected devices, collectively called Internet of Everything.
 \item The ability of cyber system to interact with and affect the physical world creating the so called cyber-physical systems (CPS).
 \item The growth of distributed computing and the capabilities that it allows.
 \item The evolution of Machine Learning enabling cyber-physical systems with increased autonomy.\footnote{A good example of an autonomous cyber-physical system are Tesla's self-driving cars.}
 \end{itemize}
-One common denominator of the aspects of the fourth industrial revolution is increased connectivity of computing devices. This brings the negative side effect that more facets of our life and society are in exposed online making cyber-security even more important. During the last couple of years we have seen many examples of this danger.
+One common denominator of the aspects of the fourth industrial revolution is increased connectivity of computing devices. This brings the negative side effect that more facets of our life and society are exposed online making cyber-security even more important. During the last couple of years we have seen many examples of this danger.
 
-Further expanding on the example on cars we mention that on the summer of 2015 two american security researchers demonstrated that a contemporary model Jeep Cherokee could be remotely accessed maliciously over mobile telephony network.\cite{intro-car1} As demonstrated in the afforementioned article\cite{intro-car1} this has resulted in the academia, the industry and regulators considering policy decisions for regulation and standards adoption in order for car safety to keep up with technological innovation. Another significant event is the attack on a regional electricity distribution company, Ukrainian Kyivoblenergo, on 23 December 2015. The attack compromised the company's computer systems and their supervisory control and data acquisition systems (SCADA). It resulted in power outages for around 225,000 customers for a period of hours. The diligence of the company employees and the quick transition on 
+Further expanding on the example of cars we mention that on the summer of 2015 two american security researchers demonstrated that a contemporary model Jeep Cherokee could be remotely accessed maliciously over mobile telephony network.\cite{intro-car1} As demonstrated in the afforementioned article\cite{intro-car1} this has resulted in the academia, the industry and regulators considering policy decisions for regulation and standards adoption in order for car safety to keep up with technological innovation. Another significant event is the attack on a regional electricity distribution company, Ukrainian Kyivoblenergo, on 23 December 2015. The attack compromised the company's computer systems and their supervisory control and data acquisition systems (SCADA). It resulted in power outages for around 225,000 customers for a period of hours. The diligence of the company employees and the quick transition on 
 manual mode allowed the company to restore its service with little delay. The attack is thought to have been carried out by a state actor and could have inflicted more damage had the perpetrators more time before making their pressence known. Again this attack has attracted a lot of attention among security researchers and the industry in order to formulate appropriate policies to protect core infrastructure\cite{intro-cps1}.
 
-Cyber security generally consists of two parts. Intrusion Prevention Systems (IPS) and Intrusion Detection Systems (IDS). Put it simply an IPS prevents the attacker from getting in and an IDS detects him once he is in.
+Now that we have seen examples of the increasing importance of cyber - security let's look deeper at what it actually is. Cyber security generally consists of two parts. Intrusion Prevention Systems (IPS) and Intrusion Detection Systems (IDS). Put it simply an IPS prevents the attacker from getting in and an IDS detects him once he is in. With the emergence of cloud computing the boundaries between the two are getting blurred\cite{intro-ids1}. Nowadays modern IDS have a wide range of features including the detection of an occuring attack, automated responses and detection of malicious behavior within the system\cite{intro-ids1}.
 
 
-\chapter{Literature Review}
+\chapter{Foundations of the project}
 
-Review me!
+In this project we are drawing knowledge from two related but distinct fields.
+\footnote{With info from:\\
+Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.}
+The first field is outlier and anomaly detection techniques from Machine Learning. The second field is Intrusion Detection techniques within deployed cyber-security solutions.
+
+\section{Outlier and Anomaly Detection}
+
+The concept of bad data has been quite old in the field of statistics. One of the first systematic approaches to dealing with them, dating back to the $19^{th}$ century has been Chauvenet's criterion on  whether one data point of an experimental data set was spurious or not. Moving on to modern machine learning techniques on outlier and anomaly detection we see that there are many approaches. They are based on different statistical methods but also on different characteristic on the domain from which the dataset comes. Below are most relevant methods with regards to our work.
+
+The first method has been put forward by Roberts et al.\cite{out1}. They use a Gaussian Mixture model to model the normal behaviour of the system their dataset describes. This creates a set of normal system states. They minimise the set of heuristically chosen parameters used in such techniques by using an evolving threshold on how much a data point can differ from learnt normal state before it gets classified as belonging to another state. When we are training out model this results in a new learnt normal state. Afterwards the threshold is used to identify an anomaly in the test data. They then test their method in a set of electroencephalograms (EEG) obtained from patient data. They prove the robustness of their method by successfully identifying epileptic seizures when they occur.
+
+A popular technique in Machine Learning is Support Vector Machines. Hence it is no surprise that there are several outlier and anomaly detection methods developed with this technique. Clifton et al.\cite{out2} study luminosity measurements of a Typhoon G30 combustor engine and create an SVM model for anomaly detection. They use wavelet analysis on the multi channel combustion data to create their feature space and subsequently perform supervised learning to train their SVM to recognise anomalous behaviour. Clifton et al. also compare the results of the SVM approach to the GMM approach on the same dataset. They found that SVM based anomaly detection performed better. Hayton et al.\cite{out3} also studied SVM based anomaly detection in Jet engine vibration spectra. Their approach also adds the feature of combining a second dataset in order to more accurately train their model. Moreover during the discussion of their results Hayton et al. give a very insightful discussion on whether it is preferable to address novelty detection as a 2-class classification problem or not. Two key points that they make are that the novel data points may be artificial and that their nature may be non-stationary. This is also the case with intrusion detection systems which is why deployed Intrusion Detection Systems use anomaly detection approaches. 
+
+We can also use unsupervised learning approaches when performing anomaly detection. This is pioneered in the work of Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset.
+
+\section{Intrusion Detection Systems}
+
+Bhuyan et al.\cite{ids1} give the following description: ``Intrusion is a set of actions aimed to compromise the security of computer and network components in terms of confidentiality, integrity and availability". Intrusion Detection Systems are our answer to that threat. The basic assumption we make is that our system will behave differently during an intrusion than during normal operation. And this is why it is appropriate to use novelty detection in IDS applications.
+
+There are many attack actions against computer system that can be classified as intrusions with the above definition. Each of them has different specific characteristics. Thus it is helpful for us to divide attacks into certain classes. As we did during Project Preparation\footnote{Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.} we will use the classification used in Bhuyan et al.\cite{ids1} and Ahmed et al.\cite{ids2}. We classify intrusions as Malware attacks, Denial of Service attacks, Network attacks, Physical attacks, Password Attacks, Information Gathering Attacks, Remote to User attacks and User to Root attacks.
+Another important property of intrusions is that they have varying anomaly characteristics. We therefore classify them in an additional way. There are \emph{point anomalies} when a data point is considered anomalous when it is distant in comparison to the points that model the normal behaviour of the system. This type of intrusion fits closely the Machine Learning problem of anomaly detection and it will be the main focus of our work. There are also \emph{contextual anomalies} when a data point may be considered anomalous according to the context it is associated as well as it's place in the feature space. The context may be additional features engineered in our feature space or an evaluation of circumstances associated with the data point from the IDS (or it's operator). Lastly there are \emph{collective anomalies} for which a collection of data is considered anomalous but each data point, taken individually, is not. In Table \ref{tab1}\footnote{Table taken from: Project Preparation: Outlier Detection in Cybersecurity Application, 2016, Nikolaos Perrakis} we describe the eight classes of attacks, gives examples of them and classify the examples with their respective type of anomalies.
+
+% Full page width table
+\begin{table*}
+\centering
+\caption{Types of attacks and associated anomalies.}
+%
+\resizebox{\textwidth}{!}{%
+%
+\begin{tabular}{|c|l|l|} \hline
+Attack Type & \phantom{1111111111111111111111111111} Description & Examples (Anomaly Type)\\ \hline
+Malware  & 
+\begin{tabular}{@{}c@{}}
+Virus, Worm, Troyan: A program that may replicate and transfer on \\ its own and  performs harmful operations on the infected computer.  
+\end{tabular}
+& Stuxnet Worm (point) \\ \hline
+Denial of Service & Attacks that make Network resources inaccessible. & Smurf (collective) \\ \hline
+Network & Compromising the security of a Network by exploiting Network protocols. & Man-in-the-Middle (point)\\ \hline
+Physical  & Compromising a system or a network through physical access. & Evil Maid (point) \\ \hline
+Password & Trying to find a user's password, usually through multiple login attempts. & Dictionary attack (collective) \\ \hline
+Information Gathering Attacks & Gathering information trying to find vulnerabilities in a network.  & Port scan (collective) \\ \hline
+Remote to User & Trying to get remote access as a user to a system.  & phf (point) \\ \hline
+User to Root & Upgrading a user's privilege to superuser. & Rootkit (point)\\ \hline
+\end{tabular}
+} % end resize
+\label{tab1}
+\end{table*}
+% end the environment with {table*}, not {table}!
+
+
+
+
+
+
 
 
 
@@ -176,25 +243,30 @@ Review me!
 \bibitem{dat2} Gideon Creech, Jiankun Huy \emph{Generation of a new IDS Test Dataset: Time to Retire the KDD Collection}, 
 2013 IEEE Wireless Communications and Networking Conference (WCNC)
 
-\bibitem{intro-car1} Maurice Schellekens \emph{Car hacking: Navigating the regulatory landscape},\\ Computer Law \& Security Review 32 (2016) 307 - 315\\
-\url{http://www.sciencedirect.com/science/article/pii/S0267364915001843}
+\bibitem{intro-car1} Maurice Schellekens \emph{Car hacking: Navigating the regulatory landscape},\\ Computer Law \& Security Review 32 (2016) 307 - 315
+%\\
+%\url{http://www.sciencedirect.com/science/article/pii/S0267364915001843}
 
-\bibitem{intro-cps1} Chih-Che Sun, Chen-Ching Liu and Jing Xie \emph{Cyber-Physical System Security of a Power Grid: State-of-the-Art}, MDPI - Electronics open access journal.\\
-\url{http://www.mdpi.com/2079-9292/5/3/40/pdf}
+\bibitem{intro-cps1} Chih-Che Sun, Chen-Ching Liu and Jing Xie \emph{Cyber-Physical System Security of a Power Grid: State-of-the-Art}, MDPI - Electronics open access journal.
+%\\
+%\url{http://www.mdpi.com/2079-9292/5/3/40/pdf}
+
+\bibitem{intro-ids1} Iti Raghav, Shashi Chhikara, Nitasha Hasteer \emph{Intrusion Detection and Prevention in Cloud Environment: A Systematic Review}, International Journal of Computer Applications (0975 – 8887, Volume 68– No.24, April 2013
+
+\bibitem{out1} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating
+network for novelty detection}, Neural Computation, vol. 6, no. 2,
+pp. 270 - 284, 1994.
+
+\bibitem{out2} Lei A. Clifton, Hujun Yin, and Yang Zhang, \emph{Support Vector Machine in Novelty Detection for Multi-channel Combustion Data}, Proceedings of the third international conference on Advances in Neural Networks - Volume Part III (2006)
+
+\bibitem{out3} P. Hayton, B. Scholkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946 - 952, 2000.
+
+\bibitem{out4} 	Bernhard Schölkopf, John C. Platt, John C. Shawe-Taylor, Alex J. Smola, Robert C. Williamson, \emph{Estimating the Support of a High-Dimensional Distribution}, Neural Computation, Vol. 13, No. 7, pp. 1443-1471, 2001.
 
 
+\bibitem{ids1} Monowar H. Bhuyan, D. K. Bhattacharyya, and J. K. Kalita (2014) \emph{Network Anomaly Detection: Methods, Systems and Tools}, IEEE Communications Surveys \& Tutorials, Vol. 16, No. 1, 2014
 
-%\bibitem{Bovey}
-%J. D. Bovey, M. M. Dodson,
-%The Hausdorff dimension of systems of linear forms
-%{\em Acta Arithmetica}
-%(1986) 337-358.
-%
-%\bibitem{Cassels}
-%J. W. S. Cassels,
-%{\em An Introduction to Diophantine Approximation},
-%Cambridge University Press, 1965.
-
+\bibitem{ids2} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
 
 \end{thebibliography}
