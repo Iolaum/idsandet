@@ -41,84 +41,6 @@
 % show chapter numbers in sections!
 
 
-% ************  begin old definitions  *******************
-
-%% *** theorem etc. commands ***
-%
-%\newtheorem{thm}{Theorem}%[section]
-%\newtheorem{lemma}[thm]{Lemma}
-%\newtheorem{cor}[thm]{Corollary}
-%
-%\theoremstyle{definition}
-%\newtheorem{definition}[thm]{Definition}
-%\newtheorem*{ass}{Assumption S}
-%
-%\theoremstyle{remark}
-%\newtheorem{remark}[thm]{Remark}
-%
-%%\numberwithin{equation}{section}
-%
-%\newenvironment{mylist}{\begin{enumerate}
-%\def\labelenumi{\theenumi}
-%\renewcommand{\theenumi}{(\roman{enumi})}
-%}{\end{enumerate}}
-%
-%% *** greek commands ***
-%
-%\newcommand\al{\alpha}
-%\newcommand\be{\beta}
-%\newcommand\ga{\gamma}
-%\newcommand\Ga{\Gamma}
-%\newcommand\de{\delta}
-%\newcommand\De{\Delta}
-%\newcommand\ep{\epsilon}
-%\newcommand\ka{\kappa}
-%\newcommand\la{\lambda}
-%\newcommand\La{\Lambda}
-%\newcommand\om{\omega}
-%\newcommand\Om{\Omega}
-%\newcommand\si{\sigma}
-%\newcommand\Si{\Sigma}
-%\renewcommand\th{\theta}
-%\newcommand\Th{\Theta}
-%
-%% *** tilde/bar/bold commands ***
-%
-%
-%\newcommand\bg{\bar g}
-%\newcommand\bh{\bar h}
-%\newcommand\bu{\bar u}
-%
-%\newcommand\bq{\boldsymbol{q}}
-%\newcommand\br{\boldsymbol{r}}
-%\newcommand\bv{\boldsymbol{v}}
-%
-%% *** Bbb commands ***
-%
-%\newcommand\Q{\mathbb{Q}}
-%\newcommand\R{\mathbb{R}}
-%\newcommand\Nf{\mathbb{N}}
-%\newcommand\Zf{\mathbb{Z}}
-%
-%% *** script commands ***
-%
-%\newcommand\I{{\mathcal I}}
-%
-%\newcommand\B{{\mathcal B}}
-%
-%% *** brackets commands ***
-%
-%\newcommand\lan{\langle}
-%\newcommand\ran{\rangle}
-%
-%% *** various maths commands ***
-%
-%\newcommand\X{\times}
-%\newcommand{\tow}{\rightharpoonup}
-%\newcommand{\pa}{\partial}
-%\newcommand\rot{{\rm Rot}}
-
-
 %  ************  end my definitions  *******************
 
 
@@ -157,6 +79,7 @@ Thank you!!
 
 \tableofcontents
 \listoffigures
+\listoftables
 
 
 \mainmatter
@@ -200,7 +123,7 @@ We can also use unsupervised learning approaches when performing anomaly detecti
 Bhuyan et al.\cite{ids1} give the following description: ``Intrusion is a set of actions aimed to compromise the security of computer and network components in terms of confidentiality, integrity and availability". Intrusion Detection Systems are our answer to that threat. The basic assumption we make is that our system will behave differently during an intrusion than during normal operation. And this is why it is appropriate to use novelty detection in IDS applications.
 
 There are many attack actions against computer system that can be classified as intrusions with the above definition. Each of them has different specific characteristics. Thus it is helpful for us to divide attacks into certain classes. As we did during Project Preparation\footnote{Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.} we will use the classification used in Bhuyan et al.\cite{ids1} and Ahmed et al.\cite{ids2}. We classify intrusions as Malware attacks, Denial of Service attacks, Network attacks, Physical attacks, Password Attacks, Information Gathering Attacks, Remote to User attacks and User to Root attacks.
-Another important property of intrusions is that they have varying anomaly characteristics. We therefore classify them in an additional way. There are \emph{point anomalies} when a data point is considered anomalous when it is distant in comparison to the points that model the normal behaviour of the system. This type of intrusion fits closely the Machine Learning problem of anomaly detection and it will be the main focus of our work. There are also \emph{contextual anomalies} when a data point may be considered anomalous according to the context it is associated as well as it's place in the feature space. The context may be additional features engineered in our feature space or an evaluation of circumstances associated with the data point from the IDS (or it's operator). Lastly there are \emph{collective anomalies} for which a collection of data is considered anomalous but each data point, taken individually, is not. In Table \ref{tab1}\footnote{Table taken from: Project Preparation: Outlier Detection in Cybersecurity Application, 2016, Nikolaos Perrakis} we describe the eight classes of attacks, gives examples of them and classify the examples with their respective type of anomalies.
+Another important property of intrusions is that they have varying anomaly characteristics. We therefore classify them in an additional way. There are \emph{point anomalies} when a data point is considered anomalous when it is distant in comparison to the points that model the normal behaviour of the system. This type of intrusion fits closely the Machine Learning problem of anomaly detection and it will be the main focus of our work. There are also \emph{contextual anomalies} when a data point may be considered anomalous according to the context it is associated as well as it's place in the feature space. The context may be additional features engineered in our feature space or an evaluation of circumstances associated with the data point from the IDS (or it's operator). Lastly there are \emph{collective anomalies} for which a collection of data is considered anomalous but each data point, taken individually, is not. In Table \ref{tab1}\footnote{Table taken from: Project Preparation: Outlier Detection in Cybersecurity Application, 2016, Nikolaos Perrakis} we describe the eight classes of attacks, give examples of them and classify the examples with their respective type of anomalies.
 
 % Full page width table
 \begin{table*}
@@ -229,7 +152,10 @@ User to Root & Upgrading a user's privilege to superuser. & Rootkit (point)\\ \h
 \end{table*}
 % end the environment with {table*}, not {table}!
 
+An operational enterprise IDS solution consists of main parts. Two main parts are a Network Intrusion Detection System (NIDS) which analyses traffic over a company's network to detect intrusion and a Host-based Intrusion Detection System (HIDS) which is installed on the company's computers (hosts) and monitors them in order to detect intrusion.
 
+There are many techniques used to identify anomalies on an IDS. Bhuyan et al.\cite{ids1} do a good work on categorizing them and we will follow their classification scheme in presenting them. It should be noted however that these methods are not completely distinct from each other and a particular implementation may include aspects from more than one. 
+The first class is statistical methods, which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous.
 
 
 
