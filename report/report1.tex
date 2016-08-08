@@ -154,14 +154,24 @@ User to Root & Upgrading a user's privilege to superuser. & Rootkit (point)\\ \h
 
 An operational enterprise IDS solution consists of main parts. Two main parts are a Network Intrusion Detection System (NIDS) which analyses traffic over a company's network to detect intrusion and a Host-based Intrusion Detection System (HIDS) which is installed on the company's computers (hosts) and monitors them in order to detect intrusion.
 
-There are many techniques used to identify anomalies on an IDS. Bhuyan et al.\cite{ids1} do a good work on categorizing them and we will follow their classification scheme in presenting them. It should be noted however that these methods are not completely distinct from each other and a particular implementation may include aspects from more than one. 
+There are many techniques used to identify anomalies on an IDS. Bhuyan et al.\cite{ids1} do a good work on categorizing them and we will follow their classification scheme in presenting them. It should be noted however that these methods are not completely distinct from each other and a particular implementation may include aspects from more than one.
 The first class is statistical methods, which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous.
+The second class is clustering methods. A distance or similarity method has to be defined on the feature space. It is then used to cluster the data with various algorithms such as k-means clustering. We then measure the distance of new data points with our learnt clusters and use it to classify them as anomalous or not.
+The third class is classification methods. They include both supervised and unsupervised algorithms. One good example, that we will use later, are support vector machines (SVM). They can be trained either on pre-labelled data or at non-labelled data depending on the SVM implementation.
+The fourth class is knowledge based methods. They take advantage of what has been learnt from previous attacks so that they are able to identify them when they re-appear. Some examples are, ontology, signature based and logic based approaches.
+The fifth class are soft computing methods. The key point behind them is that if finding the exact solution is not feasible then we can look for approximate solutions. According to Bhuyan et al.\cite{ids1} artificial neural networks are classified as soft computing methods.
+The last class is called combination learner methods and basically consists of techniques that combine more than one of the previous classes in their implementation.
+
+
+The variety of methods for Intrusion detection can be attributed to their diverse strengths and weaknesses. Additionally the intrusions each IT infrastructure faces are different which means that different IT networks are best suited to different Intrusion Detection methods. For example clustering and Nearest neighbour algorithms have poor performance on high dimensional data because in those cases distance methods cannot accurately differentiate between anomalous and normal data points. One can try to overcome this with feature reduction techniques, such as spectral techniques or principal component analysis, but he has to be careful to maintain the separation between anomalous and normal data points. In general classification techniques suffer because of the need to pre-label data points. Creating those labels is hard and often-times artificial. This results in them trained model becoming outdated quite fast because of the fast paced evolution of the IT field. Using partially labelled data for semi-supervised clustering techniques can be more efficient than classification methods provided we have a feature space with a good distance measure. If not statistical techniques are a better option. As we mentioned another point to consider is how easy it is to update our application. Statistical, clustering and classification methods are all hard to train. But it can be done off-line and their testing phase is fast. Last but not least there are times when the assumption that intrusion events are rare compared to normal events is not true. In that case an intrusion detection method may end up with a high false positive rate. This is a big problem because it interrupts the normal operation of the user.
+
+As we see Intrusion Detection is a very complex problem.  Each IT system has different characteristics and they are better addressed by different techniques. This means that addressing Intrusion Detection to it's entirety goes well far beyond the scope of this project. Therefore we will limit ourselves to a particular case.
 
 
 
-
-
-
+% Otherwise statistical techniques may perform better. Another factor we have to take into account is how fast can the system evolve in an ever changing threat landscape and how hard it is to redeploy such a system. Classification, clustering and statistical methods are hard to train but after that testing and deploying is easier. Lastly another cause for potential problems is that in some cases anomalous events are not rare compared to normal ones. In such cases our trained model can end up with high false positive rate. The key take from all these
+%points is that an IDS method’s efficiency can be quite dependant on the particular system and environment
+%implementation.
 
 \begin{thebibliography}{99}
 
