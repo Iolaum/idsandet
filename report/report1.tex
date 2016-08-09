@@ -174,9 +174,47 @@ A critical part in creating an IDS application is the data you use to train it o
 
 Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. Our dataset addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
 
-\chapter{Data Exploration}
+\chapter{Exploratory Data Analysis}
+
+\section{Dataset Documentation}
 
 The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. More specifically Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed.  Apart from them file transfer protocol (ftp), secure shell (ssh) and MySQL v$14.14$ were enabled. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
+
+A program called \emph{auditd} was used to monitor kernel system call traces. System call traces are API's provided by the kernel of the operating system for userspace applications to access. Ubutnu $11.04$ uses the linux kernel version $2.6.38$ which has $325$ system calls available\cite{adf1}. The researchers who created the dataset used 6 different types of attacks to compromise their server. They are presented in table \ref{tab2} which was taken from \cite{dat2}.
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Payload/Effect & Vector \\ \hline 
+Password brute force  & ftp by hydra \\ \hline
+Password brute force & ssh by hydra \\ \hline
+Add new superuser & Client side poison executable\\ \hline
+Java based meterpreter & Tiki Wiki Vulnerability exploit\\ \hline
+Linux meterpreter payload & Client sidepoison executable\\ \hline
+C100 Webshell & Php remote file inclusion vulnerability \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Attacks used in ADFA-LD 12 dataset.}
+\label{tab2}
+\end{table}
+The dataset is separated in three sets, the training set, the attack set and the validation set. The training and the validation set contain sequences of system calls from the normal operation of the system and the attack set contains the intrusions performed by the creators of the dataset. Each individual attack method is carried out ten times. Each data point of the dataset consists of a series of system calls. Table \ref{tab3} shows the number of data points per subset of ADFA-LD 12.
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Subset &  Data points \\ \hline 
+Training  & 833 \\ \hline
+Validation & 4373 \\ \hline
+Attack &  719\\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Subsets of ADFA-LD 12 dataset.}
+\label{tab3}
+\end{table}
+
+The traditional approach on the cyber security field is to use the training set to train a model, use the attack set to find it's accuracy and use the validation set to find it's false positive rate. While we will use that schema we will not limit ourselves to it.
+
+\section{Preprocessing and Visualization}
+
+We start by
 
 
 
@@ -213,6 +251,7 @@ pp. 270 - 284, 1994.
 
 \bibitem{ids2} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
+\bibitem{adf1} Miao Xie, Jiankun Hu, Xinghuo Yu, and Elizabeth Chang \emph{Evaluating Host-Based Anomaly Detection Systems: Application of the Frequency-Based Algorithms to ADFA-LD}, 11th International Conference on Fuzzy Systems and Knowledge Discovery, 2014
 
 \end{thebibliography}
 
