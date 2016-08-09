@@ -168,10 +168,19 @@ The variety of methods for Intrusion detection can be attributed to their divers
 As we see Intrusion Detection is a very complex problem.  Each IT system has different characteristics and they are better addressed by different techniques. This means that addressing Intrusion Detection to it's entirety goes well far beyond the scope of this project. Therefore we will limit ourselves to a particular case.
 
 
+\section{Datasets}
 
-% Otherwise statistical techniques may perform better. Another factor we have to take into account is how fast can the system evolve in an ever changing threat landscape and how hard it is to redeploy such a system. Classification, clustering and statistical methods are hard to train but after that testing and deploying is easier. Lastly another cause for potential problems is that in some cases anomalous events are not rare compared to normal ones. In such cases our trained model can end up with high false positive rate. The key take from all these
-%points is that an IDS method’s efficiency can be quite dependant on the particular system and environment
-%implementation.
+A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the first attempta to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. Even though these datasets have been a standard in the academia for more than a decade they have been heavily criticized as well. Apart from it being outdated several researchers have found artefacts of the simulation used to create the datasets within the data. Moreover the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting that the number of attacks present in the dataset is inaccurate.
+
+Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. Our dataset addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
+
+\chapter{Data Exploration}
+
+The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. More specifically Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed.  Apart from them file transfer protocol (ftp), secure shell (ssh) and MySQL v$14.14$ were enabled. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
+
+
+
+
 
 \begin{thebibliography}{99}
 
