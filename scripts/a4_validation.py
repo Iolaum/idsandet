@@ -4,6 +4,8 @@
 # See all training files and create a 
 # training data dictionary of lists.
 
+# Put all the validation set data in /data/validation
+
 from __future__ import division
 from os import listdir, stat
 from os.path import isfile, join
@@ -51,11 +53,11 @@ for it in files:
 
 print("Saving validation data dictionary!")
 
-with open('../data/validation.p', 'wb') as handle:
+with open('../data/1_validation.p', 'wb') as handle:
   pickle.dump(valdata, handle)
 
 # check file size
-statinfo = stat('../data/validation.p')
+statinfo = stat('../data/1_validation.p')
 
 print("{} validation sequences saved.".format(len(valdata)))
 

@@ -4,6 +4,8 @@
 # See all attack data files and create an
 # attack data dictionary of lists.
 
+# Put all the attack set data in /data/attack/
+
 from __future__ import division
 from os import listdir, stat, walk
 from os.path import isfile, join
@@ -84,11 +86,11 @@ for it in filelist:
 
 print("Saving attack data dictionary!")
 
-with open('../data/attack.p', 'wb') as handle:
+with open('../data/1_attack.p', 'wb') as handle:
     pickle.dump(atdata, handle)
 
 # check file size
-statinfo = stat('../data/attack.p')
+statinfo = stat('../data/1_attack.p')
 
 print("Attack data dictionary saved. It's size is {} kbytes".
       format(int(statinfo.st_size/1024)))

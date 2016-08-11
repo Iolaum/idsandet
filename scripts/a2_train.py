@@ -4,6 +4,8 @@
 # See all training files and create a 
 # training data dictionary of lists.
 
+# Put all the training set data in /data/training
+
 from __future__ import division
 from os import listdir, stat
 from os.path import isfile, join
@@ -48,10 +50,10 @@ for it in files:
 
 print("Saving training data dictionary!")
 
-with open('../data/training.p', 'wb') as handle:
+with open('../data/1_training.p', 'wb') as handle:
   pickle.dump(trdata, handle)
 
 # check file size
-statinfo = stat('../data/training.p')
+statinfo = stat('../data/1_training.p')
 
 print("Training data dictionary saved. It's size is {} kbytes".format(int(statinfo.st_size/1024)))

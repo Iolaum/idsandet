@@ -212,10 +212,22 @@ Attack &  719\\ \hline
 
 The traditional approach on the cyber security field is to use the training set to train a model, use the attack set to find it's accuracy and use the validation set to find it's false positive rate. While we will use that schema we will not limit ourselves to it.
 
+\section{Methods and Technologies used}
+
+Before moving further we would like to mention the technologies we used for this project. Our main computing platform is a x86\_{}64 machine running Ubuntu 16.04.1 LTS\footnote{Ubuntu is an open-source operating system using the Linux kernel, based on Debian and developed by Canonical Inc., \url{http://releases.ubuntu.com/16.04/} - Accessed at August 10, 2016.} as it's operating system. For our analysis we are using the python\cite{pyt} programming language, version 2.7.12. Furthermore to implement our machine learning algorithms we relied on the numpy\cite{numpy}, version 1.11.0, and sci-kit learn\cite{skl}, version 0.17.1, open source libraries. For visualization we relied on the matplotlib\cite{matpl} library version 1.5.1. The code used for the generation of all the results and graphics of this project is publicly available as a github repository.\footnote{The repository is available there: \url{https://github.com/Iolaum/idsandet}}. In order to write our report and presentation we used pdfLaTeX and Texmaker. Last but not least we used git, version 2.7.4, as a version control tool.
+
+
+In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently.
+
+Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of this approach is our ability to test our code. Writing unit test for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive.
+
+As a last remark we want to mention that  since python is able to run in a variety of operating systems our results can be replicated on a variety of operating systems. All one has to do is install python and our required libraries on his systems. Then he can download the dataset and place them in the /data/ folder according to the specifications set by the script\footnote{The scripts ``a2\_{}train.py", ``a3\_{}attack.py" and ``a4\_{}validation.py" are the ones who are used to initiate our analysis.} in their initial comments section. After the initial scripts have run the user can be sure he has set up his system properly to reproduce all of our results by running the remaining scripts.
+
 \section{Preprocessing and Visualization}
 
-We start by
+We start by downloading ADFA-LD 12 Dataset\footnote{Download url: \url{https://www.unsw.adfa.edu.au/australian-centre-for-cyber-security/cybersecurity/ADFA-IDS-Datasets/} - Accessed on 10 August 2016}. After we unzip the files we see that we create 3 folders for each subset of the dataset. The training and validation set have a long list of text files in their respective folders. Each text file represents a data point and contains a series of integers separated by white spaces that correspond to kernel system calls. The attack set is structured in folders according to the type of attack and within them are the text files describing the attack data points.
 
+After we have downloaded the dataset our first order of business is to transform it in a way that it will be easier for us to handle.
 
 
 
@@ -234,7 +246,7 @@ We start by
 %\\
 %\url{http://www.mdpi.com/2079-9292/5/3/40/pdf}
 
-\bibitem{intro-ids1} Iti Raghav, Shashi Chhikara, Nitasha Hasteer \emph{Intrusion Detection and Prevention in Cloud Environment: A Systematic Review}, International Journal of Computer Applications (0975 – 8887, Volume 68– No.24, April 2013
+\bibitem{intro-ids1} Iti Raghav, Shashi Chhikara, Nitasha Hasteer \emph{Intrusion Detection and Prevention in Cloud Environment: A Systematic Review}, Journal of Network and Computer Applications, Volume 36, Issue 1, January 2013, Pages 25-41
 
 \bibitem{out1} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating
 network for novelty detection}, Neural Computation, vol. 6, no. 2,
@@ -252,6 +264,23 @@ pp. 270 - 284, 1994.
 \bibitem{ids2} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
 \bibitem{adf1} Miao Xie, Jiankun Hu, Xinghuo Yu, and Elizabeth Chang \emph{Evaluating Host-Based Anomaly Detection Systems: Application of the Frequency-Based Algorithms to ADFA-LD}, 11th International Conference on Fuzzy Systems and Knowledge Discovery, 2014
+
+% python citation
+\bibitem{pyt} G. van Rossum, \emph{Python tutorial, Technical Report CS-R9526}, Centrum voor Wiskunde en Informatica (CWI), Amsterdam, May 1995.
+
+% numpy citation
+\bibitem{numpy} David Ascher, Paul F. Dubois, Konrad Hinsen, James Hugunin, and Travis Oliphant,
+\emph{Numerical Python} Lawrence Livermore National Laboratory, UCRL-MA-128569, 1999
+
+% sk-learn citation
+\bibitem{skl} F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot , E. Duchesnay 
+\emph{Scikit-learn: Machine Learning in Python}, Journal of Machine Learning Research, volume 12,
+ pages 2825 - 2830, 2011
+
+%matplotlib
+\bibitem{matpl} Hunter, J. D., \emph{Matplotlib: A 2D graphics environment}, Computing In Science \& Engineering, vol. 9, no. 3, pp 90 - 95, 2007
+
+
 
 \end{thebibliography}
 
