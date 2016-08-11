@@ -182,8 +182,12 @@ An important part of any project is time management. To assist us in better mana
 \centering
 % Gantt chart initial code:
 % http://tex.stackexchange.com/a/133056/111537
+\resizebox{\textwidth}{!}{
 \begin{ganttchart}
 [
+x unit=0.4cm,
+%y unit title=0.7cm,
+%y unit chart=0.8cm,
 y unit title=0.4cm,
 y unit chart=0.5cm,
 vgrid,hgrid, 
@@ -199,6 +203,7 @@ group right shift=0,
 group top shift=.6,
 group height=.3,
 group peaks height =.2
+%progress label text=  {\quad\pgfmathprintnumber[precision=0,verbatim]{#1}\%}
 ]
 {1}{26}
 %labels
@@ -235,6 +240,7 @@ group peaks height =.2
 \ganttlink{elem5}{elem6} 
 \ganttlink{elem6}{elem7} 
 \end{ganttchart}
+}
 \label{gantt}
 \caption{MSc Project Gantt Chart}
 \end{figure}
@@ -254,7 +260,7 @@ group peaks height =.2
 %Week 11: 15.8 - 19.8
 %Week 12: 22.8 - 26.8
 %Week 13: 29.8 - 02.9
-
+After that we worked on replicating results of previous papers\cite{adf1}, \cite{adf2}. This work overlapped with the work on frequency based algorithms and 2-sequence based algorithms. Once we replicated the work of previous papers we worked on new ways to analyse the dataset. One way of doing so was to get out of the boundaries established by the computer science community in handling the dataset and using it in ways more conventional to the machine learning community. After that we proceeded in writing the initial report and deliver a draft to the first supervisor. Subsequently we used his feedback to improve our analysis and our report. Lastly we prepared a presentation in order to present our work to the second supervisor.
 
 
 \chapter{Exploratory Data Analysis}
@@ -347,6 +353,9 @@ pp. 270 - 284, 1994.
 \bibitem{ids2} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
 \bibitem{adf1} Miao Xie, Jiankun Hu, Xinghuo Yu, and Elizabeth Chang \emph{Evaluating Host-Based Anomaly Detection Systems: Application of the Frequency-Based Algorithms to ADFA-LD}, 11th International Conference on Fuzzy Systems and Knowledge Discovery, 2014
+
+\bibitem{adf2} Miao Xie, Jiankun Hu and Jill Slay \emph{Evaluating Host-based Anomaly Detection Systems:
+Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th IEEE International Conference on Fuzzy Systems and Knowledge Discovery (FSKD 2014), Xiamen, 19-21 August 2014, 978-982. 
 
 % python citation
 \bibitem{pyt} G. van Rossum, \emph{Python tutorial, Technical Report CS-R9526}, Centrum voor Wiskunde en Informatica (CWI), Amsterdam, May 1995.
