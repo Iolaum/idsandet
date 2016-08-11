@@ -32,7 +32,8 @@
 % introduced to resize big table of attack types
 % http://tex.stackexchange.com/questions/10863/is-there-a-way-to-slightly-shrink-a-table-including-font-size-to-fit-within-th
 
-
+\usepackage{pgfgantt}
+% package to create gantt charts
 
 %  ************  begin my definitions  *******************
 
@@ -106,7 +107,7 @@ Now that we have seen examples of the increasing importance of cyber - security 
 In this project we are drawing knowledge from two related but distinct fields.
 \footnote{With info from:\\
 Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.}
-The first field is outlier and anomaly detection techniques from Machine Learning. The second field is Intrusion Detection techniques within deployed cyber-security solutions.
+The first field is outlier and anomaly detection techniques from Machine Learning. The second field is Intrusion Detection techniques within deployed cyber-security solutions. On the next sections we will describe the foundations of this project. They have been studied to a big extend during the Project preparation course.
 
 \section{Outlier and Anomaly Detection}
 
@@ -174,6 +175,88 @@ A critical part in creating an IDS application is the data you use to train it o
 
 Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. Our dataset addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
 
+\section{Project Planning}
+
+An important part of any project is time management. To assist us in better management we followed the Gantt Chart shown in figure \ref{gantt}. It is separated in eight parts. Initially we explore the dataset, set up our system and decide the architecture of our workflow.
+\begin{figure}[h]
+\centering
+% Gantt chart initial code:
+% http://tex.stackexchange.com/a/133056/111537
+\begin{ganttchart}
+[
+y unit title=0.4cm,
+y unit chart=0.5cm,
+vgrid,hgrid, 
+title label anchor/.style={below=-1.6ex},
+title left shift=.05,
+title right shift=-.05,
+title height=1,
+bar/.style={fill=gray!50},
+incomplete/.style={fill=white},
+progress label text={},
+bar height=0.7,
+group right shift=0,
+group top shift=.6,
+group height=.3,
+group peaks height =.2
+]
+{1}{26}
+%labels
+\gantttitle{MSc Project - Weekly Schedule}{26} \\
+\gantttitle{1}{2} 
+\gantttitle{2}{2} 
+\gantttitle{3}{2} 
+\gantttitle{4}{2} 
+\gantttitle{5}{2} 
+\gantttitle{6}{2} 
+\gantttitle{7}{2} 
+\gantttitle{8}{2}  
+\gantttitle{9}{2}   
+\gantttitle{10}{2}
+\gantttitle{11}{2}
+\gantttitle{12}{2}
+\gantttitle{13}{2} \\
+%tasks
+\ganttbar{Dataset exploration}{1}{4} \\
+\ganttbar{Results replication}{3}{6} \\
+\ganttbar{Frequency algorithms}{6}{11} \\
+\ganttbar{2-sequence algorithms}{11}{16} \\
+\ganttbar{Initial report}{15}{20} \\
+\ganttbar{Feedback}{21}{23} \\
+\ganttbar{Final report}{23}{24} \\
+\ganttbar{Demonstration}{25}{26}
+%relations
+\ganttlink{elem0}{elem1} 
+\ganttlink{elem1}{elem3} 
+\ganttlink{elem1}{elem2} 
+\ganttlink{elem3}{elem4} 
+\ganttlink{elem2}{elem4} 
+\ganttlink{elem4}{elem5} 
+\ganttlink{elem5}{elem6} 
+\ganttlink{elem6}{elem7} 
+\end{ganttchart}
+\label{gantt}
+\caption{MSc Project Gantt Chart}
+\end{figure}
+%
+%Gantt chart weeks:
+%
+%Week  1: 06.6 - 10.6
+%Week  2: 13.6 - 17.6
+%Week  3: 20.6 - 24.6
+%Week  4: 27.6 - 01.7
+%Week  5: 04.7 - 08.7
+%Week  6: 11.7 - 15.7
+%Week  7: 18.7 - 22.7
+%Week  8: 25.7 - 29.7
+%Week  9: 01.8 - 05.8
+%Week 10: 08.8 - 12.8
+%Week 11: 15.8 - 19.8
+%Week 12: 22.8 - 26.8
+%Week 13: 29.8 - 02.9
+
+
+
 \chapter{Exploratory Data Analysis}
 
 \section{Dataset Documentation}
@@ -219,9 +302,9 @@ Before moving further we would like to mention the technologies we used for this
 
 In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently.
 
-Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of this approach is our ability to test our code. Writing unit test for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive.
+Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of our modular approach is our ability to test our code. Writing unit tests for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive. Moreover this segmentation makes it easier to alter our implementation of a particular algorithm when we want to experiment further with our dataset.
 
-As a last remark we want to mention that  since python is able to run in a variety of operating systems our results can be replicated on a variety of operating systems. All one has to do is install python and our required libraries on his systems. Then he can download the dataset and place them in the /data/ folder according to the specifications set by the script\footnote{The scripts ``a2\_{}train.py", ``a3\_{}attack.py" and ``a4\_{}validation.py" are the ones who are used to initiate our analysis.} in their initial comments section. After the initial scripts have run the user can be sure he has set up his system properly to reproduce all of our results by running the remaining scripts.
+As an additional remark we want to mention that  since python is able to run in a variety of operating systems our results can be replicated on a variety of operating systems. All one has to do is install python and our required libraries on his systems. Then he can download the dataset and place them in the /data/ folder according to the specifications set by the script\footnote{The scripts ``a2\_{}train.py", ``a3\_{}attack.py" and ``a4\_{}validation.py" are the ones who are used to initiate our analysis.} in their initial comments section. After the initial scripts have run the user can be sure he has set up his system properly to reproduce all of our results by running the remaining scripts.
 
 \section{Preprocessing and Visualization}
 
