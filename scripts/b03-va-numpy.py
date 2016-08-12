@@ -44,6 +44,9 @@ for key in trdata:
         # reset sys call counter
         ctr = 0
 
+    # move to next row of tmatrix
+    linectr += 1
+
 np.save("../data/b3_vamatrix", tmatrix)
 
 print("vamatrix saved as npy array with numpy.")

@@ -315,7 +315,7 @@ The traditional approach on the cyber security field is to use the training set 
 
 \section{Methods and Technologies used}
 
-Before moving further we would like to mention the technologies we used for this project. Our main computing platform is a x86\_{}64 machine running Ubuntu 16.04.1 LTS\footnote{Ubuntu is an open-source operating system using the Linux kernel, based on Debian and developed by Canonical Inc., \url{http://releases.ubuntu.com/16.04/} - Accessed at August 10, 2016.} as it's operating system. For our analysis we are using the python\cite{pyt} programming language, version 2.7.12. Furthermore to implement our machine learning algorithms we relied on the numpy\cite{numpy}, version 1.11.0, and sci-kit learn\cite{skl}, version 0.17.1, open source libraries. For visualization we relied on the matplotlib\cite{matpl} library version 1.5.1. The code used for the generation of all the results and graphics of this project is publicly available as a github repository.\footnote{The repository is available there: \url{https://github.com/Iolaum/idsandet}}. In order to write our report and presentation we used pdfLaTeX and Texmaker. Last but not least we used git, version 2.7.4, as a version control tool.
+Before moving further we would like to mention the technologies we used for this project. Our main computing platform is a x86\_{}64 machine running Ubuntu 16.04.1 LTS\footnote{Ubuntu is an open-source operating system using the Linux kernel, based on Debian and developed by Canonical Inc., \url{http://releases.ubuntu.com/16.04/} - Accessed at August 10, 2016.} as it's operating system. For our analysis we are using the python\cite{pyt} programming language, version 2.7.12. Furthermore to implement our machine learning algorithms we relied on the numpy\cite{numpy}, version 1.11.0, and scikit-learn\cite{skl}, version 0.17.1\footnote{An important note here is that pickled scikit-learn objects may be incompatible with other scikit-learn versions.}, open source libraries. For visualization we relied on the matplotlib\cite{matpl} library version 1.5.1. The code used for the generation of all the results and graphics of this project is publicly available as a github repository.\footnote{The repository is available there: \url{https://github.com/Iolaum/idsandet}}. In order to write our report and presentation we used pdfLaTeX and Texmaker. Last but not least we used git, version 2.7.4, as a version control tool.
 
 
 In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently.
@@ -344,7 +344,6 @@ Our next step is to do basic exploration in our dataset. The kernel of the host 
 \noindent
 A curious thing to mention here is the presence of integers higher than 325. One would think that since we only have 325 system calls only integers up to 325 would be used.\footnote{Nothing in the documentation of the dataset indicated this would (or would not) happen.} This is a very good example that no assumptions should be made when addressing a dataset and that we should always clean and validate the form of the data we expect to have for the next step of our pipeline.
 
-Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our x axis because of how unevenly the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
 
 \begin{figure}
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-1.eps}} 
@@ -362,7 +361,22 @@ Moving forward we count the presences of each system call in our dataset. The re
 \label{syscalls2}
 \end{figure}
 
+Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our x axis because of how unevenly the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
 
+\begin{figure}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-1.eps}} 
+\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}   
+\caption{Principal Components of ADFA-LD 12 dataset.}
+\label{pca1}
+\end{figure}
+
+
+Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figure \ref{pca1} we have used different colors for the three subsets of ADFA-LD 12. In the left figure we only plot the training and attacks sets. In right figure we also plot the validation set. While on the left figure there is some separation between the attack and the training set once we add the validation set we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
+% research for training vs validation sets
+that the training and the validation sets as provided do not carry the same information content.
+
+
+\chapter{Machine Learning with system call frequencies}
 
 
 \begin{thebibliography}{99}

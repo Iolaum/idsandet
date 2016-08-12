@@ -6,12 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 print("Loading training data.")
-with open('../data/b5_trmatrix.p', 'rb') as ha:
-    trdat = pickle.load(ha)
+trdat = np.load('../data/b5_trmatrix.npy')
+
 
 print("Loading attack data.")
-with open('../data/b5_atmatrix.p', 'rb') as ha:
-    atdat = pickle.load(ha)
+atdat = np.load('../data/b5_atmatrix.npy')
+
 
 trdat = trdat[:, 0:2]
 atdat = atdat[:, 0:2]
