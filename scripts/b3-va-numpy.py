@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# See all training files and create a
-# training data dictionary of lists.
+# Load validation data and count system call frequencies
 
 from __future__ import division
 import pickle
@@ -11,22 +10,22 @@ import numpy as np
 
 print("Started processing validation data!")
 
-
-with open('../data/validation.p', 'rb') as ha:
+# laod validation data
+with open('../data/1_validation.p', 'rb') as ha:
     trdata = pickle.load(ha)
+
+# load non-zero sys calls
+with open('../data/a14-sys-list.p', 'rb') as ha:
+    syslist = pickle.load(ha)
 
 
 # create numpy array to handle the data
 # first number is lines, second is columns.
-# 833 training data points
-# 325 system calls to check their frequency.
-tmatrix = np.zeros((4372, 325))
+tmatrix = np.zeros((4372, 175))
 
 # counter for line in array to be added
 linectr = 0
 
-
-syscalls = range(1, 326)
 
 for key in trdata:
     dummy1 = np.asarray(trdata[key])
@@ -36,31 +35,15 @@ for key in trdata:
     ctr = 0
 
     # count system call frequency and fill Tr data matrix
-    for ic in syscalls:
+    for ic in range(len(syslist)):
         for it in trdata[key]:
-            if it == ic:
+            if it == syslist[ic]:
                 ctr += 1
-        tmatrix[linectr, (ic-1)] = ctr/len1
+        tmatrix[linectr, ic] = ctr/len1
 
         # reset sys call counter
         ctr = 0
 
-    # debug
-    #for it in tmatrix[0,:]:
-    #    if it > 0:
-    #        print it
-    #break
-    # debug
+np.save("../data/b3_vamatrix", tmatrix)
 
-    # move to next row of tmatrix
-    linectr += 1
-
-    # debug
-    #if linectr == 5:
-    #    break
-
-
-with open('../data/b3_vamatrix.p', 'wb') as ha:
-    pickle.dump(tmatrix, ha)
-
-print("vamatrix saved as nd array with pickle.")
+print("vamatrix saved as npy array with numpy.")

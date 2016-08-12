@@ -48,4 +48,10 @@ print("There are {} system calls.".format(len(syset)))
 with open('../data/a14-sys-set.p', 'wb') as ha:
     pickle.dump(syset, ha)
 
+syslist = list(syset)
+syslist.sort
+
+with open('../data/a14-sys-list.p', 'wb') as ha:
+    pickle.dump(syslist, ha)
+
 
