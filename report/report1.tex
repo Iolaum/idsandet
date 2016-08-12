@@ -35,6 +35,12 @@
 \usepackage{pgfgantt}
 % package to create gantt charts
 
+% Insert multiple figures in Latex
+% http://tex.stackexchange.com/a/119907/111537
+\usepackage{float}
+\usepackage[caption = false]{subfig}
+\usepackage{graphicx}
+
 %  ************  begin my definitions  *******************
 
 \renewcommand{\thesection}{\thechapter.\arabic{section}}
@@ -316,7 +322,24 @@ As an additional remark we want to mention that  since python is able to run in 
 
 We start by downloading ADFA-LD 12 Dataset\footnote{Download url: \url{https://www.unsw.adfa.edu.au/australian-centre-for-cyber-security/cybersecurity/ADFA-IDS-Datasets/} - Accessed on 10 August 2016}. After we unzip the files we see that we create 3 folders for each subset of the dataset. The training and validation set have a long list of text files in their respective folders. Each text file represents a data point and contains a series of integers separated by white spaces that correspond to kernel system calls. The attack set is structured in folders according to the type of attack and within them are the text files describing the attack data points.
 
-After we have downloaded the dataset our first order of business is to transform it in a way that it will be easier for us to handle.
+After we have downloaded the dataset our first order of business is to transform it in a way that it will be easier for us to handle. Given the size of our dataset we decided to handle it locally. For that reason we used pickle and numpy libraries to save python objects that represented the dataset on our hard disk. Our first preprocessing step is to create a python dictionary for each of the subsets containing the information about the sequence of system calls for each data point.
+
+
+\begin{figure}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-1.eps}} 
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-2.eps}} \    
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-3.eps}}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-4.eps}} 
+\caption{System Calls distribution.}
+\label{syscalls1}
+\end{figure}
+\begin{figure}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-5.eps}} 
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-6.eps}} \    
+\subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-7.eps}}
+\caption{System Calls distribution.}
+\label{syscalls2}
+\end{figure}
 
 
 
