@@ -1,31 +1,51 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Create ROC curves
+# Create ROC curves for k-NN square standardised euclidean distance
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# kmc eucl - adduser
+# sq sn eucl - adduser
 
-acc1 = np.array([1, 0.813186813187, 0.681318681319,
-    0.527472527473, 0.373626373626, 0.131868131868, 0.032967032967,
-    0, 0, 0])
-fpr1 = np.array([0.995425434584, 0.776989935956, 0.296889295517,
-    0.17886550777, 0.0981244281793, 0.0322506861848, 0.0114364135407,
-    0.00411710887466, 0.00297346752059, 0.000228728270814])
+acc1 = np.array([0.912087912088, 0.67032967033,  0.56043956044,
+    0.120879120879, 0.0549450549451, 0.032967032967, 0.021978021978,
+    0.021978021978,  0.021978021978, 0.010989010989])
+fpr1 = np.array([0.75571820677,  0.308325709058, 0.189387008234,
+    0.102927721866, 0.0574107959744, 0.0315645013724, 0.0180695333943,
+    0.0176120768527, 0.0176120768527, 0.0173833485819])
 
-# kmc eucl - hydra ftp
+# sq sn eucl - hydra ftp
 
-acc2 = np.array([1, 0.888888888889, 0.567901234568, 0.308641975309,
-    0.191358024691, 0.0617283950617, 0, 0, 0, 0])
+acc2 = np.array([0.703703703704, 0.58024691358, 0.351851851852,
+    0.0987654320988, 0.0493827160494, 0.00617283950617, 0, 0, 0, 0])
 # fpr2 = fpr1
 
-# kmc eucl - hydra ssh
+# sq sn eucl - hydra ssh
 
-acc3 = np.array([0.994318181818, 0.630681818182, 0.357954545455,
-    0.227272727273, 0.0852272727273, 0, 0, 0, 0, 0])
+acc3 = np.array([0.721590909091, 0.392045454545, 0.267045454545,
+    0.0795454545455, 0.0568181818182, 0.0454545454545, 0.0113636363636,
+    0.0113636363636, 0, 0])
+
+
+# sq sn eucl - java meterpreter
+
+acc4 = np.array([0.846774193548, 0.645161290323, 0.564516129032,
+    0.258064516129, 0.25, 0.225806451613, 0.225806451613, 0.217741935484,
+    0.209677419355, 0.193548387097])
+
+# sq sn eucl - meterpreter
+
+acc5 = np.array([0.853333333333, 0.76, 0.613333333333, 0.0933333333333,
+    0.0666666666667, 0.0266666666667, 0, 0, 0, 0])
+
+
+# sq sn eucl - web shell
+
+acc6 = np.array([0.957627118644, 0.661016949153, 0.457627118644,
+    0.118644067797, 0.0508474576271, 0.0169491525424, 0, 0, 0, 0])
+
 
 
 
@@ -34,11 +54,14 @@ acc3 = np.array([0.994318181818, 0.630681818182, 0.357954545455,
 plt.plot(fpr1, acc1, 'r', label='adduser')
 plt.plot(fpr1, acc2, 'g', label='hydra ftp')
 plt.plot(fpr1, acc3, 'b', label='hydra ssh')
+plt.plot(fpr1, acc4, 'c', label='java meter')
+plt.plot(fpr1, acc5, 'm', label='meterpreter')
+plt.plot(fpr1, acc6, 'y', label='web shell')
 plt.plot(fpr1, fpr1, 'k', label='random')
-plt.legend(loc='upper left')
-plt.title('k means clustering with euclidean distance')
+plt.legend(loc='lower right')
+plt.title('kNN with squared standardised euclidean distance')
 plt.ylabel('Accuracy')
 plt.xlabel('False Positive')
-plt.show() 
-
-
+#plt.show() 
+plt.savefig('../pictures/b08-roc-2.eps')
+plt.close()
