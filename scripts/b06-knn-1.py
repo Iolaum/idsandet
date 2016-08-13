@@ -19,47 +19,39 @@ def myprint(mytext):
 
 myprint("Starting a kNN squared euclidean distance classifier.")
 
-myprint("Loading trainind data.")
-with open('../data/b5_trmatrix.p', 'rb') as ha:
-    trdat = pickle.load(ha)
+myprint("Loading training data.")
+trdat = np.load('../data/b5_trmatrix.npy')
 
 # attack data options
-atdatselector = 3
+atdatselector = 6
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
-    with open('../data/b5_at1mat_adduser.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at1mat_adduser.npy')
 
 elif atdatselector == 2:
     myprint("Loading hydra ftp attack data.")
-    with open('../data/b5_at2mat_hyftp.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at2mat_hyftp.npy')
 
 elif atdatselector == 3:
     myprint("Loading hydra ssh attack data.")
-    with open('../data/b5_at3mat_hyssh.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at3mat_hyssh.npy')
 
 elif atdatselector == 4:
     myprint("Loading java meterpreter attack data.")
-    with open('../data/b5_at4mat_javamet.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at4mat_javamet.npy')
 
 elif atdatselector == 5:
     myprint("Loading meterpreter attack data.")
-    with open('../data/b5_at5mat_meter.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at5mat_meter.npy')
 
 elif atdatselector == 6:
     myprint("Loading web shell attack data.")
-    with open('../data/b5_at6mat_webshell.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at6mat_webshell.npy')
 
 
 myprint("Loading validation data.")
-with open('../data/b5_vamatrix.p', 'rb') as ha:
-    vadat = pickle.load(ha)
+vadat = np.load('../data/b5_vamatrix.npy')
 
 
 # intermediate variables
@@ -97,30 +89,33 @@ for it1 in atdat:
 myprint("With {} squared Euclidean distance limit and {} neighbours limit we get:".format(barr1, barr2))
 myprint("Attack detection accuracy: {}".format(ctracc/totacc))
 
-'''
-# determine false positive rate
-for it1 in vadat:
 
-    # debug
-    # print type(it1)
-    # print it1.shape
-    # exit()
+# only need to be done once.
+# it's the same across attacks
+if atdatselector == 1:
 
-    for it2 in trdat:
-        if math.pow(euclidean(it1, it2), 2) <= barr1:
-            dumctr += 1
+    # determine false positive rate
+    for it1 in vadat:
 
-    if dumctr < barr2:
-        ctrfpr += 1
+        # debug
+        # print type(it1)
+        # print it1.shape
+        # exit()
 
-    dumctr = 0
+        for it2 in trdat:
+            if math.pow(euclidean(it1, it2), 2) <= barr1:
+                dumctr += 1
 
-myprint("False Positive rate: {}".format(ctrfpr/totval))
+        if dumctr < barr2:
+            ctrfpr += 1
 
-# commented out because validation rates are the same
-'''
+        dumctr = 0
 
-myprint("Read false positive rate from previous runs.")
+    myprint("False Positive rate: {}".format(ctrfpr/totval))
+
+else:
+
+    myprint("Read false positive rate from previous runs.")
 
 
 with open('../data/b6-knn-1-results.txt', 'a') as ha:

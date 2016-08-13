@@ -303,7 +303,7 @@ The dataset is separated in three sets, the training set, the attack set and the
 \hline
 Subset &  Data points \\ \hline 
 Training  & 833 \\ \hline
-Validation & 4373 \\ \hline
+Validation & 4372 \\ \hline
 Attack &  719\\ \hline
 \end{tabular}
 \vspace{5pt}
@@ -364,19 +364,32 @@ A curious thing to mention here is the presence of integers higher than 325. One
 Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our x axis because of how unevenly the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
 
 \begin{figure}
-\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-1.eps}} 
-\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}   
-\caption{Principal Components of ADFA-LD 12 dataset.}
+\includegraphics[width = 1\textwidth]{a13-pcaplot-1.eps}
+\caption{Principal Components of training and attack subsets.}
 \label{pca1}
 \end{figure}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{a13-pcaplot-2.eps}
+\caption{Principal Components of training, attack and validation subsets.}
+\label{pca2}
+\end{figure}
+% \subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}  
 
-
-Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figure \ref{pca1} we have used different colors for the three subsets of ADFA-LD 12. In the left figure we only plot the training and attacks sets. In right figure we also plot the validation set. While on the left figure there is some separation between the attack and the training set once we add the validation set we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
+Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on the left figure there is some separation between the attack and the training set once we add the validation set we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
 % research for training vs validation sets
-that the training and the validation sets as provided do not carry the same information content.
+that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in 
+
+% [ 0.20417851  0.12330985  0.09493127  0.0776562   0.06456913  0.0489988  0.03860293  0.03456735  0.03275491  0.03025882  0.02729846  0.02597533]
 
 
-\chapter{Machine Learning with system call frequencies}
+\chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
+
+We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set. We will keep their procedure while we are trying to replicate their results in the following sections.
+
+\section{k-Nearest Neighbours}
+
+We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. Their work is done after they perform feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically from the authors and we will follow them. The authors used a variety of distance metrics for their exploration and we will do so as well.
+
 
 
 \begin{thebibliography}{99}
