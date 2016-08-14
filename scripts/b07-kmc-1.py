@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Implement a kMC classifier
-# set hardcoded variable to select attack methodology
+# set hardcoded variable to select attack methodology and distance
 
 from __future__ import division
 import pickle
@@ -15,7 +15,7 @@ from scipy.spatial.distance import euclidean
 # custom print function to also save runs on text file
 resultsfile = '../data/b7-kmc-1-results.txt'
 
-
+# custom print function
 def myprint(mytext):
     print(mytext)
     with open(resultsfile, 'a') as ha:
@@ -24,60 +24,52 @@ def myprint(mytext):
 myprint("Starting a k means clusting euclidean distance classifier.")
 
 myprint("Loading trainind data.")
-with open('../data/b5_trmatrix.p', 'rb') as ha:
-    trdat = pickle.load(ha)
+trdat = np.load('../data/b5_trmatrix.npy')
 
 # use model if it exits
-
-if exists('../data/b7-kmc-model.p'):
+trainedmodel = '../data/b07-kmc-model-1.p'
+if exists(trainedmodel):
     myprint('Loading trained kmc model.')
-    with open('../data/b7-kmc-model.p', 'rb') as ha:
+    with open(trainedmodel, 'rb') as ha:
         kmc = pickle.load(ha)
 else:
     kmc = KMeans(n_clusters=5, n_jobs=-2, random_state=13)
     myprint('Training a k-means clustering model.')
     kmc.fit(trdat)
     myprint('Saving our kmc model.')
-    with open('../data/b7-kmc-model.p', 'wb') as ha:
+    with open(trainedmodel, 'wb') as ha:
         pickle.dump(kmc, ha)
 
 # attack data options
-atdatselector = 3
+atdatselector = 6
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
-    with open('../data/b5_at1mat_adduser.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at1mat_adduser.npy')
 
 elif atdatselector == 2:
     myprint("Loading hydra ftp attack data.")
-    with open('../data/b5_at2mat_hyftp.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at2mat_hyftp.npy')
 
 elif atdatselector == 3:
     myprint("Loading hydra ssh attack data.")
-    with open('../data/b5_at3mat_hyssh.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at3mat_hyssh.npy')
 
 elif atdatselector == 4:
     myprint("Loading java meterpreter attack data.")
-    with open('../data/b5_at4mat_javamet.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at4mat_javamet.npy')
 
 elif atdatselector == 5:
     myprint("Loading meterpreter attack data.")
-    with open('../data/b5_at5mat_meter.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at5mat_meter.npy')
 
 elif atdatselector == 6:
     myprint("Loading web shell attack data.")
-    with open('../data/b5_at6mat_webshell.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at6mat_webshell.npy')
 
 
 myprint("Loading validation data.")
-with open('../data/b5_vamatrix.p', 'rb') as ha:
-    vadat = pickle.load(ha)
+vadat = np.load('../data/b5_vamatrix.npy')
 
 
 # sk learn: DeprecationWarning:
@@ -87,7 +79,7 @@ with open('../data/b5_vamatrix.p', 'rb') as ha:
 
 
 # find d to split distances!
-dist = 0.755066369401
+dist = 0.755064191429 #set me
 
 # intermediate variable
 cdist = 0
@@ -129,15 +121,24 @@ myprint("With {} Euclidean distance limit for 5 k-means clusters\
  we get:".format(barr1))
 myprint("Attack detection accuracy: {}".format(dumctr/totacc))
 
+
 # determine false positive rate
-dumctr = 0
-for it1 in vadat:
+# only need to be done once.
+# it's the same across attacks
+if atdatselector == 1:
 
-    if euclidean(kmcents[kmc.predict(it1.reshape(1, -1))], it1) > barr1:
-        dumctr += 1
+    # determine false positive rate
+    dumctr = 0
+    for it1 in vadat:
 
+        if euclidean(kmcents[kmc.predict(it1.reshape(1, -1))], it1) > barr1:
+            dumctr += 1
 
-myprint("False positive rate: {}".format(dumctr/totval))
+    myprint("False positive rate: {}".format(dumctr/totval))
+
+else:
+
+    myprint("Read false positive rate from previous runs.")
 
 with open(resultsfile, 'a') as ha:
     ha.write('\n')

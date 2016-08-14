@@ -53,6 +53,9 @@
 % http://tex.stackexchange.com/questions/20837/section-numbering-with-chapter-in-amsbook
 % show chapter numbers in sections!
 
+% do the same for tables and figures:
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
 
 %  ************  end my definitions  *******************
 
@@ -379,6 +382,7 @@ Another way to improve our understanding of our dataset is to look at it's princ
 % research for training vs validation sets
 that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in 
 
+% explained variance of pc's
 % [ 0.20417851  0.12330985  0.09493127  0.0776562   0.06456913  0.0489988  0.03860293  0.03456735  0.03275491  0.03025882  0.02729846  0.02597533]
 
 
@@ -386,7 +390,7 @@ that the training and the validation sets as provided do not carry the same info
 
 We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set. We will keep their procedure while we are trying to replicate their results in the following sections.
 
-\section{k-Nearest Neighbours}
+\section{k - Nearest Neighbours}
 
 We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
 
@@ -447,6 +451,7 @@ hydra ssh        & 0.5792 \\ \hline
 java meterpreter & 0.8559 \\ \hline
 meterpreter      & 0.8330 \\ \hline
 web shell        & 0.8558 \\ \hline
+$arear$          & 0.3004 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Area under the curve for squared euclidean distance kNN classifier.}
@@ -465,12 +470,62 @@ hydra ssh        & 0.5398 \\ \hline
 java meterpreter & 0.8096 \\ \hline
 meterpreter      & 0.8377 \\ \hline
 web shell        & 0.8030 \\ \hline
+$arear$          & 0.2854 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Area under the curve for squared standardised euclidean distance kNN classifier.}
 \label{knnt4}
 \end{table}
 
+We see that the password cracking attacks (hydra ssh and hydra ftp) are quite harder to identify compared to the other attacks and our classifier has poor performance on them. For the other attacks our classifier has moderate to good performance overall.
+
+\section{k - Means Clustering}
+
+\subsection{Re-creating previous results}
+%\newline
+
+We proceed in trying to replicate the results of Xie et al.\cite{adf1} with regards to the k-means clustering algorithm. We focus on implementing with a euclidean distance metric. The authors used the training data to create 5 clusters. The number of clusters was chosen empirically. A new data point was classified as normal when it was within a distance $d$ of a cluster center. The distance parameter was chosen by finding the maximum in cluster distance $(d_{max})$ and getting an evenly spaced sample of 10 numbers from $[0,d_{max}]$. In our case the maximum distance is $0.7551$.
+
+\begin{figure}
+\includegraphics[width = 0.9\textwidth]{b08-roc-3kmc.eps}
+\caption{Receiver operating characteristic curve for k-means clustering.}
+\label{kmcroc1}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.6893 \\ \hline
+hydra ftp        & 0.6428 \\ \hline
+hydra ssh        & 0.4690 \\ \hline
+java meterpreter & 0.6858 \\ \hline
+meterpreter      & 0.7475 \\ \hline
+web shell        & 0.7158 \\ \hline
+$arear$          & 0.4954 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Area under the curve for k-Means Clustering classifier using euclidean distance.}
+\label{kmct1}
+\end{table}
+
+%
+%Area under the curve for random selection        is: -0.49543587175
+%Area under the curve for adduser attack          is: 0.689277027657
+%Area under the curve for hydra ftp attack        is: 0.642760446353
+%Area under the curve for hydra ssh attack        is: 0.469041129125
+%Area under the curve for java meterpreter attack is: 0.685769143829
+%Area under the curve for meterpreter attack      is: 0.747529650319
+%Area under the curve for web shell attack        is: 0.715844036274
+
+After performing our computation we plot the receiver operating characteristic curves. They are presented in figure \ref{kmcroc1}. To assess the performance of our classifier we compute the area under the ROC curves and present the results in table \ref{kmct1}. The area has been normalised again although that was not really needed in this case since $arear = 0.4954$. We can see that in this case the hydra ssh attack has bad performance while for the other attacks the classifier has moderate performance.
+
+The authors of \cite{adf1} do not comment on the area under the ROC curves for the classifiers they used. The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. By looking through figures \ref{knnroc1}, \ref{knnroc2} and \ref{kmcroc1} we can see that the k-means clustering algorithm is a bit more reliable. Additionally k-means clustering is a lot cheaper computationally.
+
+
+\subsection{Expanding our analysis} \mbox{}
+
+Do cross validation !?
 
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
