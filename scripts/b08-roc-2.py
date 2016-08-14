@@ -63,5 +63,32 @@ plt.title('kNN with squared standardised euclidean distance')
 plt.ylabel('Accuracy')
 plt.xlabel('False Positive')
 #plt.show() 
-plt.savefig('../pictures/b08-roc-2.eps')
+plt.savefig('../pictures/b08-roc-2.jpg')
 plt.close()
+
+# calculate area under the ROC curve
+area1 = np.trapz(acc1, x=fpr1)
+area2 = np.trapz(acc2, x=fpr1)
+area3 = np.trapz(acc3, x=fpr1)
+area4 = np.trapz(acc4, x=fpr1)
+area5 = np.trapz(acc5, x=fpr1)
+area6 = np.trapz(acc6, x=fpr1)
+# area under the curve for random selection
+arear = np.trapz(fpr1, x=fpr1)
+
+print("Area under the curve for adduser attack          is: {}".format(area1))
+print("Area under the curve for hydra ftp attack        is: {}".format(area2))
+print("Area under the curve for hydra ssh attack        is: {}".format(area3))
+print("Area under the curve for java meterpreter attack is: {}".format(area4))
+print("Area under the curve for meterpreter attack      is: {}".format(area5))
+print("Area under the curve for web shell attack        is: {}".format(area6))
+print("Area under the curve for random selection        is: {}".format(arear))
+
+# Normalizing area under roc with 1/(2*arear)
+
+print("Area under the curve for adduser attack          is: {}".format(area1/(2*arear)))
+print("Area under the curve for hydra ftp attack        is: {}".format(area2/(2*arear)))
+print("Area under the curve for hydra ssh attack        is: {}".format(area3/(2*arear)))
+print("Area under the curve for java meterpreter attack is: {}".format(area4/(2*arear)))
+print("Area under the curve for meterpreter attack      is: {}".format(area5/(2*arear)))
+print("Area under the curve for web shell attack        is: {}".format(area6/(2*arear)))

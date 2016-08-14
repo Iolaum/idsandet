@@ -364,12 +364,12 @@ A curious thing to mention here is the presence of integers higher than 325. One
 Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our x axis because of how unevenly the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
 
 \begin{figure}
-\includegraphics[width = 1\textwidth]{a13-pcaplot-1.eps}
+\includegraphics[width = 0.9\textwidth]{a13-pcaplot-1.eps}
 \caption{Principal Components of training and attack subsets.}
 \label{pca1}
 \end{figure}
 \begin{figure}
-\includegraphics[width = 1\textwidth]{a13-pcaplot-2.eps}
+\includegraphics[width = 0.9\textwidth]{a13-pcaplot-2.eps}
 \caption{Principal Components of training, attack and validation subsets.}
 \label{pca2}
 \end{figure}
@@ -388,23 +388,93 @@ We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal 
 
 \section{k-Nearest Neighbours}
 
-We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. Their work is done after they perform feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically from the authors and we will follow them. The authors used a variety of distance metrics for their exploration and we will do so as well.
+We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
 
+They begin by performing feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. It is notable here that they perform PCA only on the training set and not on the whole dataset. According to our results the fraction of the total variance of the dataset explained by each principal component is shown on table \ref{knnt1}.
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Principal Component &  Variance \\ \hline 
+1 & 0.19690050 \\ \hline
+2 & 0.15480881 \\ \hline
+3 & 0.11299774\\ \hline
+4 & 0.09653481\\ \hline
+5 & 0.07091701\\ \hline
+6 & 0.06885015\\ \hline
+7 & 0.05168454\\ \hline
+8 & 0.03804072\\ \hline
+9 & 0.02933048\\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Variance of the principal components of the training set.}
+\label{knnt1}
+\end{table}
 
+The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically by the authors. For k they chose 20. Their choice of parameter d depends on the distance metric used. We present their choices\cite{adf1} in table \ref{knnt2}:
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+Metric &  distance (d) & step width  \\ \hline 
+squared euclidean & [0.01, 0.1] & 0.01 \\ \hline
+standardised squared euclidean & [1, 10] & 1 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{k-Nearest Neighbours parameters.}
+\label{knnt2}
+\end{table}
+
+After performing our computation we plot the receiver operating characteristic curves. We can see them in figures \ref{knnroc1} and \ref{knnroc2}.
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-1.eps}
 \caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square euclidean distance.}
-\label{pca1}
+\label{knnroc1}
 \end{figure}
-
-
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-2.eps}
 \caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square standardised euclidean distance.}
-\label{pca1}
+\label{knnroc2}
 \end{figure}
 
+To assess the performance of our classifiers we compute the area under the ROC curve. There is a problem however in that our data do not spawn the whole x-axis (false positive rate) from 0 to 1. This results in the random selection having area under the curve (named $arear$) for squared euclidean distance equal to $0.3004$ instead of $0.5000$ as we would expect. In order to fix that we normalize our area calculations by dividing by $(2\cdot arear)$. The results are shown in table \ref{knnt3}.
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.8822 \\ \hline
+hydra ftp        & 0.6643 \\ \hline
+hydra ssh        & 0.5792 \\ \hline
+java meterpreter & 0.8559 \\ \hline
+meterpreter      & 0.8330 \\ \hline
+web shell        & 0.8558 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Area under the curve for squared euclidean distance kNN classifier.}
+\label{knnt3}
+\end{table}
+
+Calculating the area under the ROC curve for kNN under squared standardised euclidean distance we get the results shown in table \ref{knnt4}.
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.8096 \\ \hline
+hydra ftp        & 0.6416 \\ \hline
+hydra ssh        & 0.5398 \\ \hline
+java meterpreter & 0.8096 \\ \hline
+meterpreter      & 0.8377 \\ \hline
+web shell        & 0.8030 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Area under the curve for squared standardised euclidean distance kNN classifier.}
+\label{knnt4}
+\end{table}
+
+
+
+\chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
+\chapter{Conclusion}
 
 \begin{thebibliography}{99}
 

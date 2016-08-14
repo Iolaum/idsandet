@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # PCA on training and attack data!
+# DEPRECATED after refactoring.
+# to be deleted !?
 
 from __future__ import division
 import pickle
