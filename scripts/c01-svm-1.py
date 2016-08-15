@@ -9,56 +9,49 @@ import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.svm import SVC
 
-
+# where to log results
+resultsfile = '../data/c01-svm-1-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)
-    with open('../data/c1-svm-1-results.txt', 'a') as ha:
+    with open(resultsfile, 'a') as ha:
         ha.write(mytext + '\n')
 
 myprint("Starting a linear SVM classifier.")
 
 myprint("Loading training data.")
-with open('../data/b5_trmatrix.p', 'rb') as ha:
-    trdat = pickle.load(ha)
+trdat = np.load('../data/b5_trmatrix.npy')
 
 # attack data options
-atdatselector = 3
+atdatselector = 6
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
-    with open('../data/b5_at1mat_adduser.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at1mat_adduser.npy')
 
 elif atdatselector == 2:
     myprint("Loading hydra ftp attack data.")
-    with open('../data/b5_at2mat_hyftp.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at2mat_hyftp.npy')
 
 elif atdatselector == 3:
     myprint("Loading hydra ssh attack data.")
-    with open('../data/b5_at3mat_hyssh.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at3mat_hyssh.npy')
 
 elif atdatselector == 4:
     myprint("Loading java meterpreter attack data.")
-    with open('../data/b5_at4mat_javamet.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at4mat_javamet.npy')
 
 elif atdatselector == 5:
     myprint("Loading meterpreter attack data.")
-    with open('../data/b5_at5mat_meter.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at5mat_meter.npy')
 
 elif atdatselector == 6:
     myprint("Loading web shell attack data.")
-    with open('../data/b5_at6mat_webshell.p', 'rb') as ha:
-        atdat = pickle.load(ha)
+    atdat = np.load('../data/b5_at6mat_webshell.npy')
+
 
 myprint("Loading validation data.")
-with open('../data/b5_vamatrix.p', 'rb') as ha:
-    vadat = pickle.load(ha)
-
+vadat = np.load('../data/b5_vamatrix.npy')
 
 # split attach set
 at1ctr = atdat.shape[0]/2
@@ -84,8 +77,9 @@ y = np.concatenate((l1, l2), axis=0)
 # print y.shape
 
 # define SVM parameters
-cpar = 100
-model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=True, class_weight='balanced')
+# cpar 0.05 - 0.1 - 0.5 - 1 - 5 - 10 - 50
+cpar = 50
+model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=False, class_weight='balanced')
 
 # Influence of C
 # http://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel
@@ -94,6 +88,10 @@ myprint("Starting training an SVM model with linear kernel and C={}.".format(cpa
 
 # model.fit(x[830:930, :], y[830:930])
 model.fit(x, y)
+
+# log support vectors
+myprint('Number of Support Vectors for normal class: {}'.format(model.n_support_[0]))
+myprint('Number of Support Vectors for attack class: {}'.format(model.n_support_[1]))
 
 pre1 = model.predict(at2)
 pre1a1 = float(at2.shape[0])
@@ -105,5 +103,6 @@ pre2a1 = float(vadat.shape[0])
 pre2a2 = np.sum(pre2)
 myprint("Attack detection false positive rate in our SVM model is {}".format(pre2a2/pre2a1))
 
-with open('../data/c1-svm-1-results.txt', 'a') as ha:
+
+with open(resultsfile, 'a') as ha:
     ha.write('\n')

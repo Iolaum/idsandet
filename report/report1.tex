@@ -71,6 +71,7 @@ University of Southampton\\[-1 ex]
 Faculty of Physical Sciences and Engineering\\[-1 ex]
 Electronics and Computer Science\\[-1 ex]
 }
+Supervisor: prof. Mahesan Niranjan
 }
 
 
@@ -382,7 +383,7 @@ Another way to improve our understanding of our dataset is to look at it's princ
 % research for training vs validation sets
 that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in 
 
-% explained variance of pc's
+% explained variance of pc's - 12 components !
 % [ 0.20417851  0.12330985  0.09493127  0.0776562   0.06456913  0.0489988  0.03860293  0.03456735  0.03275491  0.03025882  0.02729846  0.02597533]
 
 
@@ -481,8 +482,8 @@ We see that the password cracking attacks (hydra ssh and hydra ftp) are quite ha
 
 \section{k - Means Clustering}
 
-\subsection{Re-creating previous results}
-%\newline
+%\subsection{Re-creating previous results}
+%%\newline
 
 We proceed in trying to replicate the results of Xie et al.\cite{adf1} with regards to the k-means clustering algorithm. We focus on implementing with a euclidean distance metric. The authors used the training data to create 5 clusters. The number of clusters was chosen empirically. A new data point was classified as normal when it was within a distance $d$ of a cluster center. The distance parameter was chosen by finding the maximum in cluster distance $(d_{max})$ and getting an evenly spaced sample of 10 numbers from $[0,d_{max}]$. In our case the maximum distance is $0.7551$.
 
@@ -523,14 +524,48 @@ After performing our computation we plot the receiver operating characteristic c
 The authors of \cite{adf1} do not comment on the area under the ROC curves for the classifiers they used. The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. By looking through figures \ref{knnroc1}, \ref{knnroc2} and \ref{kmcroc1} we can see that the k-means clustering algorithm is a bit more reliable. Additionally k-means clustering is a lot cheaper computationally.
 
 
-\subsection{Expanding our analysis} \mbox{}
+%\subsection{Expanding our analysis} \mbox{}
+%
+%Do cross validation !?
 
-Do cross validation !?
+\section{Support Vector Machines}
+
+A natural step in continuing our analysis of the ADFA-LD 12 dataset are Support Vector Machines. At first we will keep the methodology we used previously so we can compare our results before moving forward.
+
+
+Part1: SVM as before
+
+Part2: SVM with new methodology ( Different feature engineering + cross validation? )
+
+\section{Revisiting k - Means Clustering}
+
+Different feature engineering + cross validation ?
+
+\section{ One class SVM - outlier  ... ?}
+
 
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
+
+\section{k-Means Clustering ?}
+
+\section{SVMs ...}
+
+Classification SVM's\\
+PCA and no PCA feature engineering approaches\\
+Cross Validation .. ?\\
+
+One class SVM 's?
+
+appropriate kernels ...
+
 \chapter{Conclusion}
 
+
+ !!?? 
+ 
+ 
+ 
 \begin{thebibliography}{99}
 
 
