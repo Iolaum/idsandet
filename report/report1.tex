@@ -562,13 +562,58 @@ A natural step in continuing our analysis of the ADFA-LD 12 dataset further than
 \beqq
 [0.05, 0.1, 0.5, 1, 5, 10, 50]
 \eeqq
-Because changing values of the regularisation parameter does not change the classifier in a way that helps us create an ROC curve we will just map their various performance points on a TP versus False positive plot in figure \ref{svm-fr1}. We can observe that for the meterpreter attacks we get good performance and that again, for the hydra attacks we get mediocre performance.
+We can see the first results of this computation in figure \ref{svm-fr1} where we plot various performance points on a True Positive versus False positive map. From there we conclude that for some attacks, namely webshell and meterpreter, the performance of the SVM classifier is not influenced a lot by the choice of  regularisation parameter. On the other hand, hydra ftp and hydra ssh attacks are significantly influenced. For each attack we note the best performing value, as we can see in table \ref{svmt1}.
+
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{c02-svm-plot.eps}
-\caption{Performance of linear SVM classifier}
+\caption{Performance instances for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
 \label{svm-fr1}
 \end{figure}
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Regularisation parameter \\ \hline 
+adduser          & 10 \\ \hline
+hydra ftp        & 0.05 \\ \hline
+hydra ssh        & 0.5 \\ \hline
+java meterpreter & 0.1 \\ \hline
+meterpreter      & 10 \\ \hline
+web shell        & 1 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Optimal regularisation parameter for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\label{svmt1}
+\end{table}
+
+
+\begin{figure}
+\includegraphics[width = 0.9\textwidth]{c05-svm-roc.eps}
+\caption{Receiver Operating Characteristics for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\label{svm-fr2}
+\end{figure}
+
+We proceed with computing the optimum linear SVM classifier for each attack and then plot it's receiver operating characteristic curve. The results are shown in figure \ref{svm-fr2}. The area under the curve for each classifier is shown in table \ref{svmt2}. As usual the hydra attacks are our worst performers while the meterpreter attacks as our best performers.
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.8303 \\ \hline
+hydra ftp        & 0.6978 \\ \hline
+hydra ssh        & 0.7801 \\ \hline
+java meterpreter & 0.8628 \\ \hline
+meterpreter      & 0.9105 \\ \hline
+web shell        & 0.8354 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Area under the curve for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\label{svmt2}
+\end{table}
+
+
+At this stage we are able to compare our results, from table \ref{svmt2}, with those of the k-means clustering algorithm, from table \ref{kmct1}. Is is quite clear that Support Vector Machines are a more accurate and reliable classifier for every attack.
 
 %Part1: SVM as before
 %
@@ -651,7 +696,7 @@ Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th 
 \bibitem{pyt} G. van Rossum, \emph{Python tutorial, Technical Report CS-R9526}, Centrum voor Wiskunde en Informatica (CWI), Amsterdam, May 1995.
 
 % numpy citation
-\bibitem{numpy} David Ascher, Paul F. Dubois, Konrad Hinsen, James Hugunin, and Travis Oliphant,
+\bibitem{numpy} D. Ascher, P. F. Dubois, K. Hinsen, J. Hugunin, and T. Oliphant,
 \emph{Numerical Python} Lawrence Livermore National Laboratory, UCRL-MA-128569, 1999
 
 % sk-learn citation
