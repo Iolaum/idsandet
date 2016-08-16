@@ -97,6 +97,15 @@ Supervisor: prof. Mahesan Niranjan
 This is the summary of the project describing the details of the analysis on the ADFA-LD 12 dataset.
 
 
+%% supervisor:
+% - Only 1 dataset ...
+% - SVM status
+%   straightforward? > kind of
+% - Pairwise calls on features (??)
+% - How many of the 175^2 possibilities exist to be used ?
+%   > Don't remember now, have the number.
+% - Fisher Discriminant Analysis (?? ...)
+% - Comparison with Xie's results.
 
 \chapter*{Acknowledgements}
 
@@ -138,9 +147,32 @@ The first field is outlier and anomaly detection techniques from Machine Learnin
 
 The concept of bad data has been quite old in the field of statistics. One of the first systematic approaches to dealing with them, dating back to the $19^{th}$ century has been Chauvenet's criterion on  whether one data point of an experimental data set was spurious or not. Moving on to modern machine learning techniques on outlier and anomaly detection we see that there are many approaches. They are based on different statistical methods but also on different characteristic on the domain from which the dataset comes. Below are most relevant methods with regards to our work.
 
-The first method has been put forward by Roberts et al.\cite{out1}. They use a Gaussian Mixture model to model the normal behaviour of the system their dataset describes. This creates a set of normal system states. They minimise the set of heuristically chosen parameters used in such techniques by using an evolving threshold on how much a data point can differ from learnt normal state before it gets classified as belonging to another state. When we are training out model this results in a new learnt normal state. Afterwards the threshold is used to identify an anomaly in the test data. They then test their method in a set of electroencephalograms (EEG) obtained from patient data. They prove the robustness of their method by successfully identifying epileptic seizures when they occur.
+The first method has been put forward by Roberts et al.\cite{out1}. 
+%% supervisor:
+% - Yes the paper name is probabilistic resource allocation but it speaks about a Gaussian Mixture model.
+They use a Gaussian Mixture model to model the normal behaviour of the system their dataset describes. This creates a set of normal system states. They minimise the set of heuristically chosen parameters used in such techniques by using an evolving threshold on how much a data point can differ from learnt normal state before it gets classified as belonging to another state. When we are training out model this results in a new learnt normal state. Afterwards the threshold is used to identify an anomaly in the test data. They then test their method in a set of electroencephalograms (EEG) obtained from patient data. They prove the robustness of their method by successfully identifying epileptic seizures 
+%% supervisor:
+% - Quantify with results
+%   What was the detection rate?
+%   Do they quantify false positives?
+when they occur.
 
-A popular technique in Machine Learning is Support Vector Machines. Hence it is no surprise that there are several outlier and anomaly detection methods developed with this technique. Clifton et al.\cite{out2} study luminosity measurements of a Typhoon G30 combustor engine and create an SVM model for anomaly detection. They use wavelet analysis on the multi channel combustion data to create their feature space and subsequently perform supervised learning to train their SVM to recognise anomalous behaviour. Clifton et al. also compare the results of the SVM approach to the GMM approach on the same dataset. They found that SVM based anomaly detection performed better. Hayton et al.\cite{out3} also studied SVM based anomaly detection in Jet engine vibration spectra. Their approach also adds the feature of combining a second dataset in order to more accurately train their model. Moreover during the discussion of their results Hayton et al. give a very insightful discussion on whether it is preferable to address novelty detection as a 2-class classification problem or not. Two key points that they make are that the novel data points may be artificial and that their nature may be non-stationary. This is also the case with intrusion detection systems which is why deployed Intrusion Detection Systems use anomaly detection approaches. 
+A popular technique in Machine Learning is Support Vector Machines. Hence it is no surprise that there are several outlier and anomaly detection methods developed with this technique. Clifton et al.\cite{out2} study luminosity measurements of a Typhoon G30 combustor engine and create an SVM model
+%% supervisor:
+% - Is this one class SVM? ???!!
+for anomaly detection. They use wavelet analysis on the multi channel combustion data to create their feature space and subsequently perform supervised learning to train their SVM to recognise anomalous behaviour. Clifton et al. also compare the results of the SVM approach to the GMM approach on the same dataset. They found that SVM based anomaly detection performed better.
+%% supervisor:
+% - perhaps quantify
+Hayton et al.\cite{out3} also studied SVM based anomaly detection in Jet engine vibration spectra. Their approach also adds the feature of combining a second dataset in order to more accurately train their model. Moreover during the discussion of their results Hayton et al. give a very insightful discussion
+%% supervisor:
+% - Very good. I would like to understand their argument.
+on whether it is preferable to address novelty detection as a 2-class classification problem or not. Two key points that they make are that the novel data points may be artificial and that their nature may be non-stationary. This is also the case with intrusion detection systems which is why deployed Intrusion Detection Systems use anomaly detection approaches. 
+
+%% supervisor:
+% - Also look at Bassam Farran MSLP (2010)
+% > Downloaded paper, need read it to use it +1 
+%   //BA005 Machine Learning for intrusion detection
+
 
 We can also use unsupervised learning approaches when performing anomaly detection. This is pioneered in the work of Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset.
 
@@ -181,24 +213,55 @@ User to Root & Upgrading a user's privilege to superuser. & Rootkit (point)\\ \h
 An operational enterprise IDS solution consists of main parts. Two main parts are a Network Intrusion Detection System (NIDS) which analyses traffic over a company's network to detect intrusion and a Host-based Intrusion Detection System (HIDS) which is installed on the company's computers (hosts) and monitors them in order to detect intrusion.
 
 There are many techniques used to identify anomalies on an IDS. Bhuyan et al.\cite{ids1} do a good work on categorizing them and we will follow their classification scheme in presenting them. It should be noted however that these methods are not completely distinct from each other and a particular implementation may include aspects from more than one.
-The first class is statistical methods, which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous.
-The second class is clustering methods. A distance or similarity method has to be defined on the feature space. It is then used to cluster the data with various algorithms such as k-means clustering. We then measure the distance of new data points with our learnt clusters and use it to classify them as anomalous or not.
-The third class is classification methods. They include both supervised and unsupervised algorithms. One good example, that we will use later, are support vector machines (SVM). They can be trained either on pre-labelled data or at non-labelled data depending on the SVM implementation.
-The fourth class is knowledge based methods. They take advantage of what has been learnt from previous attacks so that they are able to identify them when they re-appear. Some examples are, ontology, signature based and logic based approaches.
-The fifth class are soft computing methods. The key point behind them is that if finding the exact solution is not feasible then we can look for approximate solutions. According to Bhuyan et al.\cite{ids1} artificial neural networks are classified as soft computing methods.
+The first class is statistical methods,
+%% supervisor:
+% - I would like references to each of that examples
+which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous.
+The second class is clustering methods.
+%% supervisor:
+% - I would like references to each of that examples
+A distance or similarity method has to be defined on the feature space. It is then used to cluster the data with various algorithms such as k-means clustering. We then measure the distance of new data points with our learnt clusters
+%% supervisor:
+% - Does this not relate to GMM (with some restrictions)?
+% > Yes, can mention it and give reference as well.
+and use it to classify them as anomalous or not.
+The third class is classification methods.
+%% supervisor:
+% - I would like references to each of that examples
+They include both supervised and unsupervised algorithms. One good example, that we will use later, are support vector machines (SVM). They can be trained either on pre-labelled data or at non-labelled data depending on the SVM implementation.
+The fourth class is knowledge based methods.
+%% supervisor:
+% - I would like references to each of that examples
+They take advantage of what has been learnt from previous attacks so that they are able to identify them when they re-appear. Some examples are, ontology, signature based and logic based approaches.
+The fifth class are soft computing methods.
+%% supervisor:
+% - What does this mean?
+% > Approximation methods! > give reference as well?
+The key point behind them is that if finding the exact solution is not feasible then we can look for approximate solutions. According to Bhuyan et al.\cite{ids1} artificial neural networks are classified as soft computing methods.
 The last class is called combination learner methods and basically consists of techniques that combine more than one of the previous classes in their implementation.
 
 
-The variety of methods for Intrusion detection can be attributed to their diverse strengths and weaknesses. Additionally the intrusions each IT infrastructure faces are different which means that different IT networks are best suited to different Intrusion Detection methods. For example clustering and Nearest neighbour algorithms have poor performance on high dimensional data because in those cases distance methods cannot accurately differentiate between anomalous and normal data points. One can try to overcome this with feature reduction techniques, such as spectral techniques or principal component analysis, but he has to be careful to maintain the separation between anomalous and normal data points. In general classification techniques suffer because of the need to pre-label data points. Creating those labels is hard and often-times artificial. This results in them trained model becoming outdated quite fast because of the fast paced evolution of the IT field. Using partially labelled data for semi-supervised clustering techniques can be more efficient than classification methods provided we have a feature space with a good distance measure. If not statistical techniques are a better option. As we mentioned another point to consider is how easy it is to update our application. Statistical, clustering and classification methods are all hard to train. But it can be done off-line and their testing phase is fast. Last but not least there are times when the assumption that intrusion events are rare compared to normal events is not true. In that case an intrusion detection method may end up with a high false positive rate. This is a big problem because it interrupts the normal operation of the user.
+The variety of methods for Intrusion detection can be attributed to their diverse strengths and weaknesses. Additionally the intrusions each IT infrastructure faces are different which means that different IT networks are best suited to different Intrusion Detection methods. For example clustering and Nearest neighbour algorithms have poor performance on high dimensional data because in those cases distance methods cannot accurately differentiate between anomalous and normal data points.
+%% supervisor:
+% - Why is there literature to support this? (theoritical/empirical)
+One can try to overcome this with feature reduction techniques, such as spectral techniques or principal component analysis, but he has to be careful to maintain the separation between anomalous and normal data points. In general classification techniques suffer because of the need to pre-label data points. Creating those labels is hard and often-times artificial. This results in them trained model becoming outdated quite fast because of the fast paced evolution of the IT field. Using partially labelled data for semi-supervised clustering techniques can be more efficient than classification methods provided we have a feature space with a good distance measure. If not statistical techniques are a better option. As we mentioned another point to consider is how easy it is to update our application. Statistical, clustering and classification methods are all hard to train. But it can be done off-line and their testing phase is fast. Last but not least there are times when the assumption that intrusion events are rare compared to normal events is not true. In that case an intrusion detection method may end up with a high false positive rate. This is a big problem because it interrupts the normal operation of the user.
 
 As we see Intrusion Detection is a very complex problem.  Each IT system has different characteristics and they are better addressed by different techniques. This means that addressing Intrusion Detection to it's entirety goes well far beyond the scope of this project. Therefore we will limit ourselves to a particular case.
+
+%% supervisor:
+% - Good breadth of vocerage. I would like to see more quantitative info.
+% ? " xx [5] did this and shared a? Data D, and ??? ??? ??? in performance of Y y ?? and claims this methods has limitations A, B, C" etc
+
 
 
 \section{Datasets}
 
-A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the first attempta to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. Even though these datasets have been a standard in the academia for more than a decade they have been heavily criticized as well. Apart from it being outdated several researchers have found artefacts of the simulation used to create the datasets within the data. Moreover the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting that the number of attacks present in the dataset is inaccurate.
+A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the first attempta to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. Even though these datasets have been a standard in the academia for more than a decade they have been heavily criticized as well. Apart from it being outdated several researchers have found artefacts of the simulation used to create the datasets within the data. Moreover the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting
+%% supervisor:
+% - Give the exact references
+that the number of attacks present in the dataset is inaccurate.
 
-Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. Our dataset addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
+Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. The dataset used in this project addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
 
 \section{Project Planning}
 
@@ -292,7 +355,12 @@ After that we worked on replicating results of previous papers\cite{adf1}, \cite
 
 \section{Dataset Documentation}
 
-The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. More specifically Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed.  Apart from them file transfer protocol (ftp), secure shell (ssh) and MySQL v$14.14$ were enabled. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
+The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. The data was produced by Creech et al.\cite{dat2} by the following process. Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed.  Apart from them file transfer protocol (ftp), secure shell (ssh) and MySQL v$14.14$ were enabled. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
+
+%% supervisor:
+% - Is there enough detail here for us to set this up and recreate the dataset?
+%   (Perhaps ??? with the cyber security students we can get 10x bigger dataset)!!
+% > There is not enough information to recreate. A key reason is that the attack methodology isn't specified to exact detail. But the specifications can be reversed engineered  to create a dataset with the newly released Ubuntu 16.04. The linux kernel had some security vulnerabilites that could be used as well.
 
 A program called \emph{auditd} was used to monitor kernel system call traces. System call traces are API's provided by the kernel of the operating system for userspace applications to access. Ubutnu $11.04$ uses the linux kernel version $2.6.38$ which has $325$ system calls available\cite{adf1}. The researchers who created the dataset used 6 different types of attacks to compromise their server. They are presented in table \ref{tab2} which was taken from \cite{dat2}.
 \begin{table}
@@ -329,9 +397,16 @@ The traditional approach on the cyber security field is to use the training set 
 \section{Methods and Technologies used}
 
 Before moving further we would like to mention the technologies we used for this project. Our main computing platform is a x86\_{}64 machine running Ubuntu 16.04.1 LTS\footnote{Ubuntu is an open-source operating system using the Linux kernel, based on Debian and developed by Canonical Inc., \url{http://releases.ubuntu.com/16.04/} - Accessed at August 10, 2016.} as it's operating system. For our analysis we are using the python\cite{pyt} programming language, version 2.7.12. Furthermore to implement our machine learning algorithms we relied on the numpy\cite{numpy}, version 1.11.0, and scikit-learn\cite{skl}, version 0.17.1\footnote{An important note here is that pickled scikit-learn objects may be incompatible with other scikit-learn versions.}, open source libraries. For visualization we relied on the matplotlib\cite{matpl} library version 1.5.1. The code used for the generation of all the results and graphics of this project is publicly available as a github repository.\footnote{The repository is available there: \url{https://github.com/Iolaum/idsandet}}. In order to write our report and presentation we used pdfLaTeX and Texmaker. Last but not least we used git, version 2.7.4, as a version control tool.
+%% supervisor:
+% - Why is this here?? (Odd)
+% > Can be removed - It is put there for quick reproduction of the work so it can be followed upon.
 
 
 In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently. One technicality that is important for reproduction purposes is that our python scripts are written in a way that needs them being called from the /scripts/ directory. This is so that they can correctly access files in the /data/ directory during their runtime.
+%% supervisor:
+% - Is this decomposition useful?
+% > Yes. It is there to demonstrate that there was planning in how the research was conducted.
+
 
 Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of our modular approach is our ability to test our code. Writing unit tests for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive. Moreover this segmentation makes it easier to alter our implementation of a particular algorithm when we want to experiment further with our dataset.
 
@@ -339,9 +414,17 @@ As an additional remark we want to mention that  since python is able to run in 
 
 \section{Preprocessing and Visualization}
 
-We start by downloading ADFA-LD 12 Dataset\footnote{Download url: \url{https://www.unsw.adfa.edu.au/australian-centre-for-cyber-security/cybersecurity/ADFA-IDS-Datasets/} - Accessed on 10 August 2016}. After we unzip the files we see that we create 3 folders for each subset of the dataset. The training and validation set have a long list of text files in their respective folders. Each text file represents a data point and contains a series of integers separated by white spaces that correspond to kernel system calls. The attack set is structured in folders according to the type of attack and within them are the text files describing the attack data points.
+We start by downloading ADFA-LD 12 Dataset\footnote{Download url: \url{https://www.unsw.adfa.edu.au/australian-centre-for-cyber-security/cybersecurity/ADFA-IDS-Datasets/} - Accessed on 10 August 2016}.
+%% supervisor:
+% - The flow here is more like a diary than a technical document.
+%  !
+After we unzip the files we see that we create 3 folders for each subset of the dataset. The training and validation set have a long list of text files in their respective folders. Each text file represents a data point and contains a series of integers separated by white spaces that correspond to kernel system calls. The attack set is structured in folders according to the type of attack and within them are the text files describing the attack data points.
 
-After we have downloaded the dataset our first order of business is to transform it in a way that it will be easier for us to handle. Given the size of our dataset we decided to handle it locally. For that reason we used pickle and numpy libraries to save python objects that represented the dataset on our hard disk. Our first preprocessing step is to create a python dictionary for each of the subsets containing the information about the sequence of system calls for each data point. Through this process we create the following three pickle files:
+After we have downloaded the dataset our first order of business
+%% supervisor:
+% - The flow here is more like a diary than a technical document.
+%  !
+is to transform it in a way that it will be easier for us to handle. Given the size of our dataset we decided to handle it locally. For that reason we used pickle and numpy libraries to save python objects that represented the dataset on our hard disk. Our first preprocessing step is to create a python dictionary for each of the subsets containing the information about the sequence of system calls for each data point. Through this process we create the following three pickle files:
 \begin{center}
 1\_{}training.p  ,
 1\_{}attack.p ,
@@ -353,9 +436,15 @@ Our next step is to do basic exploration in our dataset. The kernel of the host 
 
 \noindent
 [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 19, 20, 21, 22, 26, 27, 30, 33, 37, 38, 39, 40, 41, 42, 43, 45, 54, 57, 60, 61, 63, 64, 65, 66, 75, 77, 78, 79, 83, 85, 90, 91, 93, 94, 96, 97, 99, 102, 104, 110, 111, 114, 116, 117, 118, 119, 120, 122, 124, 125, 128, 132, 133, 136, 140, 141, 142, 143, 144, 146, 148, 150, 151, 154, 155, 156, 157, 158, 159, 160, 162, 163, 168, 172, 173, 174, 175, 176, 177, 179, 180, 181, 183, 184, 185, 186, 187, 190, 191, 192, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 219, 220, 221, 224, 226, 228, 229, 230, 231, 233, 234, 240, 242, 243, 252, 254, 255, 256, 258, 259, 260, 264, 265, 266, 268, 269, 270, 272, 289, 292, 293, 295, 296, 298, 300, 301, 306, 307, 308, 309, 311, 314, 320, 322, 324, 328, 331, 332, 340]
+%% supervisor:
+% - anything more ??? about ??? system calls? can we group them in some way?
+% > Potentially need computer science expertise for that.
 
 \noindent
-A curious thing to mention here is the presence of integers higher than 325. One would think that since we only have 325 system calls only integers up to 325 would be used.\footnote{Nothing in the documentation of the dataset indicated this would (or would not) happen.} This is a very good example that no assumptions should be made when addressing a dataset and that we should always clean and validate the form of the data we expect to have for the next step of our pipeline.
+A curious thing to mention here is the presence of integers higher than 325.
+%% supervisor:
+% - how many of them? (maybe just one or two bypass_?)
+One would think that since we only have 325 system calls only integers up to 325 would be used.\footnote{Nothing in the documentation of the dataset indicated this would (or would not) happen.} This is a very good example that no assumptions should be made when addressing a dataset and that we should always clean and validate the form of the data we expect to have for the next step of our pipeline.
 
 
 \begin{figure}
@@ -373,8 +462,10 @@ A curious thing to mention here is the presence of integers higher than 325. One
 \caption{System Calls distribution.}
 \label{syscalls2}
 \end{figure}
+%% supervisor:
+% - A useful illustration might be: (# in data set)(system calls, ordered)
 
-Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our x axis because of how unevenly the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
+Moving forward we count the presences of each system call in our dataset. The result of this computation is presented on figures \ref{syscalls1} and \ref{syscalls2}. As we see we had to use logarithmic scale for our y axis because of how unevenly and spread out the distribution of our system calls is. Moreover we observe that the norm is that system calls are present in all three subsets hinting that there is little room for associating particular system calls with malicious behaviour.
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{a13-pcaplot-1.eps}
@@ -386,10 +477,15 @@ Moving forward we count the presences of each system call in our dataset. The re
 \caption{Principal Components of training, attack and validation subsets.}
 \label{pca2}
 \end{figure}
-% \subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}  
+%% supervisor:
+% - Expand captions to contain enough information about what the "take home" message for the reader is
 
-Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on figure \ref{pca1} there is some separation between the attack and the training set once we add the validation set, in figure \ref{pca2}, we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
-% research for training vs validation sets
+Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on figure \ref{pca1} there is some separation between the attack and the training set once we add the validation set, in figure \ref{pca2}, we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's.
+%% supervisor:
+% - Slightly denser sampling might make them look similar ??
+% > Don't know, needs Computer Science expertise
+This means 
+% __myNote__ : research for training vs validation sets
 that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in table \ref{pcat1}.
 \begin{table}
 \begin{tabular}{|c|c|}
@@ -417,31 +513,42 @@ We can see that the variance explained by each subsequent principal component de
 
 \chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
 
-We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set. We will keep their procedure while we are trying to replicate their results in the following sections.
+We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set.
+%%supervisor:
+% - Repeating to close to each other?
+We will keep their procedure while we are trying to replicate their results in the following sections.
 
 \section{k - Nearest Neighbours}
 
 We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
 
-They begin by performing feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. It is notable here that they perform PCA only on the training set and not on the whole dataset. According to our results the fraction of the total variance of the dataset explained by each principal component is shown on table \ref{knnt1}.
+They begin by performing feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. It is notable here that they perform PCA only on the training set and not on the whole dataset.
+%%supervisor:
+% - Repeating to close to each other?
+According to our results the fraction of the total variance of the dataset explained by each principal component is shown on table \ref{knnt1}.
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
 Principal Component &  Variance \\ \hline 
-1 & 0.19690050 \\ \hline
-2 & 0.15480881 \\ \hline
-3 & 0.11299774\\ \hline
-4 & 0.09653481\\ \hline
-5 & 0.07091701\\ \hline
-6 & 0.06885015\\ \hline
-7 & 0.05168454\\ \hline
-8 & 0.03804072\\ \hline
-9 & 0.02933048\\ \hline
+1 & 0.1969 \\ \hline
+2 & 0.1548 \\ \hline
+3 & 0.1130 \\ \hline
+4 & 0.0965 \\ \hline
+5 & 0.0709 \\ \hline
+6 & 0.0689 \\ \hline
+7 & 0.0517 \\ \hline
+8 & 0.0380 \\ \hline
+9 & 0.0293 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Variance of the principal components of the training set.}
 \label{knnt1}
 \end{table}
+%% supervisor:
+% - Do this many decimal components make sense?
+% > Reduced to 4
+% - Would a pie chart look nice?
+% > Not because of components with small percentage.
 
 The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically by the authors. For k they chose 20. Their choice of parameter d depends on the distance metric used. We present their choices\cite{adf1} in table \ref{knnt2}:
 \begin{table}
@@ -463,13 +570,19 @@ After performing our computation we plot the receiver operating characteristic c
 \caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square euclidean distance.}
 \label{knnroc1}
 \end{figure}
+%% supervisor:
+% - What | do you change to get ROC curve k or d?
+% > d - need better explanation in text?
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-2.eps}
 \caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square standardised euclidean distance.}
 \label{knnroc2}
 \end{figure}
 
-To assess the performance of our classifiers we compute the area under the ROC curve. There is a problem however in that our data do not spawn the whole x-axis (false positive rate) from 0 to 1. This results in the random selection having area under the curve (named $arear$) for squared euclidean distance equal to $0.3004$ instead of $0.5000$ as we would expect. In order to fix that we normalize our area calculations by dividing by $(2\cdot arear)$. The results are shown in table \ref{knnt3}.
+To assess the performance of our classifiers we compute the area under the ROC curve. There is a problem however in that our data do not spawn the whole x-axis (false positive rate) from 0 to 1. This results in the random selection having area under the curve (named $arear$) for squared euclidean distance equal to $0.3004$ instead of $0.5000$ as we would expect.
+%% supervisor:
+% - I don't follow this
+In order to fix that we normalize our area calculations by dividing by $(2\cdot arear)$. The results are shown in table \ref{knnt3}.
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
@@ -508,7 +621,16 @@ $arear$          & 0.2854 \\ \hline
 
 We see that the password cracking attacks (hydra ssh and hydra ftp) are quite harder to identify compared to the other attacks and our classifier has poor performance on them. For the other attacks our classifier has moderate to good performance overall.
 
+%% supervisor:
+% - What is the difference in performance in the 175 and 9 dimensions?
+% - We can check out the claim of higher dimensions being unsuitable ?
+% - granted you can draw something like performance = f(dimensions)
+% >> to do if enough time ... :(
+
+
 \section{k - Means Clustering}
+%% supervisor:
+% - This is a strange classifier, how do they justify it?
 
 %\subsection{Re-creating previous results}
 %%\newline
@@ -549,7 +671,19 @@ $arear$          & 0.4954 \\ \hline
 
 After performing our computation we plot the receiver operating characteristic curves. They are presented in figure \ref{kmcroc1}. To assess the performance of our classifier we compute the area under the ROC curves and present the results in table \ref{kmct1}. The area has been normalised again although that was not really needed in this case since $arear = 0.4954$. We can see that in this case the hydra ssh attack has bad performance while for the other attacks the classifier has moderate performance.
 
-The authors of \cite{adf1} do not comment on the area under the ROC curves for the classifiers they used. The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. By looking through figures \ref{knnroc1}, \ref{knnroc2} and \ref{kmcroc1} we can see that the k-means clustering algorithm is a bit more reliable. Additionally k-means clustering is a lot cheaper computationally.
+The authors of \cite{adf1} do not comment on the area under the ROC curves for the classifiers they used.
+%% supervisor:
+% - But what measure do they use to quote results? Why can't we also calculate that measure and compare?
+% > They don't ! They just take data points from the ROC curve and speak about them. Could do it as well ...
+The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. By looking through figures \ref{knnroc1}, \ref{knnroc2} and \ref{kmcroc1} we can see that the k-means clustering algorithm is a bit more reliable.
+%% supervisor:
+% - How can we detect reliability?
+% > Good question, should justify it with an argumet.
+Additionally k-means clustering is a lot cheaper computationally.
+
+%% supervisor:
+% - But I am looking to see a comparison to Xie's results.
+% > RIP graphs??!
 
 
 %\subsection{Expanding our analysis} \mbox{}
@@ -626,6 +760,15 @@ At this stage we are able to compare our results, from table \ref{svmt2}, with t
 %
 % ...
 %
+
+
+%% supervisor:
+% - Why stop with just this dataset?
+% > Because another one requires a whole new approach. The domain is not the same.
+% - SVM results?
+% > omw
+% - Why stop with new partitioning? I thought we were going to pool the data and do 10-fold cross validation.
+% > omw - needs work.
 
 \section{Revisiting k - Means Clustering}
 
