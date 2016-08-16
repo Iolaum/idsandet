@@ -57,6 +57,15 @@
 \renewcommand{\thefigure}{\thechapter.\arabic{figure}}
 \renewcommand{\thetable}{\thechapter.\arabic{table}}
 
+%%
+
+%\newcommand{name}[num]{definition}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq[1]}[1]{\label{#1}\end{equation}}
+\newcommand{\beqq}{\begin{equation*}}
+\newcommand{\eeqq}{\end{equation*}}
+
+
 %  ************  end my definitions  *******************
 
 
@@ -322,7 +331,7 @@ The traditional approach on the cyber security field is to use the training set 
 Before moving further we would like to mention the technologies we used for this project. Our main computing platform is a x86\_{}64 machine running Ubuntu 16.04.1 LTS\footnote{Ubuntu is an open-source operating system using the Linux kernel, based on Debian and developed by Canonical Inc., \url{http://releases.ubuntu.com/16.04/} - Accessed at August 10, 2016.} as it's operating system. For our analysis we are using the python\cite{pyt} programming language, version 2.7.12. Furthermore to implement our machine learning algorithms we relied on the numpy\cite{numpy}, version 1.11.0, and scikit-learn\cite{skl}, version 0.17.1\footnote{An important note here is that pickled scikit-learn objects may be incompatible with other scikit-learn versions.}, open source libraries. For visualization we relied on the matplotlib\cite{matpl} library version 1.5.1. The code used for the generation of all the results and graphics of this project is publicly available as a github repository.\footnote{The repository is available there: \url{https://github.com/Iolaum/idsandet}}. In order to write our report and presentation we used pdfLaTeX and Texmaker. Last but not least we used git, version 2.7.4, as a version control tool.
 
 
-In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently.
+In order to streamline our work flow we structured our working repository in the following way. We use / to denote the root of our repository. We put out all of our data files in the /data/ folder and configure .gitignore to files in it. For our analysis we use the /scriprs/ folder where we place all our python scripts. The plots we create are put on the /pictures/ folder which is also ignored. Lastly we wrote the report and the presentation on the /report/ folder configuring .gitignore in a way as to only monitor the two .tex files only (and not the auxiliary files used by the pdfLaTeX compiler). This allows an efficient use of git with github allowing us to track important changes more efficiently. One technicality that is important for reproduction purposes is that our python scripts are written in a way that needs them being called from the /scripts/ directory. This is so that they can correctly access files in the /data/ directory during their runtime.
 
 Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of our modular approach is our ability to test our code. Writing unit tests for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive. Moreover this segmentation makes it easier to alter our implementation of a particular algorithm when we want to experiment further with our dataset.
 
@@ -379,12 +388,31 @@ Moving forward we count the presences of each system call in our dataset. The re
 \end{figure}
 % \subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}  
 
-Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on the left figure there is some separation between the attack and the training set once we add the validation set we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
+Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on figure \ref{pca1} there is some separation between the attack and the training set once we add the validation set, in figure \ref{pca2}, we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's. This means 
 % research for training vs validation sets
-that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in 
-
-% explained variance of pc's - 12 components !
-% [ 0.20417851  0.12330985  0.09493127  0.0776562   0.06456913  0.0489988  0.03860293  0.03456735  0.03275491  0.03025882  0.02729846  0.02597533]
+that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in table \ref{pcat1}.
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Principal Component \# &  Explained Variance \\ \hline 
+1  & 0.2042 \\ \hline
+2  & 0.1233 \\ \hline
+3  & 0.0949 \\ \hline
+4  & 0.0777 \\ \hline
+5  & 0.0646 \\ \hline
+6  & 0.0490 \\ \hline
+7  & 0.0386 \\ \hline
+8  & 0.0346 \\ \hline
+9  & 0.0328 \\ \hline
+10 & 0.0303 \\ \hline
+11 & 0.0273 \\ \hline
+12 & 0.0260 \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Fraction of explained variance from the principal components that contain 80\% of the variance of ADFA-LD 12 dataset.}
+\label{pcat1}
+\end{table}
+We can see that the variance explained by each subsequent principal component decays slowly.
 
 
 \chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
@@ -530,12 +558,29 @@ The authors of \cite{adf1} do not comment on the area under the ROC curves for t
 
 \section{Support Vector Machines}
 
-A natural step in continuing our analysis of the ADFA-LD 12 dataset are Support Vector Machines. At first we will keep the methodology we used previously so we can compare our results before moving forward.
+A natural step in continuing our analysis of the ADFA-LD 12 dataset further than Xie et al.\cite{adf1} are Support Vector Machines. As a first we will keep the methodology we used previously so we can compare our results before moving forward. We will train an SVM model, using a linear Kernel, for each attack separately. More Specifically we will use the SVC class from the scikit-learn library\cite{skl}. Moreover we will use different values of the regularisation parameter $C$ to better map the hypothesis space of available classifiers. The different values of $C$ we used are: 
+\beqq
+[0.05, 0.1, 0.5, 1, 5, 10, 50]
+\eeqq
+Because changing values of the regularisation parameter does not change the classifier in a way that helps us create an ROC curve we will just map their various performance points on a TP versus False positive plot in figure \ref{svm-fr1}. We can observe that for the meterpreter attacks we get good performance and that again, for the hydra attacks we get mediocre performance.
 
+\begin{figure}
+\includegraphics[width = 0.9\textwidth]{c02-svm-plot.eps}
+\caption{Performance of linear SVM classifier}
+\label{svm-fr1}
+\end{figure}
 
-Part1: SVM as before
+%Part1: SVM as before
+%
+% Improve with:
+% - Write an SVM that predicts probabilities of classifying - from the best performing C
+% - Use different thressholds of probability to classify and create ROC curve
+%
 
-Part2: SVM with new methodology ( Different feature engineering + cross validation? )
+%Part2: SVM with new methodology ( Different feature engineering + cross validation? )
+%
+% ...
+%
 
 \section{Revisiting k - Means Clustering}
 

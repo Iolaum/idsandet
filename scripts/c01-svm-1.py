@@ -10,7 +10,7 @@ from sklearn.cross_validation import train_test_split
 from sklearn.svm import SVC
 
 # where to log results
-resultsfile = '../data/c01-svm-1-results.txt'
+resultsfile = '../data/c01-svm-2-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)
@@ -23,7 +23,7 @@ myprint("Loading training data.")
 trdat = np.load('../data/b5_trmatrix.npy')
 
 # attack data options
-atdatselector = 6
+atdatselector = 1
 
 if atdatselector == 1:
     myprint("Loading adduser attack data.")
@@ -78,7 +78,7 @@ y = np.concatenate((l1, l2), axis=0)
 
 # define SVM parameters
 # cpar 0.05 - 0.1 - 0.5 - 1 - 5 - 10 - 50
-cpar = 50
+cpar = 0.1
 model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=False, class_weight='balanced')
 
 # Influence of C

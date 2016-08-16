@@ -49,7 +49,8 @@ acc6 = np.array([0.957627118644, 0.85593220339, 0.593220338983,
     0.0677966101695, 0.0677966101695, 0.0677966101695])
 
 
-
+# random classifier
+rand = np.arange(0, 1.01, 0.2)
 
 # This is the ROC curve
 
@@ -59,13 +60,16 @@ plt.plot(fpr1, acc3, 'b', label='hydra ssh')
 plt.plot(fpr1, acc4, 'c', label='java meter')
 plt.plot(fpr1, acc5, 'm', label='meterpreter')
 plt.plot(fpr1, acc6, 'y', label='web shell')
-plt.plot(fpr1, fpr1, 'k', label='random')
+#plt.plot(fpr1, fpr1, 'k', label='random')
+plt.plot(rand, rand, 'k', label='random')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
 plt.legend(loc='lower right')
 plt.title('kNN with squared euclidean distance')
 plt.ylabel('Accuracy')
 plt.xlabel('False Positive')
 #plt.show() 
-plt.savefig('../pictures/b08-roc-1.jpg')
+plt.savefig('../pictures/b08-roc-1.eps')
 plt.close()
 
 # calculate area under the ROC curve

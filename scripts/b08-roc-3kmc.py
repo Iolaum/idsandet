@@ -45,7 +45,8 @@ acc6 = np.array([1., 0.864406779661, 0.686440677966, 0.559322033898,
     0.423728813559, 0.14406779661, 0, 0, 0, 0])
 
 
-
+# random classifier
+rand = np.arange(0, 1.01, 0.2)
 
 # This is the ROC curve
 
@@ -55,7 +56,10 @@ plt.plot(fpr1, acc3, 'b', label='hydra ssh')
 plt.plot(fpr1, acc4, 'c', label='java meter')
 plt.plot(fpr1, acc5, 'm', label='meterpreter')
 plt.plot(fpr1, acc6, 'y', label='web shell')
-plt.plot(fpr1, fpr1, 'k', label='random')
+#plt.plot(fpr1, fpr1, 'k', label='random')
+plt.plot(rand, rand, 'k', label='random')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
 plt.legend(loc='lower right')
 plt.title('k-means clustering ROC curves')
 plt.ylabel('Accuracy')
