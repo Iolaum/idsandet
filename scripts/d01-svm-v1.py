@@ -96,11 +96,11 @@ cmat = confusion_matrix(yts, pre)
 #print valsz
 
 
-# Attack detection accuracy
+# Attack detection accuracy || precision rate = TP/(TP+FP)
 # (1,1)/[(1,1)+(1,0)]
 myprint("Attack detection Accuracy of the model is {}".format(cmat[1,1]/(cmat[1,0]+cmat[1,1])))
 
-# False Positive Rate
+# False Positive Rate || ... = FN/(FN+TN)
 # (0,1)/[(0,0)+(0,1)]
 myprint("False positive rate of the model is {}".format(cmat[0,1]/(cmat[0,0]+cmat[0,1])))
 
