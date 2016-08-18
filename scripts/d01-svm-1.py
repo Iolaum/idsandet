@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stratified kfold CV with linear SVM
+# linear SVM example
 
 
 from __future__ import division
@@ -35,18 +35,18 @@ def myprint(mytext):
 
 # load dataset
 
-with open('../data/d2_trmatrix.p', 'rb') as ha:
-    trdata = pickle.load(ha)
+# # training data
+trdata = np.load("../data/b1_trmatrix.npy")
 
 print("Loaded training data.   trdata shape is {}".format(trdata.shape))
 
-with open('../data/d2_atmatrix.p', 'rb') as ha:
-    atdata = pickle.load(ha)
+# # attack data
+atdata = np.load('../data/b2_atmatrix.npy')
 
 print("Loaded attack data.     atdata shape is {}".format(atdata.shape))
 
-with open('../data/d2_vamatrix.p', 'rb') as ha:
-    vadata = pickle.load(ha)
+# # validation data
+vadata = np.load("../data/b3_vamatrix.npy")
 
 print("Loaded validation data. vadata shape is {}".format(vadata.shape))
 
@@ -64,7 +64,7 @@ l2 = np.ones(atdata.shape[0])
 
 # split train set
 xtr, xts, ytr, yts = train_test_split(np.concatenate((tvdata, atdata), axis=0), np.concatenate((l1,l2), axis=0), 
-    test_size=0.3, random_state=69) #, stratify=np.concatenate((l1,l2), axis=0))
+    test_size=0.3) #, stratify=np.concatenate((l1,l2), axis=0)) , random_state=69
 
 # print np.sum(ytr)
 
@@ -74,8 +74,8 @@ xtr, xts, ytr, yts = train_test_split(np.concatenate((tvdata, atdata), axis=0), 
 
 
 # define SVM parameters
-cpar = 50
-model = SVC(C=cpar, kernel='linear', max_iter=20000, verbose=True, class_weight='balanced') # 
+cpar = 2
+model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=True, class_weight='balanced') # 
 
 # Influence of C
 # http://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel

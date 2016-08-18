@@ -28,6 +28,7 @@ for key, value in trdata.iteritems():
 with open('../data/1_validation.p', 'rb') as ha:
     trdata = pickle.load(ha)
 
+# populate ...
 for key, value in trdata.iteritems():
 
     for it1 in range(len(value)):

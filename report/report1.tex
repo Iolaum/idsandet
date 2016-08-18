@@ -748,7 +748,7 @@ web shell        & 0.8354 \\ \hline
 
 At this stage we are able to compare our results, from table \ref{svmt2}, with those of the k-means clustering algorithm, from table \ref{kmct1}. Is is quite clear that Support Vector Machines are a more accurate and reliable classifier for every attack. On average the SVM classifier has 0.15 higher area under the curve.
 
-Moving forward we want to see the performance of Support Vector Machines on the dataset as a whole instead of training for each attack specifically. Hence we will treat the problem as a two class classification problem with our classes being normal behaviour and attack behaviour. To get a better idea of the performance of our classifier in this case we will use cross validation. To address the issue of class imbalance in our dataset we will use stratified 8-fold cross validation. Going even further we run our simulation for various values of the regularisation parameter. We present our results in table \ref{svmt3}. We can see that we get better performance\footnote{Increased performance means higher difference between precision and fallout rates, with 1 been perfect classification results.} for low regularisation values. The optimum value is $C=0.5$.
+Moving forward we want to see the performance of Support Vector Machines on the dataset as a whole instead of training for each attack specifically. Hence we will treat the problem as a two class classification problem with our classes being normal behaviour and attack behaviour. To get a better idea of the performance of our classifier in this case we will use cross validation. To address the issue of class imbalance in our dataset we will use stratified 8-fold cross validation\footnote{We chose 8-fold cross validation instead of 10-fold due to the class imbalance against our attack set and the inner divisions within it. The change is minor but helps as sample the attack set better across folds.}. Going even further we run our simulation for various values of the regularisation parameter. We present our results in table \ref{svmt3}. We can see that we get better performance\footnote{Increased performance means higher difference between precision and fallout rates, with 1 been perfect classification results.} for low regularisation values. The optimum value is $C=0.5$.
 
 
 \begin{table}
@@ -766,7 +766,7 @@ $16$ &  $0.64 \pm 0.10$ & $0.23 \pm 0.05$ \\ \hline
 $32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out).}
+\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Reduced frequency feature space was used for training and validation.}
 \label{svmt3}
 \end{table}
 
@@ -786,7 +786,30 @@ $32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
 
 \subsection{Linear SVM on the complete frequency feature space} \mbox{}
 
-Moving further away from the approach of Xie et al.\cite{adf1} we investigate the application of support vector machines in the frequency feature space without reducing it's dimensionality through principal component analysis. 
+Moving further away from the approach of Xie et al.\cite{adf1} we investigate the application of support vector machines in the frequency feature space without reducing it's dimensionality through principal component analysis. We pool all of our dataset together and perform 8 fold stratified cross validation training a linear SVM classifier. We present our results at table \ref{svmt4}.
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.62 \pm 0.10$ & $0.17 \pm 0.04$ \\ \hline 
+$0.25$ &  $0.64 \pm 0.09$ & $0.17 \pm 0.04$ \\ \hline 
+$0.5$ &  $0.66 \pm 0.09$ & $0.16 \pm 0.04$ \\ \hline 
+$1$ &  $0.68 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline 
+$2$ &  $0.76 \pm 0.07$ & $0.19 \pm 0.05$ \\ \hline 
+$4$ &  $0.81 \pm 0.08$ & $0.19 \pm 0.04$ \\ \hline 
+$8$ &  $0.91 \pm 0.04$ & $0.18 \pm 0.03$ \\ \hline 
+$16$ &  $0.91 \pm 0.05$ & $0.18 \pm 0.03$ \\ \hline 
+$32$ &  $0.92 \pm 0.04$ & $0.18 \pm 0.03$ \\ \hline
+$64$ &  $0.93 \pm 0.05$ & $0.16 \pm 0.04$ \\ \hline
+$128$ &  $0.92 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Complete frequency feature space was used for training and validation.}
+\label{svmt4}
+\end{table}
+
+As we can see by comparing tables \ref{svmt3} and \ref{svmt4} using the complete frequency feature space yields significantly better results. The precision rate is increased noticeably and the fall out rate is slightly decreased. The computation cost was not noticeably increased for the whole frequency feature space when running our scripts.
 
 
 %% supervisor:
