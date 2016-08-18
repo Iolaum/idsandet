@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Implement an SVM classifier
+# DEPRECATED
 
 from __future__ import division
 import pickle

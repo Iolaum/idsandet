@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Get number of all system calls
+# DEPRECATED!
 
 from __future__ import division
 import pickle

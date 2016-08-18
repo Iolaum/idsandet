@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Implement an SVM classifier
+# Exploratory Data Analysis
+# Deprecated!
+# Incorrect!!
 
 from __future__ import division
 import pickle
@@ -11,7 +13,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
 
 # results file
-resultsfile = '../data/d2-eda-results.txt'
+resultsfile = '../data/d02-eda-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)

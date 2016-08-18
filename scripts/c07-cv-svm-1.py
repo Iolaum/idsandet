@@ -155,5 +155,5 @@ for train_index, test_index in skf:
 myprint("Average precision is {} +/- {}".format(np.mean(precision), np.std(precision)))
 myprint("Average fall out  is {} +/- {}".format(np.mean(fallout), np.std(fallout)))
 
-
-
+with open(resultsfile, 'a') as ha:
+    ha.write('\n')
