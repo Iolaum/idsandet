@@ -3,6 +3,7 @@
 
 # See all training files and create a
 # training data dictionary of lists.
+# DEPRECATED
 
 import pickle
 import numpy as np

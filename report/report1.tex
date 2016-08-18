@@ -684,15 +684,14 @@ Additionally k-means clustering is a lot cheaper computationally.
 %% supervisor:
 % - But I am looking to see a comparison to Xie's results.
 % > RIP graphs??!
-
-
-%\subsection{Expanding our analysis} \mbox{}
-%
-%Do cross validation !?
+% + Relationship to GMM ... compare ?! !!!IF TIME!!!
 
 \section{Support Vector Machines}
 
-A natural step in continuing our analysis of the ADFA-LD 12 dataset further than Xie et al.\cite{adf1} are Support Vector Machines. As a first we will keep the methodology we used previously so we can compare our results before moving forward. We will train an SVM model, using a linear Kernel, for each attack separately. More Specifically we will use the SVC class from the scikit-learn library\cite{skl}. Moreover we will use different values of the regularisation parameter $C$ to better map the hypothesis space of available classifiers. The different values of $C$ we used are: 
+\subsection{Linear SVM on reduced frequency feature space}\mbox{}
+
+
+A natural step in continuing our analysis of the ADFA-LD 12 dataset further than Xie et al.\cite{adf1} are Support Vector Machines. As a first we will keep the methodology we used previously, meaning we will work with the first 9 principal components of the training set, so we can compare our results before moving forward. We will train an SVM model, using a linear Kernel, for each attack separately. More Specifically we will use the SVC class from the scikit-learn library\cite{skl}. Moreover we will use different values of the regularisation parameter $C$ to better map the hypothesis space of available classifiers. The different values of $C$ we used are: 
 \beqq
 [0.05, 0.1, 0.5, 1, 5, 10, 50]
 \eeqq
@@ -747,7 +746,30 @@ web shell        & 0.8354 \\ \hline
 \end{table}
 
 
-At this stage we are able to compare our results, from table \ref{svmt2}, with those of the k-means clustering algorithm, from table \ref{kmct1}. Is is quite clear that Support Vector Machines are a more accurate and reliable classifier for every attack.
+At this stage we are able to compare our results, from table \ref{svmt2}, with those of the k-means clustering algorithm, from table \ref{kmct1}. Is is quite clear that Support Vector Machines are a more accurate and reliable classifier for every attack. On average the SVM classifier has 0.15 higher area under the curve.
+
+Moving forward we want to see the performance of Support Vector Machines on the dataset as a whole instead of training for each attack specifically. Hence we will treat the problem as a two class classification problem with our classes being normal behaviour and attack behaviour. To get a better idea of the performance of our classifier in this case we will use cross validation. To address the issue of class imbalance in our dataset we will use stratified 8-fold cross validation. Going even further we run our simulation for various values of the regularisation parameter. We present our results in table \ref{svmt3}. We can see that we get better performance\footnote{Increased performance means higher difference between precision and fallout rates, with 1 been perfect classification results.} for low regularisation values. The optimum value is $C=0.5$.
+
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.62 \pm 0.08$ & $0.20 \pm 0.03$ \\ \hline 
+$0.25$ &  $0.62 \pm 0.08$ & $0.20 \pm 0.03$ \\ \hline 
+$0.5$ &  $0.62 \pm 0.08$ & $0.19 \pm 0.03$ \\ \hline 
+$1$ &  $0.62 \pm 0.08$ & $0.19 \pm 0.04$ \\ \hline 
+$2$ &  $0.61 \pm 0.09$ & $0.19 \pm 0.03$ \\ \hline 
+$4$ &  $0.63 \pm 0.07$ & $0.20 \pm 0.03$ \\ \hline 
+$8$ &  $0.64 \pm 0.08$ & $0.21 \pm 0.04$ \\ \hline 
+$16$ &  $0.64 \pm 0.10$ & $0.23 \pm 0.05$ \\ \hline 
+$32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out).}
+\label{svmt3}
+\end{table}
+
 
 %Part1: SVM as before
 %
@@ -762,6 +784,11 @@ At this stage we are able to compare our results, from table \ref{svmt2}, with t
 %
 
 
+\subsection{Linear SVM on the complete frequency feature space} \mbox{}
+
+Moving further away from the approach of Xie et al.\cite{adf1} we investigate the application of support vector machines in the frequency feature space without reducing it's dimensionality through principal component analysis. 
+
+
 %% supervisor:
 % - Why stop with just this dataset?
 % > Because another one requires a whole new approach. The domain is not the same.
@@ -770,9 +797,7 @@ At this stage we are able to compare our results, from table \ref{svmt2}, with t
 % - Why stop with new partitioning? I thought we were going to pool the data and do 10-fold cross validation.
 % > omw - needs work.
 
-\section{Implementing Cross Validation}
 
-Implement SVM cross validation.
 
 \section{ One class SVM - outlier  ... ?}
 

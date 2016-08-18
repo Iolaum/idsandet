@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+# Plot 2 principal Components from training set
+
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt

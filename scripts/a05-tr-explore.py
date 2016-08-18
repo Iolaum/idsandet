@@ -11,7 +11,7 @@ import pickle
 print("Scipt starting!\nReading training data file!")
 
 
-with open('../data/training.p', 'rb') as handle:
+with open('../data/1_training.p', 'rb') as handle:
   trdata = pickle.load(handle)
 
 # debug

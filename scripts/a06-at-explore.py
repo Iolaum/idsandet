@@ -11,7 +11,7 @@ import pickle
 print("Scipt starting!\nReading attack data file!")
 
 
-with open('../data/attack.p', 'rb') as handle:
+with open('../data/1_attack.p', 'rb') as handle:
     atdata = pickle.load(handle)
 
 # debug

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Add system call frequency
+# DEPRECATED
 
 import pickle
 import numpy as np

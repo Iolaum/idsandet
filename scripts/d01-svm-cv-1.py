@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Implement an SVM classifier
-# DEPRECATED
+# stratified kfold CV with linear SVM
+
 
 from __future__ import division
 import pickle
@@ -10,6 +10,16 @@ import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
+
+
+# results file
+resultsfile = '../data/d01-svm-cv-1-results.txt'
+# custom print function to also save runs on text file
+def myprint(mytext):
+    print(mytext)
+    with open(resultsfile, 'a') as ha:
+        ha.write(mytext + '\n')
+
 
 # confusion_matrix:
 #
@@ -22,13 +32,6 @@ from sklearn.metrics import confusion_matrix
 #
 # (Actual, Predicted)
 
-# results file
-resultsfile = '../data/d3-svm-v1-results.txt'
-# custom print function to also save runs on text file
-def myprint(mytext):
-    print(mytext)
-    with open(resultsfile, 'a') as ha:
-        ha.write(mytext + '\n')
 
 # load dataset
 
@@ -108,5 +111,3 @@ myprint("False positive rate of the model is {}".format(cmat[0,1]/(cmat[0,0]+cma
 
 with open(resultsfile, 'a') as ha:
     ha.write('\n')
-
-

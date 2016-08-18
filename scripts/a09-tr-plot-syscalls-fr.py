@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# DEPRECATED!
+
 import pickle
 import numpy as np
 from os.path import exists

@@ -11,7 +11,7 @@ import pickle
 print("Scipt starting!\nReading training data file!")
 
 
-with open('../data/validation.p', 'rb') as handle:
+with open('../data/1_validation.p', 'rb') as handle:
     vadata = pickle.load(handle)
 
 # debug
