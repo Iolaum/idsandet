@@ -5,7 +5,6 @@
 
 from __future__ import division
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
 from sklearn.cross_validation import StratifiedKFold
@@ -86,6 +85,7 @@ myprint("Starting Stratified kfold CV with a linear SVM and C={}.".format(cpar))
 # y = np.array([1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0])
 # print y
 
+# skf
 skf = StratifiedKFold(ydat[0:1000], 8, random_state = 666)
 
 #print skf

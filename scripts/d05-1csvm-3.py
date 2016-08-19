@@ -8,10 +8,11 @@ import pickle
 import numpy as np
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.utils import shuffle
 
 
 # results file
-resultsfile = '../data/d05-1csvm-v2-results.txt'
+resultsfile = '../data/d05-1csvm-v3-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)
@@ -30,11 +31,14 @@ def cperf(integer2, total, classlabel):
         return 1-result
 
 
+
+
+
 # # Load Data!
 print("Loading trainind data.")
 trdata = np.load('../data/b1_trmatrix.npy')
 
-print("Loading adduser attack data.")
+print("Loading attack data.")
 atdata = np.load('../data/b2_atmatrix.npy')
 
 print("Loading validation data.")
@@ -45,16 +49,30 @@ print("Loaded training data.   trdata shape is {}".format(trdata.shape))
 print("Loaded attack data.     atdata shape is {}".format(atdata.shape))
 print("Loaded validation data. vadata shape is {}".format(vadata.shape))
 
-# Rescale the data!
-alldata = np.concatenate((trdata, atdata, vadata), axis=0)
+tvdata = np.concatenate((trdata, vadata), axis=0)
+# delete unneeded data
+# del trdata
+# del vadata
+
+
+
+# shuffle data first
+tvdata = shuffle (tvdata) # , random_state=96
+
+
+# Rescale the data! - fit
 preproc = MinMaxScaler(copy=False)
-preproc.fit(trdata)
+preproc.fit(tvdata)
 
-del alldata
-
-trdata = preproc.transform(trdata)
+# Rescale the data! - transform
+tvdata = preproc.transform(tvdata)
 atdata = preproc.transform(atdata)
-vadata = preproc.transform(vadata)
+
+
+# resplit !!
+ind1 = int(tvdata.shape[0]/2)
+trdata = tvdata[:ind1,:]
+vadata = tvdata[ind1:, :]
 
 # define 1-class SVM parameters
 # cpar = 50
@@ -62,7 +80,7 @@ kernel1='sigmoid'
 nu1 = 0.5
 gamma1 = 0.05
 coef1 = 3
-model = OneClassSVM(kernel=kernel1, nu=nu1, gamma=gamma1, coef0=coef1, max_iter=20000)
+model = OneClassSVM(kernel=kernel1, nu=nu1, gamma=gamma1, coef0=coef1, max_iter=20000, verbose=True)
 
 # Influence of C
 # http://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel

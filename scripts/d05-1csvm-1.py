@@ -10,7 +10,7 @@ from sklearn.svm import OneClassSVM
 
 
 # results file
-resultsfile = '../data/d5-1csvm-v1-results.txt'
+resultsfile = '../data/d05-1csvm-v1-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)
@@ -29,27 +29,27 @@ def cperf(integer2, total, classlabel):
         return 1-result
 
 
-# load dataset
 
-with open('../data/d2_trmatrix.p', 'rb') as ha:
-    trdata = pickle.load(ha)
+# # Load Data!
+print("Loading trainind data.")
+trdata = np.load('../data/b1_trmatrix.npy')
+
+print("Loading attack data.")
+atdata = np.load('../data/b2_atmatrix.npy')
+
+print("Loading validation data.")
+vadata = np.load('../data/b3_vamatrix.npy')
+
 
 print("Loaded training data.   trdata shape is {}".format(trdata.shape))
-
-with open('../data/d2_atmatrix.p', 'rb') as ha:
-    atdata = pickle.load(ha)
-
 print("Loaded attack data.     atdata shape is {}".format(atdata.shape))
-
-with open('../data/d2_vamatrix.p', 'rb') as ha:
-    vadata = pickle.load(ha)
-
 print("Loaded validation data. vadata shape is {}".format(vadata.shape))
 
 
 # define 1-class SVM parameters
 # cpar = 50
-model = OneClassSVM(kernel='linear') #SVC(C=cpar, kernel='linear', max_iter=20000, verbose=True, class_weight='balanced') # 
+kernel1 = 'linear'
+model = OneClassSVM(kernel=kernel1, max_iter=20000) #SVC(C=cpar, kernel='linear', max_iter=20000, verbose=True, class_weight='balanced') # 
 
 # Influence of C
 # http://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel
@@ -57,7 +57,7 @@ model = OneClassSVM(kernel='linear') #SVC(C=cpar, kernel='linear', max_iter=2000
 
 # train the model
 # myprint("Starting training an 1-class SVM model with linear kernel and C={}.".format(cpar))
-myprint("Starting training an 1-class SVM model.")
+myprint("Starting training an 1-class SVM model with {} kernel.".format(kernel1))
 model.fit(trdata)
 
 # make predictions
