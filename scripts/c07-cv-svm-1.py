@@ -3,7 +3,6 @@
 
 from __future__ import division
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
 from sklearn.cross_validation import StratifiedKFold
@@ -83,7 +82,7 @@ model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=True, class_weight='
 # y = np.array([1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0])
 # print y
 
-skf = StratifiedKFold(ydat[0:1000], 8, random_state = 666)
+skf = StratifiedKFold(ydat, 8, random_state = 666)
 
 #print skf
 
@@ -116,7 +115,7 @@ for train_index, test_index in skf:
             tsydat = ydat[it1]
 
 
-       
+
     #print nxdat.shape
     #print nydat.shape
     #exit()

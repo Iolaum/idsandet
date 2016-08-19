@@ -48,7 +48,7 @@ print("Loaded validation data. vadata shape is {}".format(vadata.shape))
 # Rescale the data!
 alldata = np.concatenate((trdata, atdata, vadata), axis=0)
 preproc = MinMaxScaler(copy=False)
-preproc.fit(trdata)
+preproc.fit(alldata)
 
 del alldata
 
