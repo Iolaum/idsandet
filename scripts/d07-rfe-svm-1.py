@@ -111,7 +111,7 @@ xdat, ydat = shuffle(xdat, ydat, random_state=96)
 # define SVM parameters
 cpar = 2
 kernel1 = 'linear'
-model = SVC(C=cpar, kernel=kernel1, max_iter=5000, verbose=True, class_weight='balanced')
+model = SVC(C=cpar, kernel=kernel1, max_iter=5000, verbose=False, class_weight='balanced')
  
 
 # Influence of C
@@ -136,15 +136,16 @@ myprint("Optimal number of features : %d" % rfecv.n_features_)
 
 # Plot number of features VS. cross-validation scores
 plt.figure()
-plt.xlabel("Number of features selected")
-plt.ylabel("Performance Score")
+plt.xlabel("# Features")
+plt.ylabel("Performance")
+plt.title('Performance of Linear SVM classifier per # of features.')
 plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
 #plt.show()
 plt.savefig('../pictures/d07-rfe-svm-1.eps')
 plt.close()
 
 with open('../data/d07-rfeobj-v1-1.p', 'wb') as ha:
-    pickle.dumb(rfecv, ha)
+    pickle.dump(rfecv, ha)
 
 with open(resultsfile, 'a') as ha:
     ha.write('\n')
