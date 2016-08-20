@@ -39,7 +39,7 @@ def myprint(mytext):
 # custom scoring function
 def myscore(estimator, xval, ytrue):
     # #debug
-    print("Starting Scoring function.\n{} features left".format(xval.shape[0]))
+    print("Starting Scoring function.\n{} features left".format(xval.shape[1]))
 
     # make predictions
     pre = estimator.predict(xval)
@@ -109,7 +109,7 @@ del l2
 xdat, ydat = shuffle(xdat, ydat, random_state=96)
 
 # define SVM parameters
-cpar = 2
+cpar = 1
 kernel1 = 'linear'
 model = SVC(C=cpar, kernel=kernel1, max_iter=5000, verbose=False, class_weight='balanced')
  
@@ -126,7 +126,7 @@ rfecv = RFECV(estimator=model, step=step1,
 
 ##
 myprint("Starting Recursive Feature Elimination")
-myprint("Parameters:\nKernel: {} SVM\nElimination Step: {}".format(kernel1, step1))
+myprint("Parameters:\nKernel: {} SVM\nElimination Step: {}\nRegularisation (C): {}".format(kernel1, step1, cpar))
 
 # Perform RFE (...)
 rfecv.fit(xdat, ydat)

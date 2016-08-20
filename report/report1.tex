@@ -174,7 +174,7 @@ on whether it is preferable to address novelty detection as a 2-class classifica
 %   //BA005 Machine Learning for intrusion detection
 
 
-We can also use unsupervised learning approaches when performing anomaly detection. This is pioneered in the work of Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset.
+We can also use unsupervised learning approaches when performing anomaly detection. This is pioneered in the work of Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset. Their algorithm has come to be known as One class Support Vector Machine algorithm and we will be using it in our analysis as well.
 
 \section{Intrusion Detection Systems}
 
@@ -316,7 +316,7 @@ group peaks height =.2
 \ganttbar{2-sequence algorithms}{11}{16} \\
 \ganttbar{Initial report}{15}{20} \\
 \ganttbar{Feedback}{21}{23} \\
-\ganttbar{Final report}{23}{24} \\
+\ganttbar{Final report}{23}{26} \\
 \ganttbar{Demonstration}{25}{26}
 %relations
 \ganttlink{elem0}{elem1} 
@@ -326,7 +326,7 @@ group peaks height =.2
 \ganttlink{elem2}{elem4} 
 \ganttlink{elem4}{elem5} 
 \ganttlink{elem5}{elem6} 
-\ganttlink{elem6}{elem7} 
+\ganttlink{elem5}{elem7} 
 \end{ganttchart}
 }
 \label{gantt}
@@ -784,9 +784,9 @@ $32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
 %
 
 
-\subsection{Linear SVM on the complete frequency feature space} \mbox{}
+\subsection{Linear SVM on the complete frequency feature space}
 
-Moving further away from the approach of Xie et al.\cite{adf1} we investigate the application of support vector machines in the frequency feature space without reducing it's dimensionality through principal component analysis. We pool all of our dataset together and perform 8 fold stratified cross validation training a linear SVM classifier. We present our results at table \ref{svmt4}.
+\indent Moving further away from the approach of Xie et al.\cite{adf1} we investigate the application of support vector machines in the frequency feature space without reducing it's dimensionality through principal component analysis. We pool all of our dataset together and perform 8 fold stratified cross validation training a linear SVM classifier. We present our results at table \ref{svmt4}.
 
 \begin{table}
 \begin{tabular}{|c|c|c|}
@@ -811,6 +811,23 @@ $128$ &  $0.92 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline
 
 As we can see by comparing tables \ref{svmt3} and \ref{svmt4} using the complete frequency feature space yields significantly better results. The precision rate is increased noticeably and the fall out rate is slightly decreased. The computation cost was not noticeably increased for the whole frequency feature space when running our scripts.
 
+\subsection{Recursive feature elimination}\mbox{}
+
+
+Moving forward with our analysis of ADFA-LD 12 dataset we will conduct recursive feature elimination. We will train an SVM classifier with linear kernel for a two pattern classification problem. Our two classes will be attack and normal behaviour. A property k-fold cross validation is that a small part of the dataset is used as a validation set meaning our under-represented attack class may not be appropriately present in the validation set. For this reason we will use a sampling method to perform cross validation splitting our dataset with the StratifiedShuffleSplit method of scikit-learn\cite{skl}. We will sample 6 times and our training and validation sets will be equal in size. To create a scorer and assess the performance of our classifier we will use the Precision (True Positive rate) and Fall out (False Positive rate) ratios. But because recursive feature elimination works by optimising one measure we will use their difference, namely:
+\beqq
+\mathrm{Scorer = Precision - Fall out}
+\eeqq
+When Scorer=1 we have perfect classification and if Scorer is 0 we are classifying everything as attack behaviour. After writing the necessary code we plot our results in figure \ref{svm-fr3}.
+
+\begin{figure}[th]
+\includegraphics[width = 0.9\textwidth]{d07-rfe-svm-1.eps}
+\caption{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls frequency feature space. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Optimal number of features is 54.}
+\label{svm-fr3}
+\end{figure}
+
+By looking at the plot we see that when we start removing the less relevant features from the complete feature space our performance, measured by our scorer metric, remains steady. That plateau remains with minimal variation until we have 50 remaining features with a global maximum at 54 features. Then it has a small decline that keeps increasing and becomes a steep decline after we are left with only 25 features. Therefore we can deduct that the information content required to perform proper identification of attacks in the context of a two pattern classification problem is contained in the 54 most relevant features.
+
 
 %% supervisor:
 % - Why stop with just this dataset?
@@ -824,6 +841,9 @@ As we can see by comparing tables \ref{svmt3} and \ref{svmt4} using the complete
 
 \section{ One class Support Vector Machines - Outlier Detection}
 
+Before we finish our analysis of ADFA-LD 12 on the frequency feature space we will study one class Support Vector Machines. The 1-class SVM algorithm has been introduced by Schölkopf et al.\cite{out4} and can work with a variety of kernel function just like normal SVM classifiers. From our preliminary results we saw that linear kernels were giving bad performance. After various trials we found optimum performance on sigmoid kernels with the parameters $\gamma = 0.05$ and $c_0 = 3$. 
+
+One more tricky thing about the 1-class SVM classifier is that on the training set we are asked to specify the ratio of the training set that will be considered inlier versus the part that will be considered outlier. In order to study it's effects we will test it's performance with 
 
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
@@ -844,7 +864,7 @@ appropriate kernels ...
 
 
  !!?? 
- 
+%% Increased accuracy by bringing better Machine Learning experience.
  
  
 \begin{thebibliography}{99}

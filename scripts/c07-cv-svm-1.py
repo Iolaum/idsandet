@@ -27,7 +27,7 @@ from sklearn.metrics import confusion_matrix
 # (0,1)/[(0,0)+(0,1)]
 
 # custom print function to also save runs on text file
-resultsfile = '../data/c07-1-results.txt'
+resultsfile = '../data/c07-2-results.txt'
 
 # custom print function
 def myprint(mytext):
