@@ -61,6 +61,8 @@ vadata = preproc.transform(vadata)
 
 # merge to re-split !
 tvdata = np.concatenate((trdata, vadata), axis=0)
+del trdata
+del vadata
 
 # define 1-class SVM parameters
 # cpar = 50
@@ -101,7 +103,7 @@ for nu1 in nu:
 
     for train_index, test_index in cv:
         #print("TRAIN:", train_index, "TEST:", test_index)
-        print("Iteration {}: Train set #{} - Validation set #{}".format(ctr, train_index.shape, test_index.shape))
+        print("Iteration {}, nu= {}: Train set #{} - Validation set #{}".format(ctr, nu1, train_index.shape, test_index.shape))
         # print("TRAIN:", train_index.shape, "TEST:", test_index.shape)
 
         for it1 in train_index:
@@ -120,7 +122,7 @@ for nu1 in nu:
 
 
         # train the model
-        myprint("Iteration {}: nu= {}".format(ctr, nu1))
+        print("Starting Training!")
         model = OneClassSVM(kernel=kernel1, nu=nu1, gamma=gamma1, coef0=coef1, max_iter=20000)
         model.fit(trdata)
 
@@ -149,6 +151,10 @@ for nu1 in nu:
         # iterator counter
         ctr += 1
 
+        # delete data before 'resampling'
+        del trdata
+        del vadata
+
     # add to metrics
     acc1.append(np.mean(dacc1))
     fpr1.append(np.mean(dfpr1))
@@ -156,6 +162,7 @@ for nu1 in nu:
     acc1er.append(np.std(dacc1))
     fpr1er.append(np.std(dfpr1))
 
+    myprint("Cross Validation results after nu= {}:".format(nu1))
     myprint("Average precision is {} +/- {}".format(np.mean(dacc1), np.std(dacc1)))
     myprint("Average fall out  is {} +/- {}".format(np.mean(dfpr1), np.std(dfpr1)))
     
@@ -165,7 +172,6 @@ for nu1 in nu:
 
 with open(resultsfile, 'a') as ha:
     ha.write('\n')
-
 
 
 # save calculation results !
@@ -200,5 +206,5 @@ plt.title("1-class SVM classifier's CV performance")
 plt.ylabel('Accuracy')
 plt.xlabel('False Positive')
 #plt.show() 
-plt.savefig('../pictures/d05-1csvm-v4.eps')
+plt.savefig('../pictures/d08-1csvm-v1.eps')
 plt.close()
