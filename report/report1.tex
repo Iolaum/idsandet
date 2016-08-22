@@ -766,7 +766,7 @@ $16$ &  $0.64 \pm 0.10$ & $0.23 \pm 0.05$ \\ \hline
 $32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Reduced frequency feature space was used for training and validation.}
+\caption[Cross Validation and Linear SVM regularisation on reduced frequency feature space.]{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Reduced frequency feature space was used for training and validation.}
 \label{svmt3}
 \end{table}
 
@@ -805,7 +805,7 @@ $64$ &  $0.93 \pm 0.05$ & $0.16 \pm 0.04$ \\ \hline
 $128$ &  $0.92 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Complete frequency feature space was used for training and validation.}
+\caption[Cross Validation and Linear SVM regularisation on complete frequency feature space.]{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Complete frequency feature space was used for training and validation.}
 \label{svmt4}
 \end{table}
 
@@ -822,7 +822,7 @@ When Scorer=1 we have perfect classification and if Scorer is 0 we are classifyi
 
 \begin{figure}[th]
 \includegraphics[width = 0.9\textwidth]{d07-rfe-svm-1.eps}
-\caption{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls frequency feature space. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Optimal number of features is 54.}
+\caption[Recursive Feature Elimination in the complete frequency feature space.]{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls frequency feature space while conducting Recursive Feature Elimination. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Optimal number of features is 54.}
 \label{svm-fr3}
 \end{figure}
 
@@ -843,7 +843,68 @@ By looking at the plot we see that when we start removing the less relevant feat
 
 Before we finish our analysis of ADFA-LD 12 on the frequency feature space we will study one class Support Vector Machines. The 1-class SVM algorithm has been introduced by Schölkopf et al.\cite{out4} and can work with a variety of kernel function just like normal SVM classifiers. From our preliminary results we saw that linear kernels were giving bad performance. After various trials we found optimum performance on sigmoid kernels with the parameters $\gamma = 0.05$ and $c_0 = 3$. 
 
-One more tricky thing about the 1-class SVM classifier is that on the training set we are asked to specify the ratio of the training set that will be considered inlier versus the part that will be considered outlier. In order to study it's effects we will test it's performance with 
+One more tricky thing about the 1-class SVM classifier is that on the training set we are asked to specify the upper bound for the fraction of training data that we can tolerate to be incorrectly classified. In order to study the upper bound's $(\nu)$ effects we will test it's performance by recursively performing cross validation on a range of values for $\nu$. The results of our first test can be seen on figure \ref{1csvm-fr1} and table \ref{1csvmt1}.
+
+
+\begin{figure}[th]
+\includegraphics[width = 0.9\textwidth]{d08-1csvm-v1.eps}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation.}
+\label{1csvm-fr1}
+\end{figure}
+
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.1$ &  $0.55 \pm 0.10$ & $0.19 \pm 0.05$ \\ \hline 
+$0.2$ &  $0.53 \pm 0.04$ & $0.22 \pm 0.03$ \\ \hline 
+$0.3$ &  $0.59 \pm 0.02$ & $0.30 \pm 0.02$ \\ \hline 
+$0.4$ &  $0.82 \pm 0.04$ & $0.41 \pm 0.01$ \\ \hline 
+$0.5$ &  $0.89 \pm 0.01$ & $0.49 \pm 0.02$ \\ \hline 
+$0.6$ &  $0.910 \pm 0.001$ & $0.61 \pm 0.01$ \\ \hline 
+$0.7$ &  $0.912 \pm 1\cdot 10^{-16}$ & $0.73 \pm 0.10$ \\ \hline 
+$0.8$ &  $0.91 \pm 6\cdot 10^{-4}$ & $0.81 \pm 0.10$ \\ \hline 
+$0.9$ &  $0.93 \pm 0.007$ & $0.904 \pm 0.009$ \\ \hline
+$1.0$ &  $1.0 \pm 0.0$ & $1.0 \pm 0.0$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.4$.}
+\label{1csvmt1}
+\end{table}
+
+By studying the results of figure \ref{1csvm-fr1} and table \ref{1csvmt1} we see that there is  big volatility for different numbers of $\nu$. Moreover the standard deviation of our metrics is quite varying as well, something we didn't expect. This might be due to the relatively small number, 10, of re-sampling
+% bootstrapping??
+or because of some structure within our dataset that we haven't identified yet. In order to identify the best performing value of the upper bound for misclassification we repeat our procedure on a smaller range of values. The results of our computation are presented in figure \ref{1csvm-fr2} and table \ref{1csvmt2}.
+
+\begin{figure}[thb]
+\includegraphics[width = 0.9\textwidth]{d08-1csvm-v2.eps}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Using more fine grained parameter search to find optimum value. Optimal performance for upper bound $\nu = 0.41$ }
+\label{1csvm-fr2}
+\end{figure}
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.35$ &  $0.67 \pm 0.04$ & $0.36 \pm 0.01$ \\ \hline 
+$0.36$ &  $0.68 \pm 0.04$ & $0.37 \pm 0.01$ \\ \hline 
+$0.37$ &  $0.71 \pm 0.06$ & $0.39 \pm 0.02$ \\ \hline 
+$0.38$ &  $0.75 \pm 0.04$ & $0.40 \pm 0.01$ \\ \hline 
+$0.39$ &  $0.77 \pm 0.04$ & $0.40 \pm 0.01$ \\ \hline 
+$0.40$ &  $0.83 \pm 0.04$ & $0.41 \pm 0.02$ \\ \hline 
+$0.41$ &  $0.85 \pm 0.01$ & $0.42 \pm 0.02$ \\ \hline 
+$0.42$ &  $0.85 \pm 0.02$ & $0.42 \pm 0.02$ \\ \hline 
+$0.43$ &  $0.858 \pm 0.001$ & $0.431 \pm 0.010$ \\ \hline
+$0.44$ &  $0.862 \pm 0.002$ & $0.449 \pm 0.006$ \\ \hline
+$0.45$ &  $0.864 \pm 0.004$ & $0.45 \pm 0.01$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption[Finding optimum 1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to find it's optimum performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.41$.}
+\label{1csvmt2}
+\end{table}
+
+From table \ref{1csvmt2} we can identify $\nu=0.41$ as the best performing value for the upper bound on training errors. Moreover from looking at both tables \ref{1csvmt1} and \ref{1csvmt2} we can see that the fall out rate follows the value of $\nu$ which makes sense given that the training data are all from normal behaviour and the fall out rate represents misidentification of normal data.
+
 
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}

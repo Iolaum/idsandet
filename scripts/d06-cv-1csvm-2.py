@@ -84,7 +84,7 @@ xdat = preproc.fit_transform(xdat)
 # define 1-class SVM parameters
 # cpar = 50
 kernel1='sigmoid'
-nu1 = 0.35
+nu1 = 0.45
 gamma1 = 0.05
 coef1 = 3
 model = OneClassSVM(kernel=kernel1, nu=nu1, gamma=gamma1, coef0=coef1, max_iter=20000, verbose=True)
