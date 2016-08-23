@@ -1,12 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+# Perform Cross Validation with SVMs
+
 from __future__ import division
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
 from sklearn.cross_validation import StratifiedKFold
 from sklearn.metrics import confusion_matrix
+from sklearn.preprocessing import MinMaxScaler
 
 
 # confusion_matrix:
@@ -27,7 +30,7 @@ from sklearn.metrics import confusion_matrix
 # (0,1)/[(0,0)+(0,1)]
 
 # custom print function to also save runs on text file
-resultsfile = '../data/c07-2-results.txt'
+resultsfile = '../data/e09-svm-v2-results.txt'
 
 # custom print function
 def myprint(mytext):
@@ -37,20 +40,38 @@ def myprint(mytext):
 
 
 
-myprint("Starting a linear SVM classifier.")
+
 
 # # Load Data!
-myprint("Loading trainind data.")
-trdat = np.load('../data/b5_trmatrix.npy')
+print("Loading trainind data.")
+trdat = np.load('../data/e06a-trdata.npy')
 
-myprint("Loading attack data.")
-atdat = np.load('../data/b5_atmatrix.npy')
+#print trdat.shape
+#exit()
 
-myprint("Loading validation data.")
-vadat = np.load('../data/b5_vamatrix.npy')
+print("Loading attack data.")
+atdat = np.load('../data/e06c-atdata.npy')
 
+print("Loading validation data.")
+vadat = np.load('../data/e06b-vadata.npy')
+
+
+# Rescale the data!
+alldat = np.concatenate((trdat, vadat, atdat), axis=0)
+preproc = MinMaxScaler(copy=False)
+preproc.fit(alldat)
+
+
+del alldat
+
+trdat = preproc.transform(trdat)
+vadat = preproc.transform(vadat)
+atdat = preproc.transform(atdat)
+
+del preproc
 
 tvdat = np.concatenate((trdat, vadat), axis=0)
+
 # delete unneeded data
 del trdat
 del vadat
@@ -75,9 +96,9 @@ xdat, ydat = shuffle (xdat, ydat, random_state=96)
 
 # define SVM parameters
 cpar = 32
-model = SVC(C=cpar, kernel='linear', max_iter=5000, verbose=True, class_weight='balanced')
+model = SVC(C=cpar, kernel='linear', max_iter=20000, verbose=True, class_weight='balanced')
 
-
+myprint("Starting Cross Validation on a SVM model with linear kernel and C={}.".format(cpar))
 
 # y = np.array([1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0])
 # print y
@@ -96,37 +117,35 @@ fallout = []
 for train_index, test_index in skf:
     print("Iteration {}: Train set #{} - Validation set #{}".format(ctr, train_index.shape, test_index.shape))
     # print("TRAIN:", train_index.shape, "TEST:", test_index.shape)
+        
+    print("Building training data.")
 
-    for it1 in train_index:
-        try:
-            trxdat = np.concatenate((trxdat, xdat[it1, :].reshape(1,9)), axis=0)
-            trydat = np.append(trydat, ydat[it1])
-        except NameError:
-            trxdat = xdat[it1, :].reshape(1,9)
-            trydat = ydat[it1]
+    trxdat = np.zeros((len(train_index), 3792))
+    trydat = np.zeros(len(train_index))
 
+    for it1, val1 in enumerate(train_index):
+        trxdat[it1, :] = xdat[val1, :].reshape(1,3792)
+        trydat[it1] = ydat[val1]
 
-    for it1 in test_index:
-        try:
-            tsxdat = np.concatenate((tsxdat, xdat[it1, :].reshape(1,9)), axis=0)
-            tsydat = np.append(tsydat, ydat[it1])
-        except NameError:
-            tsxdat = xdat[it1, :].reshape(1,9)
-            tsydat = ydat[it1]
+    print("Building validation data.")
 
+    tsxdat = np.zeros((len(test_index), 3792))
+    tsydat = np.zeros(len(test_index))
 
+    for it1, val1 in enumerate(test_index):
+        tsxdat[it1, :] = xdat[val1, :].reshape(1,3792)
+        tsydat[it1] = ydat[val1]
 
-    #print nxdat.shape
-    #print nydat.shape
-    #exit()
 
     # train the model
-    myprint("Starting training an SVM model with linear kernel and C={}.".format(cpar))
+    print("Starting training an SVM model with linear kernel and C={}.".format(cpar))
     model.fit(trxdat, trydat)
 
     # make predictions
     pre = model.predict(tsxdat)
-
+    
+    #print tsydat.shape
+    #print pre.shape
 
     cmat = confusion_matrix(tsydat, pre)
     #print cmat
@@ -134,12 +153,12 @@ for train_index, test_index in skf:
     # Attack detection accuracy || precision rate = TP/(TP+FP)
     # (1,1)/[(1,1)+(1,0)]
     met1 = cmat[1,1]/(cmat[1,0]+cmat[1,1])
-    myprint("Attack detection Accuracy of the model is {}".format(met1))
+    print("Attack detection Accuracy of the model is {}".format(met1))
 
     # False Positive Rate || ... = FN/(FN+TN)
     # (0,1)/[(0,0)+(0,1)]
     met2 = cmat[0,1]/(cmat[0,0]+cmat[0,1])
-    myprint("False positive rate of the model is       {}".format(met2))
+    print("False positive rate of the model is       {}".format(met2))
 
     ctr += 1
     precision.append(met1)

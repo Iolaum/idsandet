@@ -20,7 +20,7 @@ print("Creating 2-sequence system calls data object.")
 # key-value-2
 # integer pointer : syscall sequence
 # 12: (33, 79)
-with open('../data/e1-sys-seq-dict.p', 'rb') as ha:
+with open('../data/e01-sys-seq-dict.p', 'rb') as ha:
     sysdict = pickle.load(ha)
 
 
@@ -64,11 +64,11 @@ print("There are {} non zero 2-sequencies.".format(np.count_nonzero(datasums)))
 #with open('../data/e3-vadata2.p', 'wb') as ha:
 #    pickle.dump(trdata2, ha)
 # Unlike pickle module it DID NOT give Memory Error !
-np.save('../data/e4-atdata2', trdata2)
+np.save('../data/e04-atdata2', trdata2)
 
 del trdata2
 
-with open('../data/e4-at-datasums.p', 'wb') as ha:
+with open('../data/e04-at-datasums.p', 'wb') as ha:
     pickle.dump(datasums, ha)
 
 print("Total probabilities: {} out of {}".format(np.sum(datasums), len1))

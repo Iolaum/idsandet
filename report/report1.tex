@@ -814,7 +814,7 @@ As we can see by comparing tables \ref{svmt3} and \ref{svmt4} using the complete
 \subsection{Recursive feature elimination}\mbox{}
 
 
-Moving forward with our analysis of ADFA-LD 12 dataset we will conduct recursive feature elimination. We will train an SVM classifier with linear kernel for a two pattern classification problem. Our two classes will be attack and normal behaviour. A property k-fold cross validation is that a small part of the dataset is used as a validation set meaning our under-represented attack class may not be appropriately present in the validation set. For this reason we will use a sampling method to perform cross validation splitting our dataset with the StratifiedShuffleSplit method of scikit-learn\cite{skl}. We will sample 6 times and our training and validation sets will be equal in size. To create a scorer and assess the performance of our classifier we will use the Precision (True Positive rate) and Fall out (False Positive rate) ratios. But because recursive feature elimination works by optimising one measure we will use their difference, namely:
+Moving forward with our analysis of ADFA-LD 12 dataset we will conduct recursive feature elimination. We will train an SVM classifier with linear kernel for a two pattern classification problem. Our two classes will be attack and normal behaviour. A property of k-fold cross validation is that a small part of the dataset is used as a validation set meaning our under-represented attack class may not be appropriately present in the validation set. For this reason we will use a sampling method to perform cross validation splitting our dataset with the StratifiedShuffleSplit method of scikit-learn\cite{skl}. We will sample 6 times and our training and validation sets will be equal in size. To create a scorer and assess the performance of our classifier we will use the Precision (True Positive rate) and Fall out (False Positive rate) ratios. But because recursive feature elimination works by optimising one measure we will use their difference, namely:
 \beqq
 \mathrm{Scorer = Precision - Fall out}
 \eeqq
@@ -839,7 +839,7 @@ By looking at the plot we see that when we start removing the less relevant feat
 
 
 
-\section{ One class Support Vector Machines - Outlier Detection}
+\section{One class Support Vector Machines - Outlier Detection}
 
 Before we finish our analysis of ADFA-LD 12 on the frequency feature space we will study one class Support Vector Machines. The 1-class SVM algorithm has been introduced by Schölkopf et al.\cite{out4} and can work with a variety of kernel function just like normal SVM classifiers. From our preliminary results we saw that linear kernels were giving bad performance. After various trials we found optimum performance on sigmoid kernels with the parameters $\gamma = 0.05$ and $c_0 = 3$. 
 
@@ -909,17 +909,48 @@ From table \ref{1csvmt2} we can identify $\nu=0.41$ as the best performing value
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
 
-\section{k-Means Clustering ?}
+After our analysis of ADFA-LD 12 dataset on the frequency feature space we proceed to analyse it on the two sequence feature space. 
 
-\section{SVMs ...}
+We begin by giving a specific definition of the two sequence feature space we will use. As we have said every point of our dataset consists of a series of operating system kernel system calls. Instead of counting the frequency of a individual system calls in each point we will count the frequency of combinations of two subsequent system calls in each point. From our previous explorations of our dataset we know that we have 175 distinct system calls present in our dataset. Out of the 30625 possible combinations of 2-sequences only 3792 are present in our dataset. Hence our two-sequence feature space has 3792 dimensions.
 
-Classification SVM's\\
-PCA and no PCA feature engineering approaches\\
-Cross Validation .. ?\\
+%%\section{k-Means Clustering ?}
+%% Implement if TIME!
+\section{Support Vector Machines}
 
-One class SVM 's?
+We start our analysis of the two-sequence feature space by addressing our data as a two pattern classification problem. We will use a linear kernel for our SVM classifier. We will test it's performance on various values of the regularisation parameter $(C)$ performing stratified cross validation. After computing the necessary calculations we get the results shown in table \ref{svmt5}.
 
-appropriate kernels ...
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.93 \pm 0.02$ & $0.068 \pm 0.010$ \\ \hline 
+$0.25$ &  $0.93 \pm 0.02$ & $0.062 \pm 0.009$ \\ \hline 
+$0.5$ &  $0.92 \pm 0.02$ & $0.054 \pm 0.009$ \\ \hline 
+$1$ &  $0.91 \pm 0.02$ & $0.049 \pm 0.007$ \\ \hline 
+$2$ &  $0.91 \pm 0.02$ & $0.047 \pm 0.006$ \\ \hline 
+$4$ &  $0.88 \pm 0.03$ & $0.046 \pm 0.007$ \\ \hline 
+$8$ &  $0.86 \pm 0.03$ & $0.043 \pm 0.006$ \\ \hline 
+$16$ &  $0.84 \pm 0.04$ & $0.041\pm 0.005$ \\ \hline 
+$32$ &  $0.81 \pm 0.03$ & $0.038 \pm 0.004$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption[Cross Validation and Linear SVM regularisation on complete two-sequence feature space.]{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Two-sequence feature space was used for training and validation.}
+\label{svmt5}
+\end{table}
+
+We see that we get our best performing results are when we have $C=0.25$. By comparing the results from tables \ref{svmt4} and \ref{svmt5} we see that the two-sequence feature space yields significantly better results compared to the full frequency feature space. This is to be expected since the two frequency feature space captures more information from the dataset.
+
+Moving forward we will conduct recursive feature elimination to see how much information is contained in each feature. We will use the same procedure as before. We will train our classifier to distinguish a two pattern classification problem. We will use Stratified Shuffle Split method to perform cross validation. 
+
+
+%
+%Classification SVM's\\
+%PCA and no PCA feature engineering approaches\\
+%Cross Validation .. ?\\
+%
+%One class SVM 's?
+%
+%appropriate kernels ...
 
 \chapter{Conclusion}
 

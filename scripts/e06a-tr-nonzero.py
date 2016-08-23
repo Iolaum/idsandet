@@ -6,11 +6,11 @@ import pickle
 import numpy as np
 
 # load indexes to be deleted!
-with open('../data/e5-zeroindex.p', 'rb') as ha:
+with open('../data/e05-zeroindex.p', 'rb') as ha:
     indx = pickle.load(ha)
 
 # load trdata
-trdata = np.load('../data/e2-trdata2.npy')
+trdata = np.load('../data/e02-trdata2.npy')
 
 # debug
 # print trdata.shape
@@ -38,4 +38,4 @@ for it in indx:
 print("trdata shape is {}".format(trdata.shape))
 
 # save data
-np.save('../data/e6a-trdata', trdata)
+np.save('../data/e06a-trdata', trdata)

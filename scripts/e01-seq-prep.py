@@ -38,7 +38,7 @@ for it1 in syscalls:
         sysdict[pointer] = (it1, it2)
         pointer += 1
 
-with open('../data/e1-sys-seq-dict.p', 'wb') as ha:
+with open('../data/e01-sys-seq-dict.p', 'wb') as ha:
     pickle.dump(sysdict, ha)
 
 print("Total number of sequencies is {}".format(pointer+1))

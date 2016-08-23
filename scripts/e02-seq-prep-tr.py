@@ -57,9 +57,9 @@ datasums =  np.sum(trdata2, axis=0)
 print("There are {} non zero 2-sequencies.".format(np.count_nonzero(datasums)))
 
 
-np.save('../data/e2-trdata2', trdata2)
+np.save('../data/e02-trdata2', trdata2)
 
-with open('../data/e2-tr-datasums.p', 'wb') as ha:
+with open('../data/e02-tr-datasums.p', 'wb') as ha:
     pickle.dump(datasums, ha)
 
 print("Total probabilities: {} out of {}".format(np.sum(datasums), len1))

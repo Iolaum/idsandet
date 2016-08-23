@@ -7,12 +7,7 @@ from __future__ import division
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix
-
-# load data
-xtr = np.load('../data/e07a-xtr.npy')
-ytr = np.load('../data/e07b-ytr.npy')
-xts = np.load('../data/e07c-xts.npy')
-yts = np.load('../data/e07d-yts.npy')
+from sklearn.preprocessing import MinMaxScaler
 
 # confusion_matrix:
 #
@@ -26,16 +21,32 @@ yts = np.load('../data/e07d-yts.npy')
 # (Actual, Predicted)
 
 # results file
-resultsfile = '../data/e08-svm-v1-results.txt'
+resultsfile = '../data/e08-svm-v2-results.txt'
 # custom print function to also save runs on text file
 def myprint(mytext):
     print(mytext)
     with open(resultsfile, 'a') as ha:
         ha.write(mytext + '\n')
 
-# debug
-# print ytr[1:10]
-# print yts[1:10]
+
+# load data
+xtr = np.load('../data/e07a-xtr.npy')
+ytr = np.load('../data/e07b-ytr.npy')
+xts = np.load('../data/e07c-xts.npy')
+yts = np.load('../data/e07d-yts.npy')
+
+
+# Rescale the data!
+alldata = np.concatenate((xtr, xts), axis=0)
+preproc = MinMaxScaler(copy=False)
+preproc.fit(alldata)
+
+del alldata
+
+xtr = preproc.transform(xtr)
+xts = preproc.transform(xts)
+
+
 
 
 

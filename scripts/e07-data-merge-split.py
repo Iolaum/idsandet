@@ -7,9 +7,9 @@ import numpy as np
 from sklearn.cross_validation import train_test_split
 
 
-trdata = np.load('../data/e6a-trdata.npy')
-vadata = np.load('../data/e6b-vadata.npy')
-atdata = np.load('../data/e6c-atdata.npy')
+trdata = np.load('../data/e06a-trdata.npy')
+vadata = np.load('../data/e06b-vadata.npy')
+atdata = np.load('../data/e06c-atdata.npy')
 
 tvdata = np.concatenate((trdata, vadata), axis=0)
 # delete unneeded data
@@ -34,9 +34,9 @@ del l1
 del l2
 
 # save data
-np.save('../data/e7a-xtr', xtr)
-np.save('../data/e7b-ytr', ytr)
-np.save('../data/e7c-xts', xts)
-np.save('../data/e7d-yts', yts)
+np.save('../data/e07a-xtr', xtr)
+np.save('../data/e07b-ytr', ytr)
+np.save('../data/e07c-xts', xts)
+np.save('../data/e07d-yts', yts)
 
 
