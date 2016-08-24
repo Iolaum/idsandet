@@ -940,8 +940,13 @@ $32$ &  $0.81 \pm 0.03$ & $0.038 \pm 0.004$ \\ \hline
 
 We see that we get our best performing results are when we have $C=0.25$. By comparing the results from tables \ref{svmt4} and \ref{svmt5} we see that the two-sequence feature space yields significantly better results compared to the full frequency feature space. This is to be expected since the two frequency feature space captures more information from the dataset.
 
-Moving forward we will conduct recursive feature elimination to see how much information is contained in each feature. We will use the same procedure as before. We will train our classifier to distinguish a two pattern classification problem. We will use Stratified Shuffle Split method to perform cross validation. 
+Moving forward we will conduct recursive feature elimination to see how much information is contained in each feature. We will use the same procedure as before. We will train our classifier to distinguish a two pattern classification problem. We will use Stratified Shuffle Split method to perform cross validation. In order to make the computation time reasonable we will use a reduction step of 24 features (out of total 3792) per iteration. After performing our computation we get the results depicted in figure \ref{svm-sq1}. We see that performance plateaus at 240 feature and stays relatively stable afterwards with an obtuse maximum at 2088 features. Below 240 features performance drops significantly, hence we can say that the core information content on normal and attack classes is contained in the 240 most important features.
 
+\begin{figure}[thb]
+\includegraphics[width = 0.9\textwidth]{e10-rfe-svm-1.eps}
+\caption[Recursive Feature Elimination in the two-sequence feature space.]{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls two-sequence feature space while conducting Recursive Feature Elimination. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Elimination step is 24. Optimal number of features is 2088.}
+\label{svm-sq1}
+\end{figure}
 
 %
 %Classification SVM's\\

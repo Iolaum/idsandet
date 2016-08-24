@@ -118,7 +118,7 @@ model = SVC(C=cpar, kernel=kernel1, max_iter=10000, verbose=False, class_weight=
 # http://stats.stackexchange.com/questions/31066/what-is-the-influence-of-c-in-svms-with-linear-kernel
 
 # Specify RFE parameters
-step1 = 1
+step1 = 24
 
 rfecv = RFECV(estimator=model, step=step1,
     cv=StratifiedShuffleSplit(ydat, n_iter=6, test_size=0.5), 
@@ -133,20 +133,29 @@ rfecv.fit(xdat, ydat)
 
 myprint("Optimal number of features : %d" % rfecv.n_features_)
 
-with open('../data/d07-rfeobj-v1-1.p', 'wb') as ha:
+with open('../data/e10-rfeobj-v1-1.p', 'wb') as ha:
     pickle.dump(rfecv, ha)
+
+# create feature x-axis index
+xra = []
+for it1 in rfecv.grid_scores_:
+    if len(xra) == 0:
+        xra.append(1)
+    elif len(xra) == 1:
+        xra.append(24)
+    else:
+        xra.append(xra[len(xra)-1]+24)
 
 
 # Plot number of features VS. cross-validation scores
 plt.figure()
 plt.xlabel("# Features")
-plt.ylabel("Performance")
+plt.ylabel("Scorer")
 plt.title('Performance of Linear SVM classifier per # of features.')
-plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+plt.plot(xra, rfecv.grid_scores_)
 #plt.show()
-plt.savefig('../pictures/d07-rfe-svm-1.eps')
+plt.savefig('../pictures/e10-rfe-svm-1.eps')
 plt.close()
-
 
 
 with open(resultsfile, 'a') as ha:
