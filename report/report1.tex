@@ -879,7 +879,7 @@ or because of some structure within our dataset that we haven't identified yet. 
 
 \begin{figure}[thb]
 \includegraphics[width = 0.9\textwidth]{d08-1csvm-v2.eps}
-\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Using more fine grained parameter search to find optimum value. Optimal performance for upper bound $\nu = 0.41$ }
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. Dataset was feature engineered on complete frequency feature space. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Using more fine grained parameter search to find optimum value. Optimal performance for upper bound $\nu = 0.41$ }
 \label{1csvm-fr2}
 \end{figure}
 \begin{table}
@@ -915,6 +915,8 @@ We begin by giving a specific definition of the two sequence feature space we wi
 
 %%\section{k-Means Clustering ?}
 %% Implement if TIME!
+
+
 \section{Support Vector Machines}
 
 We start our analysis of the two-sequence feature space by addressing our data as a two pattern classification problem. We will use a linear kernel for our SVM classifier. We will test it's performance on various values of the regularisation parameter $(C)$ performing stratified cross validation. After computing the necessary calculations we get the results shown in table \ref{svmt5}.
@@ -953,7 +955,70 @@ Moving forward we will conduct recursive feature elimination to see how much inf
 %PCA and no PCA feature engineering approaches\\
 %Cross Validation .. ?\\
 %
-%One class SVM 's?
+\section{One Class Support Vector Machines - Outlier Detection}
+
+The last step of our analysis of ADFA-LD 12 on the two-sequence feature space is studying one class Support Vector Machines. Again from our preliminary results we saw that linear kernels were giving bad performance. On the other hand the sigmoid kernel gives us good performance. In order to get results directly comparable to the ones on the frequency feature space we will use the same parameters that we used before, $\gamma = 0.05$ and $c_0 = 3$. 
+
+As we have already said one more tricky thing about the 1-class SVM classifier is that on the training set we are asked to specify the upper bound for the fraction of training data that we can tolerate to be incorrectly classified. In order to study the upper bound's $(\nu)$ effects on the two-sequence feature space we will test it's performance by recursively performing cross validation on a range of values for $\nu$. The results of our first test can be seen on figure \ref{1csvm-sq1} and table \ref{1csvmt3}.
+
+
+\begin{figure}[th]
+\includegraphics[width = 0.9\textwidth]{e12-1csvm-v1.eps}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. Dataset was feature engineered on two-sequence feature space. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation.}
+\label{1csvm-sq1}
+\end{figure}
+
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.1$ &  $0.55 \pm 0.03$ & $0.20 \pm 0.01$ \\ \hline 
+$0.2$ &  $0.58 \pm 0.01$ & $0.245 \pm 0.009$ \\ \hline 
+$0.3$ &  $0.72 \pm 0.02$ & $0.32 \pm 0.02$ \\ \hline 
+$0.4$ &  $0.826 \pm 0.004$ & $0.41 \pm 0.02$ \\ \hline 
+$0.5$ &  $0.876 \pm 0.006$ & $0.50 \pm 0.01$ \\ \hline 
+$0.6$ &  $0.9269 \pm 0.0008$ & $0.64 \pm 0.07$ \\ \hline 
+$0.7$ &  $0.930 \pm 0.001$ & $0.76 \pm 0.09$ \\ \hline 
+$0.8$ &  $0.936 \pm 0.004$ & $0.86 \pm 0.07$ \\ \hline 
+$0.9$ &  $0.9560 \pm 0.0005$ & $0.909 \pm 0.007$ \\ \hline
+$1.0$ &  $1.0 \pm 0.0$ & $1.0 \pm 0.0$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. Dataset was feature engineered on two-sequence feature space. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.4$.} % do 0.35 -> 0.45
+\label{1csvmt3}
+\end{table}
+
+While figure \ref{1csvm-sq1} gives us a good overview of the performance of one class support vector machine the iteration step, $0.1$, for $\nu$ (maximum error ratio tolerance for training set) is too big to tell us the optimum value. Hence we re-iterate with smaller iteration step, $0.01$, for values between $\nu \in (0.35, 0,45)$ to find the best performing value. We see our results for $\nu=0.36$.
+
+\begin{figure}[thb]
+\includegraphics[width = 0.9\textwidth]{e12-1csvm-v2.eps}
+\caption[1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. Dataset was feature engineered on complete two-sequence feature space. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Using more fine grained parameter search to find optimum value. Optimal performance for upper bound $\nu = 0.36$ }
+\label{1csvm-sq2}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.35$ &  $0.788 \pm 0.008$ & $0.366 \pm 0.007$ \\ \hline 
+$0.36$ &  $0.805 \pm 0.008$ & $0.379 \pm 0.012$ \\ \hline 
+$0.37$ &  $0.807 \pm 0.006$ & $0.380 \pm 0.013$ \\ \hline 
+$0.38$ &  $0.820 \pm 0.008$ & $0.398 \pm 0.011$ \\ \hline 
+$0.39$ &  $0.822 \pm 0.003$ & $0.403 \pm 0.012$ \\ \hline 
+$0.40$ &  $0.827 \pm 0.003$ & $0.410 \pm 0.010$ \\ \hline 
+$0.41$ &  $0.832 \pm 0.005$ & $0.428 \pm 0.018$ \\ \hline 
+$0.42$ &  $0.832 \pm 0.004$ & $0.424 \pm 0.013$ \\ \hline 
+$0.43$ &  $0.835 \pm 0.004$ & $0.435 \pm 0.011$ \\ \hline
+$0.44$ &  $0.839 \pm 0.005$ & $0.448 \pm 0.012$ \\ \hline
+$0.45$ &  $0.849 \pm 0.006$ & $0.464 \pm 0.017$ \\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption[Finding optimum 1-class SVM performance depending on bound for training errors]{Exploring 1-class SVM with a sigmoid kernel to find it's optimum performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.36$.}
+\label{1csvmt4}
+\end{table}
+
+
 %
 %appropriate kernels ...
 
