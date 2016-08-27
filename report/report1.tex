@@ -14,7 +14,6 @@
 %  right-aligned equation numbers
 %  (altenratively leqno)
 
-
 \usepackage[english]{babel}
 % package for language and hyphenation support (?)
 
@@ -33,19 +32,51 @@
 % introduced to resize big table of attack types
 % http://tex.stackexchange.com/questions/10863/is-there-a-way-to-slightly-shrink-a-table-including-font-size-to-fit-within-th
 
-\usepackage{pgfgantt}
-% package to create gantt charts
-
 % Insert multiple figures in Latex
 % http://tex.stackexchange.com/a/119907/111537
 \usepackage{float}
 \usepackage[caption = false]{subfig}
 \usepackage{graphicx}
 
+\usepackage{pgfgantt}
+% package to create gantt charts
 
 % Displaying Linux commands in LaTeX [duplicate]
 % http://tex.stackexchange.com/a/84188/111537
 \usepackage{listings}
+
+\usepackage{afterpage} % for the blank page
+
+
+
+
+
+% Editing the toc page with amsbook document class
+% http://tex.stackexchange.com/a/297277/111537
+\usepackage{etoolbox}
+
+% 'Table of contents' instead of 'Contents'
+\renewcommand{\contentsname}{Table of contents}
+% Use the next line if you want capital letters
+%\renewcommand{\contentsname}{\MakeUppercase{Table of contents}}
+
+% Uppercase 'CHAPTER' label in toc
+\patchcmd{\tocchapter}{#1}{\MakeUppercase{#1}}{}{}
+
+% Leader dots in toc
+\makeatletter
+%\renewcommand\@pnumwidth{2em} % <-- depending on the total number of pages
+\patchcmd{\@tocline}
+  {\hfil}
+  {\leaders\hbox{\,.\,}\hfil}
+  {}{}
+% Indent listoftables/figures
+% http://tex.stackexchange.com/questions/326573/indent-problem-in-list-of-tables-and-figures-captions
+\def\l@table{\@tocline{0}{3pt plus2pt}{0pt}{2.6em}{}}
+\let\l@figure=\l@table
+\makeatother
+
+
 
 
 %  ************  begin my definitions  *******************
@@ -68,30 +99,47 @@
 \newcommand{\eeqq}{\end{equation*}}
 
 
+% http://tex.stackexchange.com/a/326666/111537
+\newcommand\mycustomtitle{%
+\begin{titlepage}
+\begin{center}
+{\Large \textup{University of Southampton\\ \vspace{12pt}
+	Faculty of Physical Sciences and Engineering\\ \vspace{12pt}
+	School of Electronics and Computer Science}}\par
+\vspace{72pt}
+{\Large \textbf{
+Intrusion Detection using Outliers in a modern Cyber-Security Dataset}
+}\\
+\vspace{36pt}
+{\Large by}\\
+\vspace{36pt}
+{\Large Nikolaos Perrakis}
+\\ \vspace{36pt}
+{\Large 2 September 2016}
+\\ \vspace{72pt}
+{\Large
+Supervisor: prof. Mahesan Niranjan\\ \vspace{8pt}
+2nd Examiner: prof. Jonathon Hare}\\ \vspace{36pt}
+{\Large A report submitted for the award of\\ \vspace{24pt}
+\textbf{MSc Data Science}}
+\end{center}
+\end{titlepage}%
+}
+
 %  ************  end my definitions  *******************
 
 
-% title info
-% fix me later
-
-\title{Intrusion Detection using Outliers in a modern Cyber Security Dataset}
-\author{Nikolaos Perrakis\\
-{\small
-MSc Project\\[-1 ex]
-University of Southampton\\[-1 ex]
-Faculty of Physical Sciences and Engineering\\[-1 ex]
-Electronics and Computer Science\\[-1 ex]
-}
-Supervisor: prof. Mahesan Niranjan
-}
-
 
 \begin{document}
-
-
-\maketitle
-
 \frontmatter
+\mycustomtitle
+\mycustomtitle
+
+
+\afterpage{\null
+	\thispagestyle{empty}
+	\newpage} % insert a blank page
+
 
 
 \chapter*{Abstract}
@@ -147,36 +195,48 @@ The first field is outlier and anomaly detection techniques from Machine Learnin
 
 \section{Outlier and Anomaly Detection}
 
-The concept of bad data has been quite old in the field of statistics. One of the first systematic approaches to dealing with them, dating back to the $19^{th}$ century has been Chauvenet's criterion on  whether one data point of an experimental data set was spurious or not. Moving on to modern machine learning techniques on outlier and anomaly detection we see that there are many approaches. They are based on different statistical methods but also on different characteristic on the domain from which the dataset comes. Below are most relevant methods with regards to our work.
+The concept of bad data has been quite old in the field of statistics. One of the first systematic approaches to dealing with them, dating back to the $19^{th}$ century, has been Chauvenet's criterion on  whether one data point of an experimental data set was spurious or not. Moving on to modern machine learning techniques on outlier and anomaly detection we see that there are many approaches. They are based on different statistical methods but also on different characteristics on the domain from which the dataset comes. Below are most relevant methods with regards to our work.
 
 The first method has been put forward by Roberts et al.\cite{out1}. 
 %% supervisor:
 % - Yes the paper name is probabilistic resource allocation but it speaks about a Gaussian Mixture model.
-They use a Gaussian Mixture model to model the normal behaviour of the system their dataset describes. This creates a set of normal system states. They minimise the set of heuristically chosen parameters used in such techniques by using an evolving threshold on how much a data point can differ from learnt normal state before it gets classified as belonging to another state. When we are training out model this results in a new learnt normal state. Afterwards the threshold is used to identify an anomaly in the test data. They then test their method in a set of electroencephalograms (EEG) obtained from patient data. They prove the robustness of their method by successfully identifying epileptic seizures 
+They use a Gaussian Mixture model to map the normal behaviour of the system their dataset describes. This creates a set of normal system states their trained model recognises. In their method they minimise the set of heuristically chosen parameters used in such techniques by using an evolving threshold on how much a data point can differ from a learnt normal state before it gets classified as belonging to another state. When we are training out model, with normal operation data, this results in a new learnt normal state. Afterwards the same threshold is used to identify an anomaly in the test data. They then test their method in a set of electroencephalograms (EEG) obtained from patient data. They prove the robustness of their method by successfully identifying epileptic seizures 
 %% supervisor:
 % - Quantify with results
 %   What was the detection rate?
 %   Do they quantify false positives?
-when they occur.
+% > No added sentence to clarify.
+when they occur. They do not quantify the success of their results by mentioning accuracy, precision or fall out rates. However they include results from particular examples of EEG activity and explain their performance metrics result comparing them with input from domain related knowledge.
 
-A popular technique in Machine Learning is Support Vector Machines. Hence it is no surprise that there are several outlier and anomaly detection methods developed with this technique. Clifton et al.\cite{out2} study luminosity measurements of a Typhoon G30 combustor engine and create an SVM model
-%% supervisor:
-% - Is this one class SVM? ???!!
-for anomaly detection. They use wavelet analysis on the multi channel combustion data to create their feature space and subsequently perform supervised learning to train their SVM to recognise anomalous behaviour. Clifton et al. also compare the results of the SVM approach to the GMM approach on the same dataset. They found that SVM based anomaly detection performed better.
-%% supervisor:
-% - perhaps quantify
-Hayton et al.\cite{out3} also studied SVM based anomaly detection in Jet engine vibration spectra. Their approach also adds the feature of combining a second dataset in order to more accurately train their model. Moreover during the discussion of their results Hayton et al. give a very insightful discussion
+
+A pioneering approach in unsupervised approaches for anomaly detection came from Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset. Their algorithm has come to be known as One class Support Vector Machine algorithm and it has been a very influential algorithm in the field of outlier detection.
+
+
+Hayton et al.\cite{out3} have written another influential paper. They studied Support Vector Machine based anomaly detection in Jet engine vibration spectra. Their approach also adds the feature of combining a second dataset in order to more accurately train their model. Moreover during the discussion of their results Hayton et al. give a very insightful discussion
 %% supervisor:
 % - Very good. I would like to understand their argument.
-on whether it is preferable to address novelty detection as a 2-class classification problem or not. Two key points that they make are that the novel data points may be artificial and that their nature may be non-stationary. This is also the case with intrusion detection systems which is why deployed Intrusion Detection Systems use anomaly detection approaches. 
+on whether it is preferable to address novelty detection as a 2-class classification problem or not. They argue that when the ``abnormal" data points are representative of the abnormal class then training a model as a binary classification problem is optimum. On the other hand they point put that the novel data points may be artificial and that their nature may be non-stationary. In domains with those characteristics it is better to treat only the normal behaviour data points as representative of their class. This is also the case in the Information Technology domain which is why deployed Intrusion Detection Systems use the latter approach.
 
+
+
+Clifton et al.\cite{out2} are a team of researchers that use One class Support Vector Machines for anomaly detection. study luminosity measurements of a Typhoon G30 combustor engine and create an SVM model
+%% supervisor:
+% - Is this one class SVM? ???!!
+% - Yes
+for anomaly detection. They use wavelet analysis on the multi channel combustion data to create their feature space and subsequently perform supervised learning to train their SVM to recognise anomalous behaviour. Clifton et al. also compare the results of the SVM approach to the GMM approach on the same dataset. They found that SVM based anomaly detection performed better and demonstrated that with instances of multi-channel combustion data where the SVM model identified the novelty at earlier times compared to GMM model.
+%% supervisor:
+% - perhaps quantify
+
+Another interesting approach on the subject touches on the issue of the nature of the novel data points being non-stationary. Farran et al.\cite{out5} study the KDD  1999 Cup dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}.
+Their technique uses two steps. The first is using a method called Voted Spheres that runs over the the dataset once and performs non-parametric classification. It results in partitioning the feature space in a series of overlapping spheres. The second step is to take into account the possibility that the test set may not come from the same distribution as the training set. The use two algorithms, important weighting and kernel mean matching to account for that difference. It is useful to mention the author's note that kernel mean matching does not scale very well as the dataset increases due to it's reliance in quadratic programming something that may negate the low computation load of the Voted Spheres method.
 %% supervisor:
 % - Also look at Bassam Farran MSLP (2010)
 % > Downloaded paper, need read it to use it +1 
 %   //BA005 Machine Learning for intrusion detection
+% > Added it.
 
 
-We can also use unsupervised learning approaches when performing anomaly detection. This is pioneered in the work of Schölkopf et al.\cite{out4}. They propose an algorithm that estimates the region where the probability density of some given data lives. New data can be compared to this density for anomaly detection purposes. They describe their method in detail and describe it's conceptual limitations. Then they demonstrate it's characteristics in an artificial dataset and it's effectiveness in a real dataset. Their algorithm has come to be known as One class Support Vector Machine algorithm and we will be using it in our analysis as well.
+
 
 \section{Intrusion Detection Systems}
 
@@ -1051,11 +1111,23 @@ $0.45$ &  $0.849 \pm 0.006$ & $0.464 \pm 0.017$ \\ \hline
 network for novelty detection}, Neural Computation, vol. 6, no. 2,
 pp. 270 - 284, 1994.
 
-\bibitem{out2} Lei A. Clifton, Hujun Yin, and Yang Zhang, \emph{Support Vector Machine in Novelty Detection for Multi-channel Combustion Data}, Proceedings of the third international conference on Advances in Neural Networks - Volume Part III (2006)
+\bibitem{out4} 	Bernhard Schölkopf, John C. Platt, John C. Shawe-Taylor, Alex J. Smola, Robert C. Williamson, \emph{Estimating the Support of a High-Dimensional Distribution}, Neural Computation, Vol. 13, No. 7, pp. 1443-1471, 2001.
 
 \bibitem{out3} P. Hayton, B. Scholkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946 - 952, 2000.
 
-\bibitem{out4} 	Bernhard Schölkopf, John C. Platt, John C. Shawe-Taylor, Alex J. Smola, Robert C. Williamson, \emph{Estimating the Support of a High-Dimensional Distribution}, Neural Computation, Vol. 13, No. 7, pp. 1443-1471, 2001.
+\bibitem{out2} Lei A. Clifton, Hujun Yin, and Yang Zhang, \emph{Support Vector Machine in Novelty Detection for Multi-channel Combustion Data}, Proceedings of the third international conference on Advances in Neural Networks - Volume Part III (2006)
+
+\bibitem{out5} B. Farran, C. Saunders and M. Niranjan, \emph{Machine Learning for Intrusion Detection: Modeling the Distribution Shift}, 2010 IEEE International Workshop on Machine Learning for Signal Processing (MLSP 2010)
+
+
+%MACHINE LEARNING FOR INTRUSION DETECTION: MODELING THE DISTRIBUTION
+%SHIFT
+%Bassam Farran, Craig Saunders, and Mahesan Niranjan
+%School of Electronics & Computer Science, University of Southampton, Southampton, UK
+%bf06r@ecs.soton.ac.uk, Craig.Saunders@xrce.xerox.com, mn@ecs.soton.ac.uk
+% 2010 IEEE International Workshop on Machine Learning for Signal Processing (MLSP 2010)
+% August 29 – September 1, 2010, Kittilä, Finland
+
 
 
 \bibitem{ids1} Monowar H. Bhuyan, D. K. Bhattacharyya, and J. K. Kalita (2014) \emph{Network Anomaly Detection: Methods, Systems and Tools}, IEEE Communications Surveys \& Tutorials, Vol. 16, No. 1, 2014
