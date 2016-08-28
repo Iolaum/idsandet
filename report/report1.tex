@@ -242,11 +242,11 @@ Their technique uses two steps. The first is using a method called Voted Spheres
 
 Bhuyan et al.\cite{ids1} give the following description: ``Intrusion is a set of actions aimed to compromise the security of computer and network components in terms of confidentiality, integrity and availability". Intrusion Detection Systems are our answer to that threat. The basic assumption we make is that our system will behave differently during an intrusion than during normal operation. And this is why it is appropriate to use novelty detection in IDS applications.
 
-There are many attack actions against computer system that can be classified as intrusions with the above definition. Each of them has different specific characteristics. Thus it is helpful for us to divide attacks into certain classes. As we did during Project Preparation\footnote{Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.} we will use the classification used in Bhuyan et al.\cite{ids1} and Ahmed et al.\cite{ids2}. We classify intrusions as Malware attacks, Denial of Service attacks, Network attacks, Physical attacks, Password Attacks, Information Gathering Attacks, Remote to User attacks and User to Root attacks.
+There are many attack actions against a computer system that can be classified as intrusions with the above definition. Each of them has different specific characteristics. Thus it is helpful for us to divide attacks into certain classes. As we did during Project Preparation\footnote{Project Preparation: Outlier Detection in Cybersecurity Application, 2016, submitted by Nikolaos Perrakis.} we will use the classification used in Bhuyan et al.\cite{ids1} and Ahmed et al.\cite{ids2}. We classify intrusions as Malware attacks, Denial of Service attacks, Network attacks, Physical attacks, Password Attacks, Information Gathering Attacks, Remote to User attacks and User to Root attacks.
 Another important property of intrusions is that they have varying anomaly characteristics. We therefore classify them in an additional way. There are \emph{point anomalies} when a data point is considered anomalous when it is distant in comparison to the points that model the normal behaviour of the system. This type of intrusion fits closely the Machine Learning problem of anomaly detection and it will be the main focus of our work. There are also \emph{contextual anomalies} when a data point may be considered anomalous according to the context it is associated as well as it's place in the feature space. The context may be additional features engineered in our feature space or an evaluation of circumstances associated with the data point from the IDS (or it's operator). Lastly there are \emph{collective anomalies} for which a collection of data is considered anomalous but each data point, taken individually, is not. In Table \ref{tab1}\footnote{Table taken from: Project Preparation: Outlier Detection in Cybersecurity Application, 2016, Nikolaos Perrakis} we describe the eight classes of attacks, give examples of them and classify the examples with their respective type of anomalies.
 
 % Full page width table
-\begin{table*}
+\begin{table}
 \centering
 \caption{Types of attacks and associated anomalies.}
 %
@@ -263,64 +263,59 @@ Denial of Service & Attacks that make Network resources inaccessible. & Smurf (c
 Network & Compromising the security of a Network by exploiting Network protocols. & Man-in-the-Middle (point)\\ \hline
 Physical  & Compromising a system or a network through physical access. & Evil Maid (point) \\ \hline
 Password & Trying to find a user's password, usually through multiple login attempts. & Dictionary attack (collective) \\ \hline
-Information Gathering Attacks & Gathering information trying to find vulnerabilities in a network.  & Port scan (collective) \\ \hline
+Information Gathering & Gathering information trying to find vulnerabilities in a network.  & Port scan (collective) \\ \hline
 Remote to User & Trying to get remote access as a user to a system.  & phf (point) \\ \hline
 User to Root & Upgrading a user's privilege to superuser. & Rootkit (point)\\ \hline
 \end{tabular}
 } % end resize
 \label{tab1}
-\end{table*}
+\end{table}
 % end the environment with {table*}, not {table}!
 
 An operational enterprise IDS solution consists of main parts. Two main parts are a Network Intrusion Detection System (NIDS) which analyses traffic over a company's network to detect intrusion and a Host-based Intrusion Detection System (HIDS) which is installed on the company's computers (hosts) and monitors them in order to detect intrusion.
 
 There are many techniques used to identify anomalies on an IDS. Bhuyan et al.\cite{ids1} do a good work on categorizing them and we will follow their classification scheme in presenting them. It should be noted however that these methods are not completely distinct from each other and a particular implementation may include aspects from more than one.
 The first class is statistical methods,
-%% supervisor:
 % - I would like references to each of that examples
-which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous.
+which also includes Bayesian Networks. A model is trained to ``learn" the normal operation of the system. A threshold of statistical distance from normal operation is determined and data points exceeding that threshold are classified as anomalous. For example Krueger et al.\cite{meth1} used Bayesian Networks as part of an IDS system and managed to reduce the false alarm rates compared to threshold based approaches.
 The second class is clustering methods.
-%% supervisor:
 % - I would like references to each of that examples
 A distance or similarity method has to be defined on the feature space. It is then used to cluster the data with various algorithms such as k-means clustering. We then measure the distance of new data points with our learnt clusters
-%% supervisor:
 % - Does this not relate to GMM (with some restrictions)?
 % > Yes, can mention it and give reference as well.
-and use it to classify them as anomalous or not.
+and use it to classify them as anomalous or not. One example of such a method is the work of Bhuyan et al.\cite{meth2} where they create a reference point clustering method to perform outlier detection that works well on large datasets. It is useful to note here that a clustering method, such as k-means clustering, conceptually is quite similar to a Gaussian Mixture model. Such similarities exist for various algorithms that under different implementations can be labelled as different classes in our classification scheme. 
 The third class is classification methods.
-%% supervisor:
 % - I would like references to each of that examples
-They include both supervised and unsupervised algorithms. One good example, that we will use later, are support vector machines (SVM). They can be trained either on pre-labelled data or at non-labelled data depending on the SVM implementation.
+They include both supervised and unsupervised algorithms. One good example, that we will use later, are support vector machines (SVM). They can be trained either on pre-labelled data or at non-labelled data depending on the SVM implementation. Another useful example of such techniques is Support Vector Data Description, a one class classification method described and further extended by Kang et al.\cite{meth3}.
 The fourth class is knowledge based methods.
 %% supervisor:
 % - I would like references to each of that examples
-They take advantage of what has been learnt from previous attacks so that they are able to identify them when they re-appear. Some examples are, ontology, signature based and logic based approaches.
+They take advantage of what has been learnt from previous attacks so that they are able to identify them when they re-appear. These methods include ontology, signature based and logic based approaches. One example of an knowledge based method is Xu's\cite{meth4} work. In it he introduces a sequential anomaly detection method that takes advantage of a markov reward process in a reinforced learning approach.
 The fifth class are soft computing methods.
 %% supervisor:
 % - What does this mean?
 % > Approximation methods! > give reference as well?
-The key point behind them is that if finding the exact solution is not feasible then we can look for approximate solutions. According to Bhuyan et al.\cite{ids1} artificial neural networks are classified as soft computing methods.
-The last class is called combination learner methods and basically consists of techniques that combine more than one of the previous classes in their implementation.
+The key point behind them is that if finding the exact solution is not feasible then we can look for approximate solutions. These methods include Artificial Neural Networks, Rough Sets, Fuzzy Sets, Ant Colony Algorithms, Artificial Immune Systems and Genetic Algorithms. We mention as an example the work of Amini et al.\cite{meth5} where they use adaptive resonance theory (ART) and self organising maps (SOM) unsupervised neural networks for real time intrusion detection.
+% give better citation?
+The last class is called combination learner methods and basically consists of techniques that combine more than one of the previous classes in their implementation. A good example of such method is the work of Borji\cite{meth6}. He uses four classifiers, decision tress, SVM's, ANN's and kNN, that he combines with three different strategies majority voting, belief measure and bayesian averaging.
 
 
-The variety of methods for Intrusion detection can be attributed to their diverse strengths and weaknesses. Additionally the intrusions each IT infrastructure faces are different which means that different IT networks are best suited to different Intrusion Detection methods. For example clustering and Nearest neighbour algorithms have poor performance on high dimensional data because in those cases distance methods cannot accurately differentiate between anomalous and normal data points.
+The variety of methods for Intrusion detection can be attributed to their diverse strengths and weaknesses. Additionally the intrusions each IT infrastructure faces are different which means that different IT networks are best suited to different Intrusion Detection methods. For example clustering and Nearest neighbour algorithms have poor performance on high dimensional data because in those cases distance methods cannot accurately differentiate between anomalous and normal data points. As an example this problem is studied by Aggarwal et al.\cite{meth7} where they mention that the meaning of proximity in high dimensions is problematic. They study the problem empirically focusing on $L_k$ norms and propose fractional $k$'s as a potential solution, though we will not try them here.
 %% supervisor:
 % - Why is there literature to support this? (theoritical/empirical)
-One can try to overcome this with feature reduction techniques, such as spectral techniques or principal component analysis, but he has to be careful to maintain the separation between anomalous and normal data points. In general classification techniques suffer because of the need to pre-label data points. Creating those labels is hard and often-times artificial. This results in them trained model becoming outdated quite fast because of the fast paced evolution of the IT field. Using partially labelled data for semi-supervised clustering techniques can be more efficient than classification methods provided we have a feature space with a good distance measure. If not statistical techniques are a better option. As we mentioned another point to consider is how easy it is to update our application. Statistical, clustering and classification methods are all hard to train. But it can be done off-line and their testing phase is fast. Last but not least there are times when the assumption that intrusion events are rare compared to normal events is not true. In that case an intrusion detection method may end up with a high false positive rate. This is a big problem because it interrupts the normal operation of the user.
+Other ways to overcome this are feature reduction techniques, such as spectral techniques or principal component analysis, but he has to be careful to maintain the separation between anomalous and normal data points. In general classification techniques suffer because of the need to pre-label data points. Creating those labels is hard and often-times artificial. This results in the subsequently trained model becoming outdated quite fast because of the fast paced evolution of the IT field. Using partially labelled data for semi-supervised clustering techniques can be more efficient than classification methods provided we have a feature space with a good distance measure. If not statistical techniques are a better option. As we mentioned another point to consider is how easy it is to update our application. Statistical, clustering and classification methods are all hard to train. But it can be done off-line and their testing phase is fast. Last but not least there are times when the assumption that intrusion events are rare compared to normal events is not true. In that case an intrusion detection method may end up with a high false positive rate. This is a big problem because it interrupts the normal operation of the user.
 
 As we see Intrusion Detection is a very complex problem.  Each IT system has different characteristics and they are better addressed by different techniques. This means that addressing Intrusion Detection to it's entirety goes well far beyond the scope of this project. Therefore we will limit ourselves to a particular case.
 
 %% supervisor:
-% - Good breadth of vocerage. I would like to see more quantitative info.
+% - Good breadth of coverage. I would like to see more quantitative info.
 % ? " xx [5] did this and shared a? Data D, and ??? ??? ??? in performance of Y y ?? and claims this methods has limitations A, B, C" etc
 
 
 
 \section{Datasets}
 
-A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the first attempta to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. Even though these datasets have been a standard in the academia for more than a decade they have been heavily criticized as well. Apart from it being outdated several researchers have found artefacts of the simulation used to create the datasets within the data. Moreover the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting
-%% supervisor:
-% - Give the exact references
+A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the early attempts to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. The dataset was a result of the work done by Stolfo et al.\cite{dat01}. Even though the DARPA 1999 dataset has been a standard in the academia for more than a decade it has been heavily criticized as well. McHugh\cite{dat02} has criticized the procedure used to generate the dataset and more specifically the validation process  used for the validation set. Mahoney et al.\cite{dat03} have found artefacts of the simulation used to create the datasets within the data undermining the credibility of performance results from intrusion detection algorithms. Moreover Ahmed et al\cite{dat04} argue that the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting
 that the number of attacks present in the dataset is inaccurate.
 
 Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. The dataset used in this project addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
@@ -1133,6 +1128,32 @@ pp. 270 - 284, 1994.
 \bibitem{ids1} Monowar H. Bhuyan, D. K. Bhattacharyya, and J. K. Kalita (2014) \emph{Network Anomaly Detection: Methods, Systems and Tools}, IEEE Communications Surveys \& Tutorials, Vol. 16, No. 1, 2014
 
 \bibitem{ids2} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
+
+\bibitem{meth1} C. Kruegel, D. Mutz, W. Robertson, and F. Valeur, \emph{Bayesian event classification for intrusion detection}, in Proc. 19th Annual Computer Security Applications Conference, 2003
+
+\bibitem{meth2} M. H. Bhuyan, D. K. Bhattacharyya, and J. K. Kalita, \emph{RODD: An Effective Reference-Based Outlier Detection Technique for Large Datasets}, in Advanced Computing. Springer, 2011, vol. 133, pp.76–84.
+
+\bibitem{meth3} I. Kang, M. K. Jeong, and D. Kong, \emph{A differentiated one-class classification method with applications to intrusion detection}, Expert Systems with Applications, vol. 39, no. 4, pp. 3899–3905, March 2012.
+
+\bibitem{meth4} X. Xu, \emph{Sequential anomaly detection based on temporal-difference
+learning: Principles, models and case studies}, Applied Soft Computing, vol. 10, no. 3, pp. 859–867, 2010
+
+\bibitem{meth5} M. Amini, R. Jalili, and H. R. Shahriari, \emph{RT-UNNID: A practical solu-
+tion to real-time network-based intrusion detection using unsupervised neural networks}, Computers \& Security, vol. 25, no. 6, pp. 459–468, 2006
+
+\bibitem{meth6} A. Borji, \emph{Combining heterogeneous classifiers for network intrusion
+detection}, in Proc. 12th Asian Computing Science Conference on Advances in Computer Science: Computer and Network Security. Springer, 2007, pp. 254–260.
+
+\bibitem{meth7} C. Aggarwal, A. Hinneburg, and D. Keim, \emph{An empirical evaluation of supervised learning in high dimensions}, ICML '08: Proceedings of the 25th International Conference on Machine learning Pages 96-103
+
+\bibitem{dat01} S. J. Stolfo, W. Fan, W. Lee, A. Prodromidis, and P. K. Chan, \emph{Cost-Based Modeling for Fraud and Intrusion Detection: Results from the JAM Project}, in Proc. DARPA Information Survivability Conference and Exposition, vol. 2. USA: IEEE CS, 2000, pp. 130–144.
+
+\bibitem{dat02} J. McHugh, \emph{Testing intrusion detection systems: A critique of the 1998 and 1999 Darpa intrusion detection system evaluations as performed by Lincoln laboratory}. 
+ACM Transactions on Information Systems and Systems Security, Volum 3, Issue 4, pages 262 - 294, 2000
+
+\bibitem{dat03} M. Mahoney and P. Chan, \emph{An Analysis of the 1999 DARPA/Lincoln Laboratory Evaluation Data for Network Anomaly Detection}, Recent Advances in Intrusion Detection,  Volume 2820 of the series Lecture Notes in Computer Science pp 220-237
+
+\bibitem{dat04} M. Ahmed, A. Mahmood, J. Hu, \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
 \bibitem{adf1} Miao Xie, Jiankun Hu, Xinghuo Yu, and Elizabeth Chang \emph{Evaluating Host-Based Anomaly Detection Systems: Application of the Frequency-Based Algorithms to ADFA-LD}, 11th International Conference on Fuzzy Systems and Knowledge Discovery, 2014
 
