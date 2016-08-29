@@ -10,7 +10,7 @@
 /pictures
 
 # report folder
-/report/
+/report/*
 # except LaTeX files
 !/report/report1.tex
 !/report/pres1.tex

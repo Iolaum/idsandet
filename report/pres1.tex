@@ -1,0 +1,100 @@
+\documentclass{beamer}
+
+\usepackage{beamerthemesplit}
+
+\title{Intrusion Detection using Outliers in a Cybersecurity Dataset}
+\author{Nikolaos Perrakis}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section[Outline]{}
+\frame{\tableofcontents}
+
+\section{Introduction}
+%\subsection{Overview of the Beamer Class}
+\frame
+{
+  %\frametitle{Introduction}
+
+  \begin{itemize}
+  \item Anomaly and Outlier Detection
+  \item 4\textsuperscript{th} Industrial Revolution
+  \item Intrusion Detection Systems
+  \end{itemize}
+}
+
+\section{Datasets}
+\subsection{DARPA/KDD Cup Dataset}
+\frame
+{
+DARPA 1998 and KDD Cup 1999 Intrusion Detection Datasets are the first well known attempts to create a solid IDS dataset. However they have many problems\cite{ids3}:
+\begin{itemize}
+\item Generation procedure could have been more realistic.
+\item Software used is outdated and misrepresentative of current IT landscape.
+\item Artefacts of the simulation cause overestimation of efficiency.
+\item Inconsistency in labels and attacks used.
+\end{itemize}
+}
+
+\subsection{Modern Datasets}
+\frame
+{
+The main dataset we will use during the MSc Project:\\
+\textbf{ADFA LD12}\cite{dat2} Dataset:
+\begin{itemize}
+\item Representative of modern attack structure and methodology.
+\item Updated software with the inclusion of a component with a known vulnurenability.
+\end{itemize}
+Another good candidate is the \textbf{AWID 2015}\cite{dat3} Dataset.\\ 
+10 Gb in size, we can check scalability of our methods.
+}
+
+\section{Feature Engineering}
+\frame
+{Our Data:\\
+A (time) series of kernel system calls!
+
+}
+
+
+\section{Machine Learning Algorithms}
+\frame
+{
+We will focus on Statistical Based Outlier Detection.
+\begin{itemize}
+\item Gaussian Mixture Model Anomaly Detection\cite{out2}
+\item Support Vector Machine for Novelty Detection\cite{out3}
+\item Outlier Rejecting Regression\cite{out6}
+\end{itemize}
+}
+
+\section{Research Prospects}
+\frame{
+\begin{itemize}
+\item Apply Machine Learning Anomaly Detection Algorithms in Intrusion Detection Settings.
+\item Improve Efficiency of Anomaly Detection Algorithms in Intrusion Detection Settings.
+\item Improve Scalability of algorithms for applications in modern IT infrastructure.
+\end{itemize}
+}
+
+\section{Bibliography}
+\frame
+{
+\scriptsize
+\bibliographystyle{acm}
+\begin{thebibliography}{6}
+\bibitem{out2} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating network for novelty detection}, Neural Computation, vol. 6, no. 2, pp. 270 - 284, 1994.
+\bibitem{out3} P. Hayton, B. Sch¨olkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946–952, 2000.
+\bibitem{out6} Y. Gunawardana, S. Fujiwara, A. Takeda, J. Woo, C. Woelk, and M. Niranjan, \emph{Outlier detection at the transcriptomeproteome interface}, Bioinformatics, 2015.
+
+\bibitem{ids3} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
+
+\bibitem{dat2} Gideon Creech, Jiankun Huy \emph{Generation of a new IDS Test Dataset: Time to Retire the KDD Collection}, 
+2013 IEEE Wireless Communications and Networking Conference (WCNC)
+\bibitem{dat3} Constantinos Kolias, Georgios Kambourakis, Angelos Stavrou, and Stefanos Gritzalis (2015) \emph{Intrusion Detection in 802.11 Networks: Empirical Evaluation of Threats and a Public Dataset} IEEE Communication Surveys \& Tutorials, Vol. 18, No. 1, 2016
+\end{thebibliography}
+}
+\end{document}
