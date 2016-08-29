@@ -2,6 +2,10 @@
 
 \usepackage{beamerthemesplit}
 
+% How do I get numbered entries in a beamer bibliography
+% http://tex.stackexchange.com/a/124271/111537
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
 \title{Intrusion Detection using Outliers in a Cybersecurity Dataset}
 \author{Nikolaos Perrakis}
 \date{\today}
@@ -39,25 +43,68 @@ DARPA 1998 and KDD Cup 1999 Intrusion Detection Datasets are the first well know
 \end{itemize}
 }
 
-\subsection{Modern Datasets}
+\subsection{ADFA-LD 12 Dataset}
 \frame
 {
 The main dataset we will use during the MSc Project:\\
-\textbf{ADFA LD12}\cite{dat2} Dataset:
+\center{ is the \textbf{ADFA LD12}\cite{dat2} Dataset}:
 \begin{itemize}
-\item Representative of modern attack structure and methodology.
-\item Updated software with the inclusion of a component with a known vulnurenability.
+\item Updated software with the inclusion of a component with a known vulnurenability.\\
+\begin{itemize}
+\item  Common architectural service of web server solutions (LAMP):\\
+Ubuntu $11.04$, Apache v$2.2.17$,  PHP v$5.3.5$ and MySQL v$14.14$
+\item FTP and SSH services were enabled to simulate remote administration
+\item Tiki Wiki v$8.1$ - web based collaborative tool. It has a known vulnerability which simulates 0-day exploitable bug.
 \end{itemize}
-Another good candidate is the \textbf{AWID 2015}\cite{dat3} Dataset.\\ 
-10 Gb in size, we can check scalability of our methods.
+
+\item Representative of modern attack structure and methodology.
+
+\end{itemize}
 }
+
+\begin{frame}{Attacks used in ADFA-LD 12 dataset.}
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Payload/Effect} & \textbf{Vector} \\ \hline 
+Password brute force  & ftp by hydra \\ \hline
+Password brute force & ssh by hydra \\ \hline
+Add new superuser & Client side poison executable\\ \hline
+Java based meterpreter & Tiki Wiki Vulnerability exploit\\ \hline
+Linux meterpreter payload & Client sidepoison executable\\ \hline
+C100 Webshell & Php remote file inclusion vulnerability \\ \hline
+\end{tabular}
+%\vspace{5pt}
+%\caption{Attacks used in ADFA-LD 12 dataset.}
+\label{tab2}
+\end{table}
+\end{frame}
+
+\begin{frame}{Data Format}
+%{
+Each data point is a variable length (time) series of kernel system calls!
+
+\begin{table}
+\begin{tabular}{|c|c|}
+\hline
+Subset &  Data points \\ \hline 
+Training  & 833 \\ \hline
+Validation & 4372 \\ \hline
+Attack &  719\\ \hline
+\end{tabular}
+\vspace{5pt}
+\caption{Subsets of ADFA-LD 12 dataset.}
+\label{tab3}
+\end{table}
+
+%}
+\end{frame}
+
+
+
 
 \section{Feature Engineering}
-\frame
-{Our Data:\\
-A (time) series of kernel system calls!
 
-}
 
 
 \section{Machine Learning Algorithms}
@@ -74,9 +121,10 @@ We will focus on Statistical Based Outlier Detection.
 \section{Research Prospects}
 \frame{
 \begin{itemize}
-\item Apply Machine Learning Anomaly Detection Algorithms in Intrusion Detection Settings.
-\item Improve Efficiency of Anomaly Detection Algorithms in Intrusion Detection Settings.
-\item Improve Scalability of algorithms for applications in modern IT infrastructure.
+\item Improve feature engineering or use more custom kernels for SVM methods for better performance.
+\item Improve Scalability of algorithms.\\
+A good candidate is the \textbf{AWID 2015}\cite{dat3} Dataset.\\ 
+10 Gb in size, we can check scalability of our methods.
 \end{itemize}
 }
 
@@ -84,7 +132,7 @@ We will focus on Statistical Based Outlier Detection.
 \frame
 {
 \scriptsize
-\bibliographystyle{acm}
+\bibliographystyle{abbrv}
 \begin{thebibliography}{6}
 \bibitem{out2} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating network for novelty detection}, Neural Computation, vol. 6, no. 2, pp. 270 - 284, 1994.
 \bibitem{out3} P. Hayton, B. Sch¨olkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946–952, 2000.
