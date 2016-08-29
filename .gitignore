@@ -11,8 +11,9 @@
 
 # report folder
 /report/
-# except LaTeX file
+# except LaTeX files
 !/report/report1.tex
+!/report/pres1.tex
 
 
 ## Default exceptions by github for python
