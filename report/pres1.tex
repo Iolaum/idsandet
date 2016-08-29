@@ -2,9 +2,26 @@
 
 \usepackage{beamerthemesplit}
 
+
+% Insert multiple figures in Latex
+% http://tex.stackexchange.com/a/119907/111537
+\usepackage{float}
+\usepackage[caption = false]{subfig}
+\usepackage{graphicx}
+
+% introduced to resize big table of attack types
+% http://tex.stackexchange.com/questions/10863/is-there-a-way-to-slightly-shrink-a-table-including-font-size-to-fit-within-th
+\usepackage{graphics}
+
+
+
 % How do I get numbered entries in a beamer bibliography
 % http://tex.stackexchange.com/a/124271/111537
 \setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% Beamer: change size of figure caption
+% http://tex.stackexchange.com/a/196217/111537
+\setbeamerfont{caption}{size=\scriptsize}
 
 \title{Intrusion Detection using Outliers in a Cybersecurity Dataset}
 \author{Nikolaos Perrakis}
@@ -103,25 +120,495 @@ Attack &  719\\ \hline
 
 
 
-\section{Feature Engineering}
+\section{Preprocessing}
+\subsection{Exploratory Data Analysis}
 
+\begin{frame}
+\begin{itemize}
+\item Convert text files in subdirectories to single pickle files.\\
+		Use python dictionary object to maintain all information included in the dataset.
+\item Perform Exploratory Data Analysis on those files to learn more about the dataset.\\
+Find which system calls are present on the dataset!\\
+\item[*] 325 system calls on kernel but 4 of them are representing by numbers $> 325$
+\end{itemize}
+
+\end{frame}
+
+
+\frame
+{
+\frametitle{System calls distribution in ADFA - LD 12}
+\vspace{-9pt}
+\begin{figure}
+\includegraphics[width = 0.65\textwidth]{a17-syscalls-7.eps}
+\caption{System calls \# 150 - 175 total count in training, attack and validation set.}
+\end{figure}
+}
+
+\frame
+{
+\frametitle{Frequency Space Principal Components}
+\begin{figure}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-1.eps}}
+\subfloat{\includegraphics[width = 0.5\textwidth]{a13-pcaplot-2.eps}}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+}
+
+\subsection{Feature Engineering}
+
+\frame
+{
+\itemize
+{
+\item Count frequency of each system call on data point to create system calls frequency feature space.
+\item Perform PCA on the frequency space and keep the first 9 principal components.
+\item Count frequency of two-sequence system calls on data point  to create two-sequence feature space.
+}
+}
 
 
 \section{Machine Learning Algorithms}
 \frame
 {
-We will focus on Statistical Based Outlier Detection.
+\frametitle{Outline}
+\textbf{Frequency Feature Space:}
 \begin{itemize}
-\item Gaussian Mixture Model Anomaly Detection\cite{out2}
-\item Support Vector Machine for Novelty Detection\cite{out3}
-\item Outlier Rejecting Regression\cite{out6}
+\item k - Nearest Neighbours\cite{adf1}
+\item k - Means Clustering\cite{adf1}
+\item Support Vector Machines - Two pattern classification
+\item One - class Support Vector Machines
+\end{itemize}
+\textbf{Two Sequence Feature Space:}
+\begin{itemize}
+\item Support Vector Machines - Two pattern classification
+\item One - class Support Vector Machines
 \end{itemize}
 }
+
+\subsection{k-Nearest Neighbours}
+\frame{
+\frametitle{Performance under euclidean distance.}
+\begin{columns}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{b08-roc-1.eps}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.745 \\ \hline
+hydra ftp        & 0.593 \\ \hline
+hydra ssh        & 0.549 \\ \hline
+java meterpreter & 0.727 \\ \hline
+meterpreter      & 0.710 \\ \hline
+web shell        & 0.734 \\ \hline
+\end{tabular}
+}
+%\vspace{5pt}
+\caption{Area under the ROC curve.}
+%\label{knnt3}
+
+\end{table}
+\end{columns}
+}
+
+\frame{
+\frametitle{Performance under standardised euclidean distance.}
+\begin{columns}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{b08-roc-2.eps}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.696 \\ \hline
+hydra ftp        & 0.574 \\ \hline
+hydra ssh        & 0.518 \\ \hline
+java meterpreter & 0.689 \\ \hline
+meterpreter      & 0.705 \\ \hline
+web shell        & 0.697 \\ \hline
+\end{tabular}
+}
+%\vspace{5pt}
+\caption{Area under the ROC curve.}
+%\label{knnt3}
+\end{table}
+\end{columns}
+}
+
+
+\subsection{k-Means Clustering}
+
+\frame{
+\frametitle{Performance under euclidean distance.}
+\begin{columns}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{b08-roc-3kmc.eps}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.6893 \\ \hline
+hydra ftp        & 0.6428 \\ \hline
+hydra ssh        & 0.4690 \\ \hline
+java meterpreter & 0.6858 \\ \hline
+meterpreter      & 0.7475 \\ \hline
+web shell        & 0.7158 \\ \hline
+\end{tabular}
+}
+%\vspace{5pt}
+\caption{Area under the ROC curve.}
+%\label{knnt3}
+\end{table}
+\end{columns}
+}
+
+
+\subsection{Support Vector Machines - reduced frequency space}
+
+\frame{
+\frametitle{Exploring the SVM parameter space.}
+\begin{columns}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{c02-svm-plot.eps}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Regularisation parameter \\ \hline 
+adduser          & 10 \\ \hline
+hydra ftp        & 0.05 \\ \hline
+hydra ssh        & 0.5 \\ \hline
+java meterpreter & 0.1 \\ \hline
+meterpreter      & 10 \\ \hline
+web shell        & 1 \\ \hline
+\end{tabular}
+}
+%\vspace{5pt}
+\caption{Optimum regularisation values.}
+%\label{knnt3}
+\end{table}
+\end{columns}
+}
+
+
+
+\frame{
+\frametitle{SVM performance with linear kernel.}
+\begin{columns}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width = 1\textwidth]{c05-svm-roc.eps}
+%\caption{Principal Components of training and attack subsets.}
+%\label{pca1}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+Attack Used &  Area under ROC curve \\ \hline 
+adduser          & 0.8303 \\ \hline
+hydra ftp        & 0.6978 \\ \hline
+hydra ssh        & 0.7801 \\ \hline
+java meterpreter & 0.8628 \\ \hline
+meterpreter      & 0.9105 \\ \hline
+web shell        & 0.8354 \\ \hline
+\end{tabular}
+}
+%\vspace{5pt}
+\caption{Area under the ROC curve.}
+%\label{knnt3}
+\end{table}
+\end{columns}
+}
+
+
+\frame{
+\frametitle{SVM on a two pattern classification setting.}
+
+\begin{table}
+\resizebox{0.5\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.62 \pm 0.08$ & $0.20 \pm 0.03$ \\ \hline 
+$0.25$ &  $0.62 \pm 0.08$ & $0.20 \pm 0.03$ \\ \hline 
+$0.5$ &  $0.62 \pm 0.08$ & $0.19 \pm 0.03$ \\ \hline 
+$1$ &  $0.62 \pm 0.08$ & $0.19 \pm 0.04$ \\ \hline 
+$2$ &  $0.61 \pm 0.09$ & $0.19 \pm 0.03$ \\ \hline 
+$4$ &  $0.63 \pm 0.07$ & $0.20 \pm 0.03$ \\ \hline 
+$8$ &  $0.64 \pm 0.08$ & $0.21 \pm 0.04$ \\ \hline 
+$16$ &  $0.64 \pm 0.10$ & $0.23 \pm 0.05$ \\ \hline 
+$32$ &  $0.64 \pm 0.11$ & $0.24 \pm 0.06$ \\ \hline
+\end{tabular}
+}
+\vspace{5pt}
+\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Reduced frequency feature space was used for training and validation.}
+\end{table}
+}
+
+\subsection{Support Vector Machines - complete frequency space}
+
+
+\frame{
+\frametitle{SVM on a two pattern classification setting.}
+\begin{table}
+\resizebox{0.5\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.62 \pm 0.10$ & $0.17 \pm 0.04$ \\ \hline 
+$0.25$ &  $0.64 \pm 0.09$ & $0.17 \pm 0.04$ \\ \hline 
+$0.5$ &  $0.66 \pm 0.09$ & $0.16 \pm 0.04$ \\ \hline 
+$1$ &  $0.68 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline 
+$2$ &  $0.76 \pm 0.07$ & $0.19 \pm 0.05$ \\ \hline 
+$4$ &  $0.81 \pm 0.08$ & $0.19 \pm 0.04$ \\ \hline 
+$8$ &  $0.91 \pm 0.04$ & $0.18 \pm 0.03$ \\ \hline 
+$16$ &  $0.91 \pm 0.05$ & $0.18 \pm 0.03$ \\ \hline 
+$32$ &  $0.92 \pm 0.04$ & $0.18 \pm 0.03$ \\ \hline
+$64$ &  $0.93 \pm 0.05$ & $0.16 \pm 0.04$ \\ \hline
+$128$ &  $0.92 \pm 0.06$ & $0.16 \pm 0.04$ \\ \hline
+\end{tabular}
+}
+\vspace{5pt}
+\caption{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Complete frequency feature space was used for training and validation.}
+\end{table}
+
+}
+
+\frame{
+\frametitle{Recursive Feature Elimination with SVM}
+\begin{figure}
+\includegraphics[width = 0.55\textwidth]{d07-rfe-svm-1.eps}
+\vspace{-10pt}
+\caption{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls frequency feature space while conducting Recursive Feature Elimination. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Optimal number of features is 54.}
+\end{figure}
+}
+
+
+\subsection{One-class SVM - complete frequency space}
+
+\frame{
+\frametitle{One-class SVM training and bound for training errors.}
+\begin{columns}
+\column{0.6\textwidth}
+\vspace{-10pt}
+\begin{figure}
+\includegraphics[width = \textwidth]{d08-1csvm-v1.eps}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.1$ &  $0.55 \pm 0.10$ & $0.19 \pm 0.05$ \\ \hline 
+$0.2$ &  $0.53 \pm 0.04$ & $0.22 \pm 0.03$ \\ \hline 
+$0.3$ &  $0.59 \pm 0.02$ & $0.30 \pm 0.02$ \\ \hline 
+$0.4$ &  $0.82 \pm 0.04$ & $0.41 \pm 0.01$ \\ \hline 
+$0.5$ &  $0.89 \pm 0.01$ & $0.49 \pm 0.02$ \\ \hline 
+$0.6$ &  $0.910 \pm 0.001$ & $0.61 \pm 0.01$ \\ \hline 
+$0.7$ &  $0.912 \pm 1\cdot 10^{-16}$ & $0.73 \pm 0.10$ \\ \hline 
+$0.8$ &  $0.91 \pm 6\cdot 10^{-4}$ & $0.81 \pm 0.10$ \\ \hline 
+$0.9$ &  $0.93 \pm 0.007$ & $0.904 \pm 0.009$ \\ \hline
+$1.0$ &  $1.0 \pm 0.0$ & $1.0 \pm 0.0$ \\ \hline
+\end{tabular}
+}
+\end{table}
+\end{columns}
+\tiny{
+Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.4$.
+}
+}
+
+
+\frame{
+\frametitle{One-class SVM training and bound for training errors.}
+\begin{columns}
+\column{0.6\textwidth}
+\vspace{-10pt}
+\begin{figure}
+\includegraphics[width = \textwidth]{d08-1csvm-v2.eps}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.35$ &  $0.67 \pm 0.04$ & $0.36 \pm 0.01$ \\ \hline 
+$0.36$ &  $0.68 \pm 0.04$ & $0.37 \pm 0.01$ \\ \hline 
+$0.37$ &  $0.71 \pm 0.06$ & $0.39 \pm 0.02$ \\ \hline 
+$0.38$ &  $0.75 \pm 0.04$ & $0.40 \pm 0.01$ \\ \hline 
+$0.39$ &  $0.77 \pm 0.04$ & $0.40 \pm 0.01$ \\ \hline 
+$0.40$ &  $0.83 \pm 0.04$ & $0.41 \pm 0.02$ \\ \hline 
+$0.41$ &  $0.85 \pm 0.01$ & $0.42 \pm 0.02$ \\ \hline 
+$0.42$ &  $0.85 \pm 0.02$ & $0.42 \pm 0.02$ \\ \hline 
+$0.43$ &  $0.858 \pm 0.001$ & $0.431 \pm 0.010$ \\ \hline
+$0.44$ &  $0.862 \pm 0.002$ & $0.449 \pm 0.006$ \\ \hline
+$0.45$ &  $0.864 \pm 0.004$ & $0.45 \pm 0.01$ \\ \hline
+\end{tabular}
+}
+\end{table}
+\end{columns}
+\tiny{
+Exploring 1-class SVM with a sigmoid kernel to find it's optimum performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.41$.
+}
+}
+
+
+
+
+
+\subsection{Support Vector Machines - two-sequence feature space}
+
+\frame{
+\frametitle{SVM on a two pattern classification setting.}
+\begin{table}
+\resizebox{0.5\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+Regularisation (C) &  Precision & Fall out \\ \hline 
+$0.125$ &  $0.93 \pm 0.02$ & $0.068 \pm 0.010$ \\ \hline 
+$0.25$ &  $0.93 \pm 0.02$ & $0.062 \pm 0.009$ \\ \hline 
+$0.5$ &  $0.92 \pm 0.02$ & $0.054 \pm 0.009$ \\ \hline 
+$1$ &  $0.91 \pm 0.02$ & $0.049 \pm 0.007$ \\ \hline 
+$2$ &  $0.91 \pm 0.02$ & $0.047 \pm 0.006$ \\ \hline 
+$4$ &  $0.88 \pm 0.03$ & $0.046 \pm 0.007$ \\ \hline 
+$8$ &  $0.86 \pm 0.03$ & $0.043 \pm 0.006$ \\ \hline 
+$16$ &  $0.84 \pm 0.04$ & $0.041\pm 0.005$ \\ \hline 
+$32$ &  $0.81 \pm 0.03$ & $0.038 \pm 0.004$ \\ \hline
+\end{tabular}
+}
+\end{table}
+\tiny{8-fold stratified cross validation results for various regularisation parameter values of SVM classifier with linear kernel. Results are presented with mean and standard deviation for two metrics. True Positive rate (Precision) and False Positive rate (Fall out). Two-sequence feature space was used for training and validation.}
+}
+
+
+\frame{
+\frametitle{Recursive Feature Elimination with SVM}
+\begin{figure}
+\includegraphics[width = 0.55\textwidth]{e10-rfe-svm-1.eps}
+\vspace{-12pt}
+\end{figure}
+\tiny{Scorer (= Precision - Fall out) performance metric compared to number of features in the complete system calls two-sequence feature space while conducting Recursive Feature Elimination. StratifiedShuffleSplit method was used for cross validation in order to assess scorer. Elimination step is 24. Optimal number of features is 2088.}
+}
+
+
+
+\subsection{One-class SVM - two-sequence feature space}
+
+\frame{
+\frametitle{One-class SVM training and bound for training errors.}
+\begin{columns}
+\column{0.6\textwidth}
+\vspace{-10pt}
+\begin{figure}
+\includegraphics[width = \textwidth]{e12-1csvm-v1.eps}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.1$ &  $0.55 \pm 0.03$ & $0.20 \pm 0.01$ \\ \hline 
+$0.2$ &  $0.58 \pm 0.01$ & $0.245 \pm 0.009$ \\ \hline 
+$0.3$ &  $0.72 \pm 0.02$ & $0.32 \pm 0.02$ \\ \hline 
+$0.4$ &  $0.826 \pm 0.004$ & $0.41 \pm 0.02$ \\ \hline 
+$0.5$ &  $0.876 \pm 0.006$ & $0.50 \pm 0.01$ \\ \hline 
+$0.6$ &  $0.9269 \pm 0.0008$ & $0.64 \pm 0.07$ \\ \hline 
+$0.7$ &  $0.930 \pm 0.001$ & $0.76 \pm 0.09$ \\ \hline 
+$0.8$ &  $0.936 \pm 0.004$ & $0.86 \pm 0.07$ \\ \hline 
+$0.9$ &  $0.9560 \pm 0.0005$ & $0.909 \pm 0.007$ \\ \hline
+$1.0$ &  $1.0 \pm 0.0$ & $1.0 \pm 0.0$ \\ \hline
+\end{tabular}
+}
+\end{table}
+\end{columns}
+\tiny{
+Exploring 1-class SVM with a sigmoid kernel to assess it's performance depending on the upper bound for the fraction of training errors. Dataset was feature engineered on two-sequence feature space. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.4$.
+}
+}
+
+
+\frame{
+\frametitle{One-class SVM training and bound for training errors.}
+\begin{columns}
+\column{0.6\textwidth}
+\vspace{-10pt}
+\begin{figure}
+\includegraphics[width = \textwidth]{e12-1csvm-v2.eps}
+\end{figure}
+\column{0.3\textwidth}
+\begin{table}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|c|c|c|}
+\hline
+$\nu$ &  Precision & Fall out \\ \hline 
+$0.35$ &  $0.788 \pm 0.008$ & $0.366 \pm 0.007$ \\ \hline 
+$0.36$ &  $0.805 \pm 0.008$ & $0.379 \pm 0.012$ \\ \hline 
+$0.37$ &  $0.807 \pm 0.006$ & $0.380 \pm 0.013$ \\ \hline 
+$0.38$ &  $0.820 \pm 0.008$ & $0.398 \pm 0.011$ \\ \hline 
+$0.39$ &  $0.822 \pm 0.003$ & $0.403 \pm 0.012$ \\ \hline 
+$0.40$ &  $0.827 \pm 0.003$ & $0.410 \pm 0.010$ \\ \hline 
+$0.41$ &  $0.832 \pm 0.005$ & $0.428 \pm 0.018$ \\ \hline 
+$0.42$ &  $0.832 \pm 0.004$ & $0.424 \pm 0.013$ \\ \hline 
+$0.43$ &  $0.835 \pm 0.004$ & $0.435 \pm 0.011$ \\ \hline
+$0.44$ &  $0.839 \pm 0.005$ & $0.448 \pm 0.012$ \\ \hline
+$0.45$ &  $0.849 \pm 0.006$ & $0.464 \pm 0.017$ \\ \hline
+\end{tabular}
+}
+\end{table}
+\end{columns}
+\tiny{
+Exploring 1-class SVM with a sigmoid kernel to find it's optimum performance depending on the upper bound for the fraction of training errors. ShuffleSplit method was used for cross validation to create two, equal in size, normal behaviour datasets for training and validation. Optimal performance for upper bound $\nu = 0.36$.
+}
+}
+
+\section{Results}
+
+\frame{
+\begin{itemize}
+\item We successfully replicated results of \cite{adf1} for kNN and kMC.
+\item We improved performance with SVM's and by moving to the full feature space.
+\item We identified key system calls with RFE.
+\item We demonstrated that moving to two-sequence feature space improves performance.
+\item We saw that unsupervised learning general purpose approaches do not perform very well.
+\end{itemize}
+}
+
 
 \section{Research Prospects}
 \frame{
 \begin{itemize}
-\item Improve feature engineering or use more custom kernels for SVM methods for better performance.
+\item Combine domain knowledge with the information provided from recursive feature elimination.
+\item Improve feature engineering or use more custom kernels for one-class SVM methods for better performance.
 \item Improve Scalability of algorithms.\\
 A good candidate is the \textbf{AWID 2015}\cite{dat3} Dataset.\\ 
 10 Gb in size, we can check scalability of our methods.
@@ -133,16 +620,25 @@ A good candidate is the \textbf{AWID 2015}\cite{dat3} Dataset.\\
 {
 \scriptsize
 \bibliographystyle{abbrv}
-\begin{thebibliography}{6}
-\bibitem{out2} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating network for novelty detection}, Neural Computation, vol. 6, no. 2, pp. 270 - 284, 1994.
-\bibitem{out3} P. Hayton, B. Sch¨olkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946–952, 2000.
-\bibitem{out6} Y. Gunawardana, S. Fujiwara, A. Takeda, J. Woo, C. Woelk, and M. Niranjan, \emph{Outlier detection at the transcriptomeproteome interface}, Bioinformatics, 2015.
+\begin{thebibliography}{5}
+%\bibitem{out2} S. Roberts and L. Tarassenko, \emph{A probabilistic resource allocating network for novelty detection}, Neural Computation, vol. 6, no. 2, pp. 270 - 284, 1994.
+%\bibitem{out3} P. Hayton, B. Sch¨olkopf, L. Tarassenko, and P. Anuzis, \emph{Support vector novelty detection applied to jet engine vibration spectra}, in NIPS, pp. 946–952, 2000.
+%\bibitem{out6} Y. Gunawardana, S. Fujiwara, A. Takeda, J. Woo, C. Woelk, and M. Niranjan, \emph{Outlier detection at the transcriptomeproteome interface}, Bioinformatics, 2015.
 
 \bibitem{ids3} Mohiuddin Ahmed, Abdun Naser Mahmood, Jiankun Hu \emph{A survey of network anomaly detection techniques}, Journal of Network and Computer Applications. Vol. 60, January 2016, p. 19-31
 
 \bibitem{dat2} Gideon Creech, Jiankun Huy \emph{Generation of a new IDS Test Dataset: Time to Retire the KDD Collection}, 
 2013 IEEE Wireless Communications and Networking Conference (WCNC)
 \bibitem{dat3} Constantinos Kolias, Georgios Kambourakis, Angelos Stavrou, and Stefanos Gritzalis (2015) \emph{Intrusion Detection in 802.11 Networks: Empirical Evaluation of Threats and a Public Dataset} IEEE Communication Surveys \& Tutorials, Vol. 18, No. 1, 2016
+
+\bibitem{adf1} M. Xie, J. Hu, X. Yu, and Elizabeth Chang \emph{Evaluating Host-Based Anomaly Detection Systems: Application of the Frequency-Based Algorithms to ADFA-LD}, 11th International Conference on Fuzzy Systems and Knowledge Discovery, 2014
+
+\bibitem{adf2} M. Xie, J. Hu and J. Slay \emph{Evaluating Host-based Anomaly Detection Systems:
+Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th IEEE International Conference on Fuzzy Systems and Knowledge Discovery (FSKD 2014), Xiamen, 19-21 August 2014, 978-982. 
+
+
+
 \end{thebibliography}
+
 }
 \end{document}

@@ -412,7 +412,7 @@ After that we worked on replicating results of previous papers\cite{adf1}, \cite
 
 \section{Dataset Documentation}
 
-The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. The data was produced by Creech et al.\cite{dat2} by the following process. In order to simulate a typical real world case they used a common architectural configuration used in web servers, called LAMP stack. LAMP means Linux, Apache, MySQL, PHP after the names of the core software this approach uses. Consequently for the creation of the dataset Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed and lastly MySQL v$14.14$. Apart from that, file transfer protocol (ftp), secure shell (ssh) and  were enabled in order to simulate remote administration of the server and the attack surface that comes with it. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
+The dataset we will use for this project is a modern dataset. It has been presented in 2013 IEEE Wireless Communications and Networking Conference\cite{dat2}. It uses modern software that simulates real user cases in the IT landscape. The data was produced by Creech et al.\cite{dat2} by the following described below. Given their goal to simulate a typical real world case they used a common architectural configuration used in web servers, called LAMP stack. LAMP means Linux, Apache, MySQL, PHP after the names of the core software this approach uses. Consequently for the creation of the dataset Ubuntu 11.04 is used as the server operating system. In order to enable intrusion from the internet Apache v$2.2.17$ and PHP v$5.3.5$ were also installed and lastly MySQL v$14.14$. Apart from that, file transfer protocol (ftp), secure shell (ssh) and  were enabled in order to simulate remote administration of the server and the attack surface that comes with it. Their default configuration settings were used. Lastly a web based collaborative tool, Tiki Wiki v8.1 was installed and enabled. This version has a documented vulnurenability\footnote{Packet Storm: All things security, \url{https://packetstormsecurity.com/files/108036/INFOSERVE-ADV2011-07.txt}, Accessed 9 August 2016.} that allows web exploitation. Those settings are representative of a local server offering basic web services on the internet. Tiki Wiki's known vulnerability represents the ever present danger of previously unknown vulnerabilities on up to date software running on production infrastructure.
 
 %% supervisor:
 % - Is there enough detail here for us to set this up and recreate the dataset?
@@ -612,40 +612,34 @@ After performing our computation we plot the receiver operating characteristic c
 \label{knnroc2}
 \end{figure}
 
-To assess the performance of our classifiers we compute the area under the ROC curve. There is a problem however in that our data do not spawn the whole x-axis (false positive rate) from 0 to 1. This results in the random selection having area under the curve (named $arear$) for squared euclidean distance equal to $0.3004$ instead of $0.5000$ as we would expect.
-%% supervisor:
-% - I don't follow this
-In order to fix that we normalize our area calculations by dividing by $(2\cdot arear)$. The results are shown in table \ref{knnt3}.
+To assess the performance of our classifiers we compute the area under the ROC curve. The results are shown in table \ref{knnt3}.
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
 Attack Used &  Area under ROC curve \\ \hline 
-adduser          & 0.8822 \\ \hline
-hydra ftp        & 0.6643 \\ \hline
-hydra ssh        & 0.5792 \\ \hline
-java meterpreter & 0.8559 \\ \hline
-meterpreter      & 0.8330 \\ \hline
-web shell        & 0.8558 \\ \hline
-$arear$          & 0.3004 \\ \hline
+adduser          & 0.745 \\ \hline
+hydra ftp        & 0.593 \\ \hline
+hydra ssh        & 0.549 \\ \hline
+java meterpreter & 0.727 \\ \hline
+meterpreter      & 0.710 \\ \hline
+web shell        & 0.734 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Area under the curve for squared euclidean distance kNN classifier.}
 \label{knnt3}
 \end{table}
-
 Calculating the area under the ROC curve for kNN under squared standardised euclidean distance we get the results shown in table \ref{knnt4}.
 
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
 Attack Used &  Area under ROC curve \\ \hline 
-adduser          & 0.8096 \\ \hline
-hydra ftp        & 0.6416 \\ \hline
-hydra ssh        & 0.5398 \\ \hline
-java meterpreter & 0.8096 \\ \hline
-meterpreter      & 0.8377 \\ \hline
-web shell        & 0.8030 \\ \hline
-$arear$          & 0.2854 \\ \hline
+adduser          & 0.696 \\ \hline
+hydra ftp        & 0.574 \\ \hline
+hydra ssh        & 0.518 \\ \hline
+java meterpreter & 0.689 \\ \hline
+meterpreter      & 0.705 \\ \hline
+web shell        & 0.697 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Area under the curve for squared standardised euclidean distance kNN classifier.}
@@ -686,7 +680,6 @@ hydra ssh        & 0.4690 \\ \hline
 java meterpreter & 0.6858 \\ \hline
 meterpreter      & 0.7475 \\ \hline
 web shell        & 0.7158 \\ \hline
-$arear$          & 0.4954 \\ \hline
 \end{tabular}
 \vspace{5pt}
 \caption{Area under the curve for k-Means Clustering classifier using euclidean distance.}
@@ -702,7 +695,7 @@ $arear$          & 0.4954 \\ \hline
 %Area under the curve for meterpreter attack      is: 0.747529650319
 %Area under the curve for web shell attack        is: 0.715844036274
 
-After performing our computation we plot the receiver operating characteristic curves. They are presented in figure \ref{kmcroc1}. To assess the performance of our classifier we compute the area under the ROC curves and present the results in table \ref{kmct1}. The area has been normalised again although that was not really needed in this case since $arear = 0.4954$. We can see that in this case the hydra ssh attack has bad performance while for the other attacks the classifier has moderate performance.
+After performing our computation we plot the receiver operating characteristic curves. They are presented in figure \ref{kmcroc1}. To assess the performance of our classifier we compute the area under the ROC curves and present the results in table \ref{kmct1}. We can see that in this case the hydra ssh attack has bad performance while for the other attacks the classifier has moderate performance.
 
 The authors of \cite{adf1} do not comment on the area under the ROC curves for the classifiers they used.
 %% supervisor:
@@ -1179,3 +1172,7 @@ Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th 
 % citation or experiment, maybe both
 % captions ... !!!
 % convert tables to pie chart !?
+
+% % myComments:
+% training and validation/test set not comming from the same distribution
+%  + Mahesan's paper.
