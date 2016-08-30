@@ -322,7 +322,9 @@ Over time other datasets started to emerge but none has managed to be come a sta
 
 \section{Project Planning}
 
-An important part of any project is time management. To assist us in better management we followed the Gantt Chart shown in figure \ref{gantt}. It is separated in eight parts. Initially we explore the dataset, set up our system and decide the architecture of our workflow.
+An important part of any project is time management. In order to decide how to manage our time we first had to see the situation we were at and the goals we wanted to achieve. While the MSc project supervisor has done previous work in the field of Intrusion Detection he and his research team were not currently working on it. Therefore part of the work of this project is to understand recent developments and trends in this field as well as laying the ground work for further researching in the field. This means that our work will not be focused on only one approach but we will try many approaches to enhance our wider understanding of the subject. That doesn't mean we shouldn't have a specific goal and this was to employ unsupervised learning outlier detection algorithms. There were also weekly meetings with the supervisor to report on the progress done and decide on the best way forward. Some of the meetings were with the wider research team were we each presented the work we were doing to the other members.
+
+To assist us in better management we created the Gantt Chart shown in figure \ref{gantt}. It is separated in eight parts. Initially we explore the dataset, set up our system and decide the architecture of our workflow.
 \begin{figure}[h]
 \centering
 % Gantt chart initial code:
@@ -485,14 +487,14 @@ One would think that since we only have 325 system calls only integers up to 325
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-2.eps}} \    
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-3.eps}}
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-4.eps}} 
-\caption{System Calls distribution.}
+\caption[System calls count distribution.]{Counting how many times each system call occurs in the the training, attack and validation set.}
 \label{syscalls1}
 \end{figure}
 \begin{figure}
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-5.eps}} 
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-6.eps}} \    
 \subfloat{\includegraphics[width = 0.5\textwidth]{a17-syscalls-7.eps}}
-\caption{System Calls distribution.}
+\caption[System calls count distribution.]{Counting how many times each system call occurs in the the training, attack and validation set.}
 \label{syscalls2}
 \end{figure}
 %% supervisor:
@@ -513,17 +515,19 @@ Moving forward we count the presences of each system call in our dataset. The re
 %% supervisor:
 % - Expand captions to contain enough information about what the "take home" message for the reader is
 
-Another way to improve our understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. While on figure \ref{pca1} there is some separation between the attack and the training set once we add the validation set, in figure \ref{pca2}, we see that there is little separation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's.
+Another way to improve our basic understanding of our dataset is to look at it's principal components. In order to compute the principal components we merge the whole dataset. As we can see in figures \ref{pca1} and \ref{pca2} we have used different colors for the three subsets of ADFA-LD 12. In the figure \ref{pca1} we only plot the training and attacks sets. In figure \ref{pca2} we also plot the validation set. By observing figure \ref{pca1} we can see some degree of differentiation between the distributions of the attack and training set. However once we add the validation set, in figure \ref{pca2}, we see that there is little differentiation between the attack dataset and the training and validation sets combined. The validation set's spatial distribution on the first two principal components is a bit different than the training set's.
 %% supervisor:
 % - Slightly denser sampling might make them look similar ??
 % > Don't know, needs Computer Science expertise
 This means 
 % __myNote__ : research for training vs validation sets
-that the training and the validation sets as provided do not carry the same information content. We can see how much of the variation of the dataset is captured with each principal component in table \ref{pcat1}.
+that the training and the validation sets as provided do not carry the same information content. 
+
+We can see how much of the variance of the dataset is captured with each principal component of the complete frequency space in table \ref{pcat1}. It is is worthwhile here to mention some specifics about the variance of our datasets. At table \ref{pcat1} we present the variance of the complete dataset in the complete frequency feature space. In that case one needs 12 dimensions to capture 80\% of the variance of the dataset. However in the work of Xie et al.\cite{adf1} that we will reproduce in the next chapter they perform principal component analysis on the training set only. This results in them needing only 9 dimensions in order to capture 80\% of the variance of the training set. While we consider that choice sub-optimum, because we want our principal components to contain the diversity of the attack dataset in order for a classifier to take advantage of it, we will use their approach in order to be able to compare our results with them.
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
-Principal Component \# &  Explained Variance \\ \hline 
+Principal Component &  Explained Variance \\ \hline 
 1  & 0.2042 \\ \hline
 2  & 0.1233 \\ \hline
 3  & 0.0949 \\ \hline
@@ -538,31 +542,14 @@ Principal Component \# &  Explained Variance \\ \hline
 12 & 0.0260 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Fraction of explained variance from the principal components that contain 80\% of the variance of ADFA-LD 12 dataset.}
+\caption{Fraction of explained variance from the principal components of the complete frequency space that contain 80\% of the variance of ADFA-LD 12 dataset.}
 \label{pcat1}
 \end{table}
-We can see that the variance explained by each subsequent principal component decays slowly.
-
-
-\chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
-
-We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set.
-%%supervisor:
-% - Repeating to close to each other?
-We will keep their procedure while we are trying to replicate their results in the following sections.
-
-\section{k - Nearest Neighbours}
-
-We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
-
-They begin by performing feature reduction through principal component analysis. They keep 80\% of the variance of the dataset, which results in them having a 9 dimensional feature space. It is notable here that they perform PCA only on the training set and not on the whole dataset.
-%%supervisor:
-% - Repeating to close to each other?
-According to our results the fraction of the total variance of the dataset explained by each principal component is shown on table \ref{knnt1}.
+The percentage of variance of the training set explained in each principal component in this case is presented in table \ref{knnt1}.
 \begin{table}
 \begin{tabular}{|c|c|}
 \hline
-Principal Component &  Variance \\ \hline 
+Principal Component &  Explained Variance \\ \hline 
 1 & 0.1969 \\ \hline
 2 & 0.1548 \\ \hline
 3 & 0.1130 \\ \hline
@@ -577,11 +564,21 @@ Principal Component &  Variance \\ \hline
 \caption{Variance of the principal components of the training set.}
 \label{knnt1}
 \end{table}
-%% supervisor:
-% - Do this many decimal components make sense?
-% > Reduced to 4
-% - Would a pie chart look nice?
-% > Not because of components with small percentage.
+In both vases we can see that the variance explained by each subsequent principal component decays slowly.
+
+
+\chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
+
+We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set.
+%%supervisor:
+% - Repeating to close to each other?
+We will keep their procedure while we are trying to replicate their results in the following sections.
+
+\section{k - Nearest Neighbours}
+
+We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
+
+They begin by performing feature reduction through principal component analysis. 
 
 The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically by the authors. For k they chose 20. Their choice of parameter d depends on the distance metric used. We present their choices\cite{adf1} in table \ref{knnt2}:
 \begin{table}
