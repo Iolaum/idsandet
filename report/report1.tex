@@ -409,6 +409,12 @@ group peaks height =.2
 %Week 13: 29.8 - 02.9
 After that we worked on replicating results of previous papers\cite{adf1}, \cite{adf2}. This work overlapped with the work on frequency based algorithms and 2-sequence based algorithms. Once we replicated the work of previous papers we worked on new ways to analyse the dataset. One way of doing so was to get out of the boundaries established by the computer science community in handling the dataset and using it in ways more conventional to the machine learning community. After that we proceeded in writing the initial report and deliver a draft to the first supervisor. Subsequently we used his feedback to improve our analysis and our report. Lastly we prepared a presentation in order to present our work to the second supervisor.
 
+An overall view of the velocity of our work can be seen in figure \ref{code1}. It includes both our programming work done in python as well as the writing of this report and presentation that were written in \LaTeX. It does not include time spent in work outside of those two such us computation time and literature review.
+\begin{figure}[b]
+\includegraphics[width = 1\textwidth]{code1.jpg}
+\caption{Code Frequency in the project's github repository.}
+\label{code1}
+\end{figure}
 
 \chapter{Exploratory Data Analysis}
 
@@ -569,18 +575,14 @@ In both vases we can see that the variance explained by each subsequent principa
 
 \chapter{Frequency Analysis of the ADFA-LD 12 Dataset}
 
-We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. It's analysis is based in two algorithms, k-nearest neighbours and k-means clustering. One noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set.
-%%supervisor:
-% - Repeating to close to each other?
-We will keep their procedure while we are trying to replicate their results in the following sections.
+We now proceed deeper in our analysis of the ADFA-LD 12 dataset. Our first goal is to replicate the results produced by Xie et al.\cite{adf1}. The paper focuses on frequency based feature engineering, similar to the one we used to explore our dataset. Their analysis is based in two algorithms, k-nearest neighbours and k-means clustering. As we mentioned a noteworthy part of \cite{adf1} is that the authors perform principal component analysis not on the whole of the dataset but only on the training set.
+We will follow their approach while we are trying to replicate their results in the following sections even though this means our reduced frequency feature space does not capture the dataset as efficiently as it could. This way ensures that we can verify that our replication has been successful. After that we can move in to our own approach.
 
 \section{k - Nearest Neighbours}
 
 We now describe the kNN implementation of Xie et al.\cite{adf1}, that we will replicate. 
 
-They begin by performing feature reduction through principal component analysis. 
-
-The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically by the authors. For k they chose 20. Their choice of parameter d depends on the distance metric used. We present their choices\cite{adf1} in table \ref{knnt2}:
+They begin by performing feature reduction through principal component analysis. The criterion for classifying a data point as normal or not is whether it has more than k data points from the training set within a distance d. The parameters k and d where chosen empirically by the authors. For k they chose 20. Their choice of parameter d depends on the distance metric used. We present their choices\cite{adf1} in table \ref{knnt2}.
 \begin{table}
 \begin{tabular}{|c|c|c|}
 \hline
@@ -589,15 +591,17 @@ squared euclidean & [0.01, 0.1] & 0.01 \\ \hline
 standardised squared euclidean & [1, 10] & 1 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{k-Nearest Neighbours parameters.}
+\caption[k-Nearest Neighbours parameters.]{k-Nearest Neighbours parameters used in different iterations of the algorithm in order to create the ROC curves for kNN algorithm in the reduced frequency feature space.}
 \label{knnt2}
 \end{table}
-
-After performing our computation we plot the receiver operating characteristic curves. We can see them in figures \ref{knnroc1} and \ref{knnroc2}.
+The change in distance parameter d allows us to calibrate the sensitivity on identifying a data point as abnormal. The bigger the distance, the more likely we are to find k points and call that data point normal. This calibration procedure allows us to construct the ROC curves.
+After performing our computation we plot the receiver operating characteristic curves that have also been plotted by  Xie et al.\cite{adf1}\footnote{
+We should note here that we modified the procedure a bit.  Xie et al\cite{adf1} in their figures do not include the 100\% False Positive and True Positive point as well as the 0\% True Positive and False Positive point. Thus they cannot move forward with computing the area under the ROC curve. We add this trivial step in our implementation in order to have a measure that we can use to evaluate and compare results from different algorithms.
+}. We can see them in figures \ref{knnroc1} and \ref{knnroc2}.
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-1.eps}
-\caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square euclidean distance.}
+\caption[kNN ROC curves on squared euclidean distance]{Receiver Operating Characteristic curve for k-Nearest Neighbours with square euclidean distance in the reduced frequency feature space.}
 \label{knnroc1}
 \end{figure}
 %% supervisor:
@@ -605,7 +609,7 @@ After performing our computation we plot the receiver operating characteristic c
 % > d - need better explanation in text?
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-2.eps}
-\caption{Receiver Operating Characteristic curve for k-Nearest Neighbours with square standardised euclidean distance.}
+\caption[kNN ROC curves on squared standardised euclidean distance]{Receiver Operating Characteristic curve for k-Nearest Neighbours with square standardised euclidean distance in the reduced frequency feature space.}
 \label{knnroc2}
 \end{figure}
 
@@ -622,7 +626,7 @@ meterpreter      & 0.710 \\ \hline
 web shell        & 0.734 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Area under the curve for squared euclidean distance kNN classifier.}
+\caption[Area under the curve for squared euclidean distance kNN classifier.]{Area under the curve for squared euclidean distance kNN classifier in the reduced frequency space.}
 \label{knnt3}
 \end{table}
 Calculating the area under the ROC curve for kNN under squared standardised euclidean distance we get the results shown in table \ref{knnt4}.
@@ -639,7 +643,7 @@ meterpreter      & 0.705 \\ \hline
 web shell        & 0.697 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Area under the curve for squared standardised euclidean distance kNN classifier.}
+\caption[Area under the curve for squared standardised euclidean distance kNN classifier.]{Area under the curve for squared standardised euclidean distance kNN classifier in the reduced frequency space.}
 \label{knnt4}
 \end{table}
 
@@ -659,11 +663,11 @@ We see that the password cracking attacks (hydra ssh and hydra ftp) are quite ha
 %\subsection{Re-creating previous results}
 %%\newline
 
-We proceed in trying to replicate the results of Xie et al.\cite{adf1} with regards to the k-means clustering algorithm. We focus on implementing with a euclidean distance metric. The authors used the training data to create 5 clusters. The number of clusters was chosen empirically. A new data point was classified as normal when it was within a distance $d$ of a cluster center. The distance parameter was chosen by finding the maximum in cluster distance $(d_{max})$ and getting an evenly spaced sample of 10 numbers from $[0,d_{max}]$. In our case the maximum distance is $0.7551$.
+We proceed in trying to replicate the results of Xie et al.\cite{adf1} with regards to the k-means clustering algorithm. We focus on implementing the algorithm with a euclidean distance metric. The authors used the training data to create 5 clusters. The number of clusters was chosen empirically. A new data point was classified as normal when it was within a distance $d$ of a cluster center. The distance parameter was chosen by finding the maximum in cluster distance $(d_{max})$ and getting an evenly spaced sample of 10 numbers from $[0,d_{max}]$. In our case the maximum distance is $0.7551$. This calibration of the distance parameter allows us to control the sensitivity with which we classify a data point as anomalous enabling the creation of receiver operating characteristic curves.
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{b08-roc-3kmc.eps}
-\caption{Receiver operating characteristic curve for k-means clustering.}
+\caption[Receiver operating characteristic curve for k-means clustering.]{Receiver operating characteristic curve for k-means clustering on the reduced frequency feature space.}
 \label{kmcroc1}
 \end{figure}
 
@@ -679,18 +683,10 @@ meterpreter      & 0.7475 \\ \hline
 web shell        & 0.7158 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Area under the curve for k-Means Clustering classifier using euclidean distance.}
+\caption[Area under the curve for k-Means Clustering classifier using euclidean distance.]{Area under the curve for k-Means Clustering classifier using euclidean distance on the reduced frequency feature space.}
 \label{kmct1}
 \end{table}
 
-%
-%Area under the curve for random selection        is: -0.49543587175
-%Area under the curve for adduser attack          is: 0.689277027657
-%Area under the curve for hydra ftp attack        is: 0.642760446353
-%Area under the curve for hydra ssh attack        is: 0.469041129125
-%Area under the curve for java meterpreter attack is: 0.685769143829
-%Area under the curve for meterpreter attack      is: 0.747529650319
-%Area under the curve for web shell attack        is: 0.715844036274
 
 After performing our computation we plot the receiver operating characteristic curves. They are presented in figure \ref{kmcroc1}. To assess the performance of our classifier we compute the area under the ROC curves and present the results in table \ref{kmct1}. We can see that in this case the hydra ssh attack has bad performance while for the other attacks the classifier has moderate performance.
 
@@ -698,11 +694,15 @@ The authors of \cite{adf1} do not comment on the area under the ROC curves for t
 %% supervisor:
 % - But what measure do they use to quote results? Why can't we also calculate that measure and compare?
 % > They don't ! They just take data points from the ROC curve and speak about them. Could do it as well ...
-The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. By looking through figures \ref{knnroc1}, \ref{knnroc2} and \ref{kmcroc1} we can see that the k-means clustering algorithm is a bit more reliable.
+%The $arear$ measure was introduced by the author of this work to get an estimate of how completely the parameter space of the classifier has been examined. Because of the differences of $arear$ the results of the classifiers should be compared through the points creating the ROC curves rather than the area under them. 
+Instead they just assess individual Precision (True Positive) and Fall out (False Positive) rates. With our implementation we can compute it.
+By looking through figures \ref{knnroc1}, \ref{knnroc2}, \ref{kmcroc1} and the tables presenting the area under the ROC curve, \ref{knnt2}, \ref{knnt3}, \ref{kmct1}, we can see that the k-means clustering algorithm is a bit more reliable.
 %% supervisor:
 % - How can we detect reliability?
 % > Good question, should justify it with an argumet.
-Additionally k-means clustering is a lot cheaper computationally.
+Additionally k-means clustering is a lot cheaper computationally. The training times for k-means clustering were at least one order of magnitude less  than those of k-nearest neighbours on the computing resources we were using for this work.
+
+As a final remark for using k-means clustering for anomaly detection we should mention that conceptually it has a lot of similarities to the Gaussian Mixture Model pioneered by Roberts et al.\cite{out1}.
 
 %% supervisor:
 % - But I am looking to see a comparison to Xie's results.
@@ -723,7 +723,7 @@ We can see the first results of this computation in figure \ref{svm-fr1} where w
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{c02-svm-plot.eps}
-\caption{Performance instances for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\caption[Performance instances for SVM's with linear kernel for different attack profiles.]{Performance instances for SVM's with linear kernel on ADFA-LD 12 dataset for different attack profiles in the reduced feature space.}
 \label{svm-fr1}
 \end{figure}
 
@@ -739,14 +739,14 @@ meterpreter      & 10 \\ \hline
 web shell        & 1 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Optimal regularisation parameter for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\caption[Optimal regularisation parameter for linear SVM's for different attack profiles.]{Optimal regularisation parameter for SVM's with linear kernel on ADFA-LD 12 for different attack profiles in the reduced feature space.}
 \label{svmt1}
 \end{table}
 
 
 \begin{figure}
 \includegraphics[width = 0.9\textwidth]{c05-svm-roc.eps}
-\caption{Receiver Operating Characteristics for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\caption[ROC curves for linear SVM's for different attack profiles.]{Receiver Operating Characteristic curves for SVM's with linear kernel on ADFA-LD 12 for different attack profiles on the reduced feature space.}
 \label{svm-fr2}
 \end{figure}
 
@@ -764,14 +764,14 @@ meterpreter      & 0.9105 \\ \hline
 web shell        & 0.8354 \\ \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Area under the curve for SVM's with linear kernel on ADFA-LD 12 attack profiles.}
+\caption[Area under the curve for linear SVM's for different attack profiles.]{Area under the curve for SVM's with linear kernel on ADFA-LD 12 for different attack profiles on the reduced feature space.}
 \label{svmt2}
 \end{table}
 
 
 At this stage we are able to compare our results, from table \ref{svmt2}, with those of the k-means clustering algorithm, from table \ref{kmct1}. Is is quite clear that Support Vector Machines are a more accurate and reliable classifier for every attack. On average the SVM classifier has 0.15 higher area under the curve.
 
-Moving forward we want to see the performance of Support Vector Machines on the dataset as a whole instead of training for each attack specifically. Hence we will treat the problem as a two class classification problem with our classes being normal behaviour and attack behaviour. To get a better idea of the performance of our classifier in this case we will use cross validation. To address the issue of class imbalance in our dataset we will use stratified 8-fold cross validation\footnote{We chose 8-fold cross validation instead of 10-fold due to the class imbalance against our attack set and the inner divisions within it. The change is minor but helps as sample the attack set better across folds.}. Going even further we run our simulation for various values of the regularisation parameter. We present our results in table \ref{svmt3}. We can see that we get better performance\footnote{Increased performance means higher difference between precision and fallout rates, with 1 been perfect classification results.} for low regularisation values. The optimum value is $C=0.5$.
+Moving forward we want to see the performance of Support Vector Machines on the dataset as a whole instead of training for each attack specifically. Hence we will treat the problem as a two class classification problem with our classes being normal behaviour and attack behaviour. To get a better idea of the performance of our classifier in this case we will use cross validation. To address the issue of class imbalance in our dataset we will use stratified 8-fold cross validation\footnote{We chose 8-fold cross validation instead of 10-fold due to the class imbalance against our attack set and the inner divisions within it. The change is minor but helps us sample the attack set better across folds.}. Going even further we run our simulation for various values of the regularisation parameter. We present our results in table \ref{svmt3}. We can see that we get better performance\footnote{Increased performance means higher difference between precision and fallout rates, with 1 been perfect classification results.} for low regularisation values. The optimum value is $C=0.5$.
 
 
 \begin{table}
@@ -837,11 +837,11 @@ As we can see by comparing tables \ref{svmt3} and \ref{svmt4} using the complete
 \subsection{Recursive feature elimination}\mbox{}
 
 
-Moving forward with our analysis of ADFA-LD 12 dataset we will conduct recursive feature elimination. We will train an SVM classifier with linear kernel for a two pattern classification problem. Our two classes will be attack and normal behaviour. A property of k-fold cross validation is that a small part of the dataset is used as a validation set meaning our under-represented attack class may not be appropriately present in the validation set. For this reason we will use a sampling method to perform cross validation splitting our dataset with the StratifiedShuffleSplit method of scikit-learn\cite{skl}. We will sample 6 times and our training and validation sets will be equal in size. To create a scorer and assess the performance of our classifier we will use the Precision (True Positive rate) and Fall out (False Positive rate) ratios. But because recursive feature elimination works by optimising one measure we will use their difference, namely:
+Moving forward with our analysis of ADFA-LD 12 dataset we will conduct recursive feature elimination. We will train an SVM classifier with linear kernel for a two pattern classification problem. Our two classes will be attack and normal behaviour. A property of k-fold cross validation is that only a small part of the dataset is used as a validation set meaning our under-represented attack class may not be appropriately represented in the validation set. For this reason we will use a sampling method to perform cross validation. We will be sampling our dataset with the StratifiedShuffleSplit method of scikit-learn\cite{skl} 6 times and our training and validation sets will be equal in size. To create a scorer and assess the performance of our classifier we will use the Precision (True Positive rate) and Fall out (False Positive rate) ratios. But because recursive feature elimination works by optimising one measure we will use their difference, namely:
 \beqq
 \mathrm{Scorer = Precision - Fall out}
 \eeqq
-When Scorer=1 we have perfect classification and if Scorer is 0 we are classifying everything as attack behaviour. After writing the necessary code we plot our results in figure \ref{svm-fr3}.
+When Scorer=1 we have perfect classification and if Scorer is 0 we are classifying everything as attack behaviour. After writing our code and performing the necessary computations we plot our results in figure \ref{svm-fr3}.
 
 \begin{figure}[th]
 \includegraphics[width = 0.9\textwidth]{d07-rfe-svm-1.eps}
@@ -898,7 +898,7 @@ $1.0$ &  $1.0 \pm 0.0$ & $1.0 \pm 0.0$ \\ \hline
 
 By studying the results of figure \ref{1csvm-fr1} and table \ref{1csvmt1} we see that there is  big volatility for different numbers of $\nu$. Moreover the standard deviation of our metrics is quite varying as well, something we didn't expect. This might be due to the relatively small number, 10, of re-sampling
 % bootstrapping??
-or because of some structure within our dataset that we haven't identified yet. In order to identify the best performing value of the upper bound for misclassification we repeat our procedure on a smaller range of values. The results of our computation are presented in figure \ref{1csvm-fr2} and table \ref{1csvmt2}.
+or because of some structure within our dataset that we haven't identified yet. Further investigation is needed to determine this. In order to identify the best performing value of the upper bound for misclassification we repeat our procedure on a smaller range of values. The results of our computation are presented in figure \ref{1csvm-fr2} and table \ref{1csvmt2}.
 
 \begin{figure}[thb]
 \includegraphics[width = 0.9\textwidth]{d08-1csvm-v2.eps}
@@ -926,8 +926,10 @@ $0.45$ &  $0.864 \pm 0.004$ & $0.45 \pm 0.01$ \\ \hline
 \label{1csvmt2}
 \end{table}
 
-From table \ref{1csvmt2} we can identify $\nu=0.41$ as the best performing value for the upper bound on training errors. Moreover from looking at both tables \ref{1csvmt1} and \ref{1csvmt2} we can see that the fall out rate follows the value of $\nu$ which makes sense given that the training data are all from normal behaviour and the fall out rate represents misidentification of normal data.
+From table \ref{1csvmt2} we can identify $\nu=0.41$ as the best performing value for the upper bound on training errors. Moreover from looking at both tables \ref{1csvmt1} and \ref{1csvmt2} we can see that the fall out rate follows the value of $\nu$ which makes sense given that the training data are all from normal behaviour and the fall out rate represents misidentification of normal data. 
 
+Because the LIBSVM library\cite{libsvm} implementing the One-class SVM algorithm that we use does not predict probabilities for a data point to be classified as outlier but only classifies them as such we cannot create ROC curves. 
+However by observing the performance of the algorithm depending on the bound for the training error at figures \ref{1csvm-fr1} and \ref{1csvm-fr2} we see that there is a resemblance to a receiver operating characteristic.
 
 
 \chapter{2-Sequence Analysis of the ADFA-LD 12 Dataset}
@@ -965,7 +967,7 @@ $32$ &  $0.81 \pm 0.03$ & $0.038 \pm 0.004$ \\ \hline
 
 We see that we get our best performing results are when we have $C=0.25$. By comparing the results from tables \ref{svmt4} and \ref{svmt5} we see that the two-sequence feature space yields significantly better results compared to the full frequency feature space. This is to be expected since the two frequency feature space captures more information from the dataset.
 
-Moving forward we will conduct recursive feature elimination to see how much information is contained in each feature. We will use the same procedure as before. We will train our classifier to distinguish a two pattern classification problem. We will use Stratified Shuffle Split method to perform cross validation. In order to make the computation time reasonable we will use a reduction step of 24 features (out of total 3792) per iteration. After performing our computation we get the results depicted in figure \ref{svm-sq1}. We see that performance plateaus at 240 feature and stays relatively stable afterwards with an obtuse maximum at 2088 features. Below 240 features performance drops significantly, hence we can say that the core information content on normal and attack classes is contained in the 240 most important features.
+Moving forward we will conduct recursive feature elimination to see how much information is contained in each feature. We will use the same procedure as before. We will train our classifier to distinguish a two pattern classification problem. We will use Stratified Shuffle Split method to perform cross validation. In order to make the computation time reasonable we will use a reduction step of 24 features (out of total 3792) per iteration. After performing our computation we get the results depicted in figure \ref{svm-sq1}. We see that performance plateaus at 240 features and stays relatively stable afterwards with an obtuse maximum at 2088 features. Below 240 features performance drops significantly, hence we can say that the core information content on normal and attack classes is contained in the 240 most important features.
 
 \begin{figure}[thb]
 \includegraphics[width = 0.9\textwidth]{e10-rfe-svm-1.eps}
@@ -1045,7 +1047,16 @@ $0.45$ &  $0.849 \pm 0.006$ & $0.464 \pm 0.017$ \\ \hline
 %
 %appropriate kernels ...
 
-\chapter{Conclusion}
+\chapter{Project Evaluation}
+
+After having gone through our results it is time to review them with a more critical approach.
+
+\section{Results Analysis}
+
+Our first goal was to replicate the results of Xie et al.\cite{out1}. We successfully achieved that and implemented some trivial improvements that allowed us to fully compute the ROC curve and the area below it. 
+
+
+\section{Further Research}
 
 
  !!?? 
@@ -1070,7 +1081,7 @@ In order to streamline our work flow we structured our working repository in the
 
 Since we are not building an application that is to be deployed in a production setting we use a more basic approach for our coding requirements. We create a lot of individual scripts that perform one small task. This gradual progress allows us to monitor keep a very good understanding of our progress because every step we make is assessed before we move to a new one. Another benefit of our modular approach is our ability to test our code. Writing unit tests for our work is inappropriate. Therefore we test manually\footnote{In most cases manual testing means that we run a script in a small subset of our dataset and make sure the result is correct. Then we proceed to finalize the script in order to process the whole dataset. Whenever possible we run numerical tests on the final results to verify them.}. The fact that our scripts are small means that we have to test for very few possibilities and the fact that we run our scripts one after another means those possibilities are added instead of multiplied keeping the manual testing feasible and not counter productive. Moreover this segmentation makes it easier to alter our implementation of a particular algorithm when we want to experiment further with our dataset.
 
-As an additional remark we want to mention that  since python is able to run in a variety of operating systems our results can be replicated on a variety of operating systems. All one has to do is install python and our required libraries on his systems. Then he can download the dataset and place them in the /data/ folder according to the specifications set by the script\footnote{The scripts ``a2\_{}train.py", ``a3\_{}attack.py" and ``a4\_{}validation.py" are the ones that are used to initiate our analysis.} in their initial comments section. After the initial scripts have run the user can be sure he has set up his system properly to reproduce all of our results by running the remaining scripts.
+As an additional remark we want to mention that  since python is able to run in a variety of operating systems our results can be replicated on a variety of operating systems. Depending on the user's system he has to install all the required libraries and associated dependencies. In order to replicate our work one has to download the data and put each subset in the /data/training /data/validation and /data/attack folders. The script a01\_{}intro.py can be used to verify that this has been done correctly. The python scripts  a02\_{}train.py, a03\_{}attack.py, a04\_{}validation.py are used to create the first pickle files of the dataset. After that the scripts can be run in sequence. The data files created have in their name the alphanumeric characters of the script that created so it is easy to check which script should have been run before the one we are attempting to run.
 
  
 \backmatter
@@ -1152,6 +1163,17 @@ Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th 
 %matplotlib
 \bibitem{matpl}J. Hunter, \emph{Matplotlib: A 2D graphics environment}, Computing In Science \& Engineering, vol. 9, no. 3, pp 90 - 95, 2007
 
+\bibitem{libsvm} C. Chih-Chung, L. Chih-Jen, \emph{LIBSVM: A library for support vector machines}, ACM Transactions on Intelligent Systems and Technology, Volume 2, Issue 3 (2011)
+%@article{CC01a,
+% author = {Chang, Chih-Chung and Lin, Chih-Jen},
+% title = {{LIBSVM}: A library for support vector machines},
+% journal = {ACM Transactions on Intelligent Systems and Technology},
+% volume = {2},
+% issue = {3},
+% year = {2011},
+% pages = {27:1--27:27},
+% note =	 {Software available at \url{http://www.csie.ntu.edu.tw/~cjlin/libsvm}}
+%}
 
 
 \end{thebibliography}
@@ -1173,3 +1195,5 @@ Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th 
 % % myComments:
 % training and validation/test set not comming from the same distribution
 %  + Mahesan's paper.
+
+% k-means clustering scales!!
