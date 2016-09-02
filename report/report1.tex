@@ -144,7 +144,8 @@ Supervisor: prof. Mahesan Niranjan\\ \vspace{8pt}
 
 \chapter*{Abstract}
 \setcounter{page}{1}
-This is the summary of the project describing the details of the analysis on the ADFA-LD 12 dataset.
+
+In this project we study outlier detection in an intrusion detection dataset. In order to base our research on solid foundation we first review the relevant Machine Learning literature on outlier detection  as well as the Information Security literature on Intrusion Detection Techniques. We did a short review of the available datasets in the literature to show what one should look for when searching for an Intrusion Detection Dataset. After that we start exploring the dataset performing exploratory data analysis. This enables us to replicate previous work done on the dataset. We then expanded on that work exploring the full potential of the frequency feature space using support vector machines. We get results with better performance and then move on implementing an outlier detection algorithm, one-class support vector machines. We see a drop in performance as we would expect from moving from a supervised to an unsupervised learning approach. Then we move to the next step of our analysis. We construct the two-sequence feature space and use support vector machines as a two pattern classification problem. We see that we get significantly better results compared to the frequency space. On the other hand we see only minor improvements when we use the outlier detection algorithm. This leads up to conclude that there many open ended research questions on this dataset in the two-sequence feature space and unsupervised outlier detection.
 
 
 %% supervisor:
@@ -159,7 +160,7 @@ This is the summary of the project describing the details of the analysis on the
 
 \chapter*{Acknowledgements}
 
-Thank you!!
+I would like to express my gratitude to professor Mahesan Niranjan for his guidance, critical appraisal and insight. I would also like to thank my parents and my brother for their great support during this difficult year. Last but not least I would like to thank all my colleagues on the MSc of Data Science for the camaraderie we have built this year.
 
 
 \tableofcontents
@@ -318,7 +319,7 @@ As we see Intrusion Detection is a very complex problem.  Each IT system has dif
 A critical part in creating an IDS application is the data you use to train it on. In the enterprise world you have access to the company's data. In the academia however good datasets for IDS are hard to find. One of the early attempts to solve that problem was initiated by DARPA and it resulted at the DARPA 1999 IDS Dataset\footnote{DARPA IDS 1998 - 1999 Datasets: \url{https://www.ll.mit.edu/ideval/data/} - Accessed at 9 Aug 2016}. The dataset was a result of the work done by Stolfo et al.\cite{dat01}. Even though the DARPA 1999 dataset has been a standard in the academia for more than a decade it has been heavily criticized as well. McHugh\cite{dat02} has criticized the procedure used to generate the dataset and more specifically the validation process  used for the validation set. Mahoney et al.\cite{dat03} have found artefacts of the simulation used to create the datasets within the data undermining the credibility of performance results from intrusion detection algorithms. Moreover Ahmed et al\cite{dat04} argue that the software used to create the dataset is no longer relevant and even at it's time it didn't have a significant market share. Lastly the documentation of the dataset is questioned with some researchers suggesting
 that the number of attacks present in the dataset is inaccurate.
 
-Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that the diverse needs of an IDS system means that different datasets address different aspects. This is the case for the dataset we will be using as well. The dataset used in this project addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
+Over time other datasets started to emerge but none has managed to be come a standard. One reason for this is that it is dificult to create a dataset that maintain the quality standards needed to not be criticised with any of the shortcomings the DARPA datasets have. This is the case for the dataset we will be using as well. Another reason is that the diverse needs of an IDS system means that different datasets address different aspects of the IDS landscape. The dataset used in this project addresses host-based intrusion detection (HIDS). It is called ADFA LD-12 and it was presented by Creech et al.\cite{dat2}. We will describe it in detail in the next chapter.
 
 \section{Project Planning}
 
@@ -485,7 +486,7 @@ Our next step is to do basic exploration in our dataset. The kernel of the host 
 A curious thing to mention here is the presence of integers higher than 325.
 %% supervisor:
 % - how many of them? (maybe just one or two bypass_?)
-One would think that since we only have 325 system calls only integers up to 325 would be used.\footnote{Nothing in the documentation of the dataset indicated this would (or would not) happen.} This is a very good example that no assumptions should be made when addressing a dataset and that we should always clean and validate the form of the data we expect to have for the next step of our pipeline.
+One would think that since we only have 325 system calls only integers up to 325 would be used.\footnote{Nothing in the documentation of the dataset indicated this would (or would not) happen.} This is a very good example that no assumptions should be made when addressing a dataset and that we should always clean and validate the form of the data we expect to have for the next step of our pipeline. Another notable issue here is that we had not identified this problem initially when we were modelling the dataset. But numerical tests performed after constructing the system call frequency feature space, about which we talk more later, showed that we had not captured all the dataset. This resulted in more rigorous exploration that revealed the unexpected labelling of the system calls.
 
 
 \begin{figure}
@@ -849,7 +850,7 @@ When Scorer=1 we have perfect classification and if Scorer is 0 we are classifyi
 \label{svm-fr3}
 \end{figure}
 
-By looking at the plot we see that when we start removing the less relevant features from the complete feature space our performance, measured by our scorer metric, remains steady. That plateau remains with minimal variation until we have 50 remaining features with a global maximum at 54 features. Then it has a small decline that keeps increasing and becomes a steep decline after we are left with only 25 features. Therefore we can deduct that the information content required to perform proper identification of attacks in the context of a two pattern classification problem is contained in the 54 most relevant features.
+By looking at the plot we see that when we start removing the less relevant features from the complete feature space our performance, measured by our scorer metric, remains steady. That plateau remains with minimal variation until we have 50 remaining features with a global maximum at 54 features. Then it has a small decline that keeps increasing and becomes a steep decline after we are left with only 25 features. Therefore we can deduct that the information content required to perform proper identification of attacks in the context of a two pattern classification problem is contained in the 54 most relevant features. 
 
 
 %% supervisor:
@@ -1049,20 +1050,65 @@ $0.45$ &  $0.849 \pm 0.006$ & $0.464 \pm 0.017$ \\ \hline
 
 \chapter{Project Evaluation}
 
-After having gone through our results it is time to review them with a more critical approach.
+After having gone through our results it is time to review them with a more critical approach. 
+
+\section{Validation and Testing} 
+
+Before we do that however is important to mention a key part of our work that has been lurking in the shadows. This is validation and testing. All of our numerical analysis has been done through computations. It is easy to make a mistake that introduces bug in the python code but it is very hard to identify that by looking at the results. Therefore we took the approach that every step of a numerical calculation, once implemented, should be tested through the form of debug messages printed by the terminal or our log files in order to verify them. This approach has not only helped us identify bugs in our code immediately but it has also shaped how our code was written to make it more resilient.
+
+A key success of that testing was the proper identification of the integers representing the kernel system calls. Initially through manual exploration of the data files, sampled randomly, we had assumed that they were represented but the integers from 1 to 325. Numerical testing, in this case mostly through summation, of the relevant probabilities revealed that something was missing. More rigorous exploration of the dataset revealed the problem.
 
 \section{Results Analysis}
 
 Our first goal was to replicate the results of Xie et al.\cite{out1}. We successfully achieved that and implemented some trivial improvements that allowed us to fully compute the ROC curve and the area below it. 
 
+We then moved further by implementing Support Vector Machines classifiers. Comparing the area under the ROC curves for the various cases described in tables \ref{knnt3}, \ref{knnt4}, \ref{kmct1} and \ref{svmt2} is not very straightforward so we created figure \ref{res1} to condense that information. We can see that k-means clustering and k-nearest neighbours with squared standardised euclidean distance are the worst performers while support vector machines perform a lot better.
+\begin{figure}[hbt]
+\includegraphics[width = 0.9\textwidth]{f01-results.eps}
+\caption[Performance on reduced frequency feature space.]{Performance, measuring the area under the ROC curve, for various attack detection algorithms on the reduced frequency feature space.}
+\label{res1}
+\end{figure}
+
+We then moved to the complete frequency feature space. When formulating the problem as a two pattern classification we saw, from tables \ref{svmt3} and \ref{svmt4}, a significant improvement in performance.This means that the feature reduction approach used by Xie et al.\cite{out1} was not efficient in maintaining the information contained in the dataset while reducing it's dimensionality. To that extend we tried recursive feature elimination and we saw that we could eliminate up to 121 out of 175 dimensions of the feature space with no loss of performance.
+As we can see from figure \ref{svm-fr3} we could even go below that and unless we keep less than the 35 most informative features we are not sacrificing much on performance of our algorithm.
+
+We then move to trying an unsupervised learning approach using one-class support vector machines where we saw a significant drop in performance as evident from our results on tables \ref{1csvmt1} and \ref{1csvmt2}.
+
+Our next step was to move to a feature space that captured more information from the dataset, the two-sequence feature space. To compare how much our performance improved we create figure \ref{res2} which takes information from tables \ref{svmt4} and \ref{svmt5}.
+\begin{figure}[htb]
+\includegraphics[width = 0.9\textwidth]{f02-results.eps}
+\caption[Performance of SVM classifier]{Performance, measuring the area under the ROC curve, for Support Vector Machine Classifier by varying the regularization parameter Showing results  on the frequency and two-sequence feature spaces.}
+\label{res2}
+\end{figure}
+As an evaluation metric we use the scored we have defined earlier as the difference between precision and fall out rate.
+
+\begin{figure}[htb]
+\includegraphics[width = 0.9\textwidth]{f03-results.eps}
+\caption[Performance of one-class SVM classifier]{Performance, measuring the area under the ROC curve, for one class Support Vector Machine Classifier by varying the bound on the fraction of the training error. Showing results on the frequency and two-sequence feature spaces.}
+\label{res3}
+\end{figure}
+Last but not least we compare the performance of one class support vector machine. This algorithm acts as outlier detection and from what we see from figures \ref{res2}, \ref{res3} it's performance is significantly poorer compared to support vector machines classifier. We can also see that there is very little difference between the two feature spaces. This is in contrast with our previous results when intrusion detection was framed as a two pattern classification problem.
 
 \section{Further Research}
 
 
- !!?? 
+This work was intended to initiate research on the the field of intrusion detection through modern machine learning approaches. As such it leaves a lot of open questions.
+One straightforward path to go forward is to take note of the system calls identified as more relevant from recursive feature elimination.\footnote{The 54 more informative system calls of the complete frequency feature space are:
+11, 13, 15, 19, 27, 37, 39, 42, 45, 57, 78, 85, 91, 96, 97, 99, 104, 114, 117, 125, 140, 141, 155,
+159, 160, 162, 168, 174, 175, 191, 195, 196, 199, 200, 202, 206, 207, 209, 212, 213, 215, 224, 243,
+256, 258, 265, 266, 268, 301, 307, 309, 311, 331 and 332}
+Someone with expertise on computer science and more specifically with the linux kernel can give us domain input and provide useful information for more efficient feature engineering.
+
+Another avenue for further research is to check on the scalability of the algorithms we are using. The AWID 2015 dataset by kolias et al.\cite{adf3} is a very good candidate. It's compressed size is 10Gb making it a very good candidate for assessing algorithms that are to be trained in a distributed setting or high performance computer systems. It is a modern dataset using tools representative of the current IT landscape and results on it will have applications on current networks.
+
+Last but not least there is great room for improvement in using better kernels in unsupervised outlier detection. The fact that we saw very small performance increase by moving to the two-sequence feature space means that we not training the one-class support vector machine algorithm on a feature space that it can take full advantage of. Taking advantage of kernel methods has the potential to greatly improve performance. And it even if it doesn't it is useful to know the extend of each algorithm's efficiency. This enhances our overall understanding in the Machine Learning field and helps us find areas in need of novel approaches.
 %% Increased accuracy by bringing better Machine Learning experience.
+
+%% better feature reduction techniques !
+%% + domain knowledge input!
  
- 
+
+
 \appendix 
 
 \chapter{Methods and Technologies used}
@@ -1147,6 +1193,8 @@ ACM Transactions on Information Systems and Systems Security, Volum 3, Issue 4, 
 
 \bibitem{adf2} M. Xie, J. Hu and J. Slay \emph{Evaluating Host-based Anomaly Detection Systems:
 Application of the One-class SVM Algorithm to ADFA-LD}, Proceedings of the 11th IEEE International Conference on Fuzzy Systems and Knowledge Discovery (FSKD 2014), Xiamen, 19-21 August 2014, 978-982. 
+
+\bibitem{adf3} C. Kolias, G. Kambourakis, A. Stavrou, and S. Gritzalis \emph{Intrusion Detection in 802.11 Networks: Empirical Evaluation of Threats and a Public Dataset} IEEE Communication Surveys \& Tutorials, Vol. 18, No. 1, 2016
 
 % python citation
 \bibitem{pyt} G. van Rossum, \emph{Python tutorial, Technical Report CS-R9526}, Centrum voor Wiskunde en Informatica (CWI), Amsterdam, May 1995.
